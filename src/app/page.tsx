@@ -1,65 +1,269 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect } from "react";
+import Lenis from "@studio-freight/lenis";
+import { TubesCursor } from "@/components/ui/tube-cursor";
+import { ZoomParallax } from "@/components/ui/zoom-parallax";
+import { FloatingNav } from "@/components/ui/floating-navbar";
+import { AboutSection } from "@/components/ui/about-section";
+import { ProjectTimeline } from "@/components/ui/project-timeline";
+import { NeuralNoise } from "@/components/ui/neural-noise";
+import { CursorProvider, Cursor, CursorFollow } from "@/components/ui/cursor";
+import { SocialLinks } from "@/components/ui/social-links";
+import { ContactSection } from "@/components/ui/contact-section";
+import { Home as HomeIcon, User, Briefcase, Share2 } from "lucide-react";
+
+// Menu items
+const navItems = [
+  {
+    name: "Início",
+    link: "#inicio",
+    icon: <HomeIcon className="h-4 w-4" />,
+  },
+  {
+    name: "Sobre Mim",
+    link: "#sobre",
+    icon: <User className="h-4 w-4" />,
+  },
+  {
+    name: "Projetos",
+    link: "#projetos",
+    icon: <Briefcase className="h-4 w-4" />,
+  },
+  {
+    name: "Redes",
+    link: "#redes",
+    icon: <Share2 className="h-4 w-4" />,
+  },
+];
+
+// Imagens dos projetos para parallax
+const projectImages = [
+  {
+    src: "/images/projeto 1.webp",
+    alt: "Projeto 1",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=1280&h=720&fit=crop",
+    alt: "App Mobile",
+    title: "App Mobile",
+    category: "Mobile",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1559028012-481c04fa702d?w=800&h=800&fit=crop",
+    alt: "UI Design",
+    title: "Interface Design",
+    category: "UI/UX",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=1280&h=720&fit=crop",
+    alt: "Website",
+    title: "Website Corporativo",
+    category: "Web",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=800&h=800&fit=crop",
+    alt: "Branding",
+    title: "Identidade Visual",
+    category: "Branding",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1280&h=720&fit=crop",
+    alt: "Design System",
+    title: "Design System",
+    category: "UI/UX",
+  },
+  {
+    src: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=1280&h=720&fit=crop",
+    alt: "Landing Page",
+    title: "Landing Page",
+    category: "Web",
+  },
+];
+
+// Timeline data - projetos detalhados
+const timelineData = [
+  {
+    title: "Dashboard Analytics",
+    year: "2024",
+    category: "Web App",
+    description: "Plataforma completa de analytics com visualizações em tempo real e relatórios personalizados para tomada de decisões.",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&h=400&fit=crop",
+    tags: ["React", "D3.js", "Tailwind"],
+  },
+  {
+    title: "App Mobile Fitness",
+    year: "2024",
+    category: "Mobile",
+    description: "Aplicativo de acompanhamento fitness com gamification e integração com wearables.",
+    image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=400&fit=crop",
+    tags: ["React Native", "Firebase", "UI/UX"],
+  },
+  {
+    title: "E-commerce Platform",
+    year: "2023",
+    category: "Web",
+    description: "Loja virtual completa com checkout otimizado e experiência mobile-first.",
+    image: "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=800&h=400&fit=crop",
+    tags: ["Next.js", "Stripe", "Figma"],
+  },
+  {
+    title: "Brand Identity System",
+    year: "2023",
+    category: "Branding",
+    description: "Sistema de identidade visual completo incluindo logo, tipografia e guidelines de marca.",
+    image: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=800&h=400&fit=crop",
+    tags: ["Illustrator", "Photoshop", "Design System"],
+  },
+  {
+    title: "SaaS Dashboard",
+    year: "2022",
+    category: "UI/UX",
+    description: "Interface administrativa para plataforma SaaS com foco em usabilidade e eficiência.",
+    image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop",
+    tags: ["Figma", "Prototyping", "User Research"],
+  },
+];
 
 export default function Home() {
+  // Smooth scroll with Lenis
+  useEffect(() => {
+    const lenis = new Lenis();
+
+    function raf(time: number) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <main className="bg-black">
+      {/* Floating Navigation */}
+      <FloatingNav 
+        navItems={navItems} 
+        ctaText="Entre em Contato" 
+        ctaLink="#contato" 
+      />
+
+      {/* Social Links - Fixed on left side */}
+      <SocialLinks
+        links={[
+          { platform: "linkedin", href: "https://www.linkedin.com/in/marcelomourojr/" },
+          { platform: "github", href: "https://github.com/marcelomourojr" },
+          { platform: "instagram", href: "https://www.instagram.com/marcelomourojr/" },
+          { platform: "mail", href: "mailto:contato@marcelomouro.com" },
+        ]}
+        floatingButtonColor="bg-gradient-to-r from-rose-500 to-purple-600"
+      />
+
+      {/* Hero Section */}
+      <section id="inicio" className="relative">
+        <TubesCursor
+          title="Marcelo Mouro Jr"
+          subtitle="UI/UX"
+          caption="Clique para mudar as cores"
+          initialColors={["#9333ea", "#06b6d4", "#ec4899"]}
+          lightColors={["#8b5cf6", "#22d3ee", "#f472b6", "#a855f7"]}
+          lightIntensity={250}
+          titleSize="text-[48px] md:text-[70px] lg:text-[90px]"
+          subtitleSize="text-[32px] md:text-[50px] lg:text-[60px]"
+          captionSize="text-sm md:text-lg"
+          enableRandomizeOnClick
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+      </section>
+
+      {/* Transition: Hero → About */}
+      <div className="h-24 bg-gradient-to-b from-black via-black to-transparent -mb-24 relative z-10" />
+
+      {/* About Section */}
+      <AboutSection />
+
+      {/* Transition: About → Projects Header */}
+      <div className="h-32 bg-gradient-to-b from-black to-transparent -mb-32 relative z-10" />
+
+      {/* Projects Section Header */}
+      <section id="projetos" className="relative flex h-[50vh] items-center justify-center bg-black">
+        <div className="text-center">
+          <span className="inline-block mb-4 text-xs font-bold tracking-[0.3em] text-rose-400 uppercase">
+            Portfolio
+          </span>
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-rose-400 via-white to-rose-600">
+            Meus Projetos
+          </h2>
+          <p className="mt-6 text-base md:text-lg text-white/50 max-w-2xl mx-auto font-light px-6">
+            Role para explorar meus trabalhos em UI/UX Design
           </p>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      </section>
+
+      {/* Transition: Projects Header → Parallax */}
+      <div className="h-20 bg-gradient-to-b from-black to-transparent -mb-20 relative z-10" />
+
+      {/* Zoom Parallax Projects */}
+      <ZoomParallax images={projectImages} />
+
+      {/* Transition: Parallax → Timeline */}
+      <div className="h-32 bg-gradient-to-b from-black to-transparent -mb-32 relative z-10" />
+
+      {/* Transition: Parallax → Timeline */}
+      <div className="relative h-32 bg-gradient-to-b from-black via-black to-transparent -mb-32 z-10" />
+
+      {/* Project Timeline with Neural Noise Background and Custom Cursor */}
+      <NeuralNoise 
+        className="relative bg-black"
+        opacity={0.5}
+        pointerStrength={1.5}
+        timeScale={0.6}
+      >
+        {/* Top fade overlay */}
+        <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black to-transparent z-20 pointer-events-none" />
+        
+        <CursorProvider className="w-full">
+          <Cursor>
+            <svg
+              className="size-6 text-rose-500"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 40 40"
+            >
+              <path
+                fill="currentColor"
+                d="M1.8 4.4 7 36.2c.3 1.8 2.6 2.3 3.6.8l3.9-5.7c1.7-2.5 4.5-4.1 7.5-4.3l6.9-.5c1.8-.1 2.5-2.4 1.1-3.5L5 2.5c-1.4-1.1-3.5 0-3.3 1.9Z"
+              />
+            </svg>
+          </Cursor>
+          <CursorFollow align="bottom-right" sideOffset={20}>
+            <div className="bg-gradient-to-r from-rose-500 to-purple-600 text-white px-3 py-1.5 rounded-full text-sm font-medium shadow-lg shadow-rose-500/30">
+              Você
+            </div>
+          </CursorFollow>
+          <ProjectTimeline
+            title="Minha Jornada"
+            subtitle="Uma linha do tempo dos projetos que marcaram minha carreira"
+            data={timelineData}
+          />
+        </CursorProvider>
+
+        {/* Bottom fade overlay */}
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black to-transparent z-20 pointer-events-none" />
+      </NeuralNoise>
+
+      {/* Transition: Timeline → Contact */}
+      <div className="relative h-24 bg-gradient-to-b from-black to-transparent -mb-24 z-10" />
+
+      {/* Contact Section */}
+      <ContactSection 
+        title="Vamos Conversar?"
+        subtitle="Entre em contato para transformarmos suas ideias em realidade."
+        buttonText="Enviar"
+        successMessage="Mensagem enviada!"
+        placeholderText="seu@email.com"
+      />
+    </main>
   );
 }
