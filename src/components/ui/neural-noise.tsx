@@ -222,9 +222,9 @@ function NeuralNoise({
   }, [pointerStrength, timeScale]);
 
   return (
-    <div ref={containerRef} className={className}>
-      {/* Sticky canvas container that stays in view while scrolling through content */}
-      <div className="sticky top-0 left-0 h-screen w-full pointer-events-none" style={{ marginBottom: '-100vh' }}>
+    <div ref={containerRef} className={`${className} bg-black`}>
+      {/* Fixed canvas that covers the entire background */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <canvas
           ref={canvasRef}
           className="w-full h-full"

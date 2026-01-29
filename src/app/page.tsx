@@ -44,10 +44,8 @@ const projectImages = [
     alt: "Projeto 1",
   },
   {
-    src: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=1280&h=720&fit=crop",
-    alt: "App Mobile",
-    title: "App Mobile",
-    category: "Mobile",
+    src: "/images/projeto 2 - Primeiro Portfolio.webp",
+    alt: "Primeiro Portfolio",
   },
   {
     src: "https://images.unsplash.com/photo-1559028012-481c04fa702d?w=800&h=800&fit=crop",
@@ -92,12 +90,12 @@ const timelineData = [
     tags: ["React", "D3.js", "Tailwind"],
   },
   {
-    title: "App Mobile Fitness",
+    title: "Primeiro Portfolio",
     year: "2024",
-    category: "Mobile",
-    description: "Aplicativo de acompanhamento fitness com gamification e integração com wearables.",
-    image: "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=800&h=400&fit=crop",
-    tags: ["React Native", "Firebase", "UI/UX"],
+    category: "Web",
+    description: "Meu primeiro portfolio pessoal desenvolvido para apresentar minhas habilidades e projetos.",
+    image: "/images/projeto 2 - Primeiro Portfolio.webp",
+    tags: ["Next.js", "Tailwind", "UI/UX"],
   },
   {
     title: "E-commerce Platform",
@@ -215,14 +213,15 @@ export default function Home() {
       <div className="relative h-32 bg-gradient-to-b from-black via-black to-transparent -mb-32 z-10" />
 
       {/* Project Timeline with Neural Noise Background and Custom Cursor */}
-      <NeuralNoise 
-        className="relative bg-black"
-        opacity={0.5}
-        pointerStrength={1.5}
-        timeScale={0.6}
-      >
-        {/* Top fade overlay */}
-        <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black to-transparent z-20 pointer-events-none" />
+      <div className="bg-black">
+        <NeuralNoise 
+          className="relative overflow-hidden"
+          opacity={0.8}
+          pointerStrength={1.5}
+          timeScale={0.6}
+        >
+          {/* Top fade overlay */}
+          <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black to-transparent z-20 pointer-events-none" />
         
         <CursorProvider className="w-full">
           <Cursor>
@@ -252,17 +251,17 @@ export default function Home() {
         {/* Bottom fade overlay */}
         <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black to-transparent z-20 pointer-events-none" />
       </NeuralNoise>
+      </div>
 
       {/* Transition: Timeline → Contact */}
       <div className="relative h-24 bg-gradient-to-b from-black to-transparent -mb-24 z-10" />
 
       {/* Contact Section */}
       <ContactSection 
-        title="Vamos Conversar?"
-        subtitle="Entre em contato para transformarmos suas ideias em realidade."
-        buttonText="Enviar"
-        successMessage="Mensagem enviada!"
-        placeholderText="seu@email.com"
+        title="Vamos conversar sobre seu projeto?"
+        subtitle="Um clique é suficiente para começarmos. Clique no botão abaixo e vamos fazer acontecer."
+        buttonText="Entrar em Contato"
+        email="contato@marcelomouro.com"
       />
     </main>
   );
