@@ -42,7 +42,6 @@ export function AboutSection({
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
           <div className="absolute right-[-15%] top-[-10%] w-[40%] h-[40%] rounded-full bg-rose-500/20 blur-[150px]" />
           <div className="absolute left-[-10%] top-[30%] w-[30%] h-[30%] rounded-full bg-purple-500/15 blur-[130px]" />
-          <div className="absolute right-[10%] bottom-[-10%] w-[35%] h-[35%] rounded-full bg-blue-500/15 blur-[120px]" />
         </div>
 
         <div className="relative z-10 max-w-5xl mx-auto px-6 md:px-10">

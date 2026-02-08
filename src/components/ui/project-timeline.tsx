@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 
 interface TimelineItem {
@@ -17,6 +17,150 @@ interface ProjectTimelineProps {
   title?: string;
   subtitle?: string;
   data: TimelineItem[];
+}
+
+function TimelineCard({ item }: { item: TimelineItem }) {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  return (
+    <div className="relative w-full h-[450px] perspective-1000 group">
+      <motion.div
+        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        transition={{ duration: 0.8, type: "spring", stiffness: 200, damping: 25 }}
+        className="w-full h-full relative preserve-3d"
+        style={{ transformStyle: "preserve-3d" }}
+      >
+        {/* Front Face */}
+        <div className="absolute inset-0 backface-hidden bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10 shadow-xl group-hover:border-rose-500/30 transition-colors duration-500">
+          {/* Image */}
+          <div className="relative h-3/5 overflow-hidden">
+            <Image
+              src={item.image}
+              alt={item.title}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent z-10" />
+            
+            <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20 z-20 shadow-lg">
+              <span className="text-sm font-bold text-white">{item.year}</span>
+            </div>
+            
+            <div className="absolute bottom-4 left-4 z-20">
+              <span className="text-xs font-bold tracking-wider text-rose-400 uppercase drop-shadow-md">
+                {item.category}
+              </span>
+            </div>
+          </div>
+
+          {/* Content Front */}
+          <div className="h-2/5 p-6 flex flex-col justify-between bg-black/40 backdrop-blur-md">
+            <div>
+              <h3 className="text-2xl font-bold text-white mb-2">{item.title}</h3>
+              <p className="text-white/60 text-sm line-clamp-2 leading-relaxed">
+                {item.description}
+              </p>
+            </div>
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsFlipped(true);
+              }}
+              className="w-full mt-4 py-3 px-4 rounded-xl bg-gradient-to-r from-rose-600/20 to-purple-600/20 hover:from-rose-600/40 hover:to-purple-600/40 text-white text-sm font-semibold transition-all border border-rose-500/20 hover:border-rose-500/50 flex items-center justify-center gap-2 group/btn"
+            >
+              Mais informações
+              <svg className="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Back Face - Liquid Glass Design */}
+        <div 
+          className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden border border-white/20 shadow-2xl shadow-rose-900/30"
+          style={{ transform: "rotateY(180deg)", backfaceVisibility: "hidden" }}
+        >
+          {/* Blurred Background Image */}
+          <div className="absolute inset-0">
+            <Image
+              src={item.image}
+              alt={item.title}
+              fill
+              className="object-cover blur-xl scale-125 opacity-60"
+            />
+            {/* Glass Overlay */}
+            <div className="absolute inset-0 bg-black/60 backdrop-blur-md" />
+            {/* Gradient Overlay for Readability */}
+            <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-black/60 to-rose-950/40" />
+            {/* Noise Texture */}
+            <div className="absolute inset-0 opacity-[0.03] bg-[url('https://grainy-gradients.vercel.app/noise.svg')] bg-repeat" />
+          </div>
+
+          {/* Back Content */}
+          <div className="relative h-full p-8 flex flex-col items-center text-center justify-center z-10">
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: isFlipped ? 1 : 0, y: isFlipped ? 0 : 10 }}
+              transition={{ delay: 0.2, duration: 0.5 }}
+            >
+              <h3 className="text-3xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white via-rose-100 to-white drop-shadow-sm">
+                {item.title}
+              </h3>
+            </motion.div>
+            
+            <motion.div 
+              className="overflow-y-auto max-h-[140px] mb-8 pr-2 custom-scrollbar"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: isFlipped ? 1 : 0 }}
+              transition={{ delay: 0.3, duration: 0.5 }}
+            >
+              <p className="text-white/90 text-base leading-relaxed font-light">
+                {item.description}
+              </p>
+            </motion.div>
+
+            <motion.div 
+              className="w-full"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: isFlipped ? 1 : 0, y: isFlipped ? 0 : 10 }}
+              transition={{ delay: 0.4, duration: 0.5 }}
+            >
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <div className="h-px w-8 bg-gradient-to-r from-transparent to-rose-500/50" />
+                <span className="text-rose-300 text-xs font-bold uppercase tracking-[0.2em]">Tecnologias</span>
+                <div className="h-px w-8 bg-gradient-to-l from-transparent to-rose-500/50" />
+              </div>
+
+              <div className="flex flex-wrap justify-center gap-2">
+                {item.tags.map((tag, i) => (
+                  <span 
+                    key={i} 
+                    className="px-3 py-1.5 text-xs font-medium rounded-lg bg-white/10 text-white border border-white/10 hover:bg-white/20 transition-colors shadow-sm"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </motion.div>
+
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsFlipped(false);
+              }}
+              className="absolute top-4 right-4 p-2 text-white/50 hover:text-white hover:bg-white/10 rounded-full transition-all duration-300 group/close"
+              aria-label="Voltar"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover/close:rotate-90 transition-transform duration-300">
+                <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
 }
 
 export function ProjectTimeline({ 
@@ -107,66 +251,13 @@ export function ProjectTimeline({
                   <div className="w-3 h-3 rounded-full bg-gradient-to-r from-rose-500 to-purple-600 shadow-lg shadow-rose-500/50" />
                 </div>
 
-                {/* Card */}
+                {/* Card Container */}
                 <div
                   className={`w-full md:w-[45%] ml-8 md:ml-0 ${
                     isLeft ? "md:pr-12" : "md:pl-12"
                   }`}
                 >
-                  <div className="group relative bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10 hover:border-rose-500/50 transition-all duration-500 hover:shadow-xl hover:shadow-rose-500/10">
-                    {/* Image */}
-                    <div className="relative h-48 overflow-hidden">
-                      <Image
-                        src={item.image}
-                        alt={item.title}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      {/* Top gradient */}
-                      <div className="absolute top-0 left-0 right-0 h-20 bg-gradient-to-b from-black/70 to-transparent z-10" />
-                      {/* Bottom gradient */}
-                      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black via-black/60 to-transparent z-10" />
-                      
-                      {/* Year Badge */}
-                      <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-black/50 backdrop-blur-sm border border-white/20">
-                        <span className="text-sm font-bold text-white">{item.year}</span>
-                      </div>
-
-                      {/* Category Badge */}
-                      <div className="absolute bottom-4 left-4">
-                        <span className="text-xs font-bold tracking-wider text-rose-400 uppercase">
-                          {item.category}
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Content */}
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-white mb-2 group-hover:text-rose-400 transition-colors">
-                        {item.title}
-                      </h3>
-                      <p className="text-white/60 text-sm leading-relaxed mb-4">
-                        {item.description}
-                      </p>
-
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-2">
-                        {item.tags.map((tag, tagIndex) => (
-                          <span
-                            key={tagIndex}
-                            className="px-3 py-1 text-xs rounded-full bg-white/5 text-white/70 border border-white/10"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Hover Glow Effect */}
-                    <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                      <div className="absolute inset-0 bg-gradient-to-r from-rose-500/10 to-purple-500/10" />
-                    </div>
-                  </div>
+                  <TimelineCard item={item} />
                 </div>
 
                 {/* Spacer for alternating layout - Desktop only */}
