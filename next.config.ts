@@ -8,10 +8,11 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'images.unsplash.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'framerusercontent.com',
+      },
     ],
-  },
-  experimental: {
-    urlImports: ['https://cdn.jsdelivr.net/'],
   },
 };
 

@@ -5,7 +5,8 @@ import {
   motion, 
   useMotionValue, 
   useMotionTemplate, 
-  useAnimationFrame 
+  useAnimationFrame,
+  MotionValue
 } from "framer-motion";
 
 /**
@@ -17,8 +18,8 @@ const GridPattern = ({
   size,
   strokeColor = "rgba(255, 255, 255, 0.3)"
 }: { 
-  offsetX: any; 
-  offsetY: any; 
+  offsetX: MotionValue<number>; 
+  offsetY: MotionValue<number>; 
   size: number;
   strokeColor?: string;
 }) => {

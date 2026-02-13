@@ -87,7 +87,7 @@ const timelineData = [
     category: "Web App",
     description: "Plataforma completa para gestão de seguros, com foco na experiência do usuário e otimização de fluxos de contratação.",
     image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=400&fit=crop",
-    tags: ["Figma", "Framer", "React"],
+    tags: ["Figma", "Framer"],
   },
   {
     title: "CupidLove",
@@ -95,7 +95,7 @@ const timelineData = [
     category: "Web App",
     description: "Aplicativo de relacionamentos focado em conexões significativas, com interface moderna e interativa.",
     image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&h=400&fit=crop",
-    tags: ["Figma", "Framer", "Next.js"],
+    tags: ["Figma", "Framer"],
   },
   {
     title: "Verbo",

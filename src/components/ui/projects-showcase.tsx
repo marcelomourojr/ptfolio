@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useRef } from "react";
-import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import Image from "next/image";
+import { motion, useScroll, useTransform, useSpring, MotionValue } from "framer-motion";
 
 // Projetos placeholder - substitua pelas imagens reais dos seus projetos
 const PROJECTS = [
@@ -16,7 +17,7 @@ const PROJECTS = [
 interface ProjectCardProps {
   project: typeof PROJECTS[0];
   index: number;
-  scrollYProgress: any;
+  scrollYProgress: MotionValue<number>;
 }
 
 function ProjectCard({ project, index, scrollYProgress }: ProjectCardProps) {
@@ -57,13 +58,15 @@ function ProjectCard({ project, index, scrollYProgress }: ProjectCardProps) {
       style={{ y: springY, opacity, scale: springScale, rotate: springRotate }}
       className="group relative overflow-hidden rounded-2xl bg-gray-900 cursor-pointer"
     >
-      <div className="aspect-[4/3] overflow-hidden">
-        <img
+      <div className="aspect-[4/3] overflow-hidden relative">
+        <Image
           src={project.src}
           alt={project.title}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+          className="object-cover transition-transform duration-500 group-hover:scale-110"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
       </div>
 
       {/* Overlay Content */}

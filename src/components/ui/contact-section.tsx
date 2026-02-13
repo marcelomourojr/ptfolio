@@ -1,6 +1,7 @@
 "use client"
 
 import { ShinyButton } from "./shiny-button"
+import Image from "next/image"
 
 interface ContactSectionProps {
   title?: string;
@@ -57,10 +58,11 @@ export const ContactSection = ({
               zIndex: 0,
             }}
           >
-            <img
+            <Image
               src="https://framerusercontent.com/images/oqZEqzDEgSLygmUDuZAYNh2XQ9U.png?scale-down-to=2048"
               alt=""
-              className="w-full h-full object-cover opacity-50"
+              fill
+              className="object-cover opacity-50"
             />
           </div>
         </div>
@@ -76,10 +78,11 @@ export const ContactSection = ({
               zIndex: 1,
             }}
           >
-            <img
+            <Image
               src="https://framerusercontent.com/images/UbucGYsHDAUHfaGZNjwyCzViw8.png?scale-down-to=1024"
               alt=""
-              className="w-full h-full object-cover opacity-60"
+              fill
+              className="object-cover opacity-60"
             />
           </div>
         </div>
@@ -95,10 +98,11 @@ export const ContactSection = ({
               zIndex: 2,
             }}
           >
-            <img
+            <Image
               src="https://framerusercontent.com/images/Ans5PAxtJfg3CwxlrPMSshx2Pqc.png"
               alt=""
-              className="w-full h-full object-cover opacity-80"
+              fill
+              className="object-cover opacity-80"
             />
           </div>
         </div>

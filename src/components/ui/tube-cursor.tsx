@@ -24,12 +24,13 @@ const TubesCursor = ({
   lightColors = ["#83f36e", "#fe8a2e", "#ff008a", "#60aed5"],
   lightIntensity = 200,
   titleSize = "text-[80px]",
-  subtitleSize = "text-[60px]",
+  // subtitleSize = "text-[60px]", // Unused
   captionSize = "text-base",
   enableRandomizeOnClick = true,
   className = "",
 }: TubesCursorProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const appRef = useRef<any>(null);
 
   useEffect(() => {
@@ -42,6 +43,7 @@ const TubesCursor = ({
         // @ts-expect-error - External CDN module
         "https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js"
       );
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const TubesCursorCtor = (mod as any).default ?? mod;
 
       if (!canvasRef.current || destroyed) return;

@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { InfiniteSlider } from "./infinite-slider";
 import { InfiniteGridBackground } from "./infinite-grid";
 
@@ -141,10 +142,12 @@ export function AboutSection({
                 key={index}
                 className="flex items-center group cursor-pointer"
               >
-                <img 
-                  src={tool.logo} 
+                <Image
+                  src={tool.logo}
                   alt={tool.name}
-                  className="h-10 w-auto opacity-50 group-hover:opacity-100 transition-opacity duration-300"
+                  width={40}
+                  height={40}
+                  className="h-10 w-auto opacity-50 group-hover:opacity-100 transition-opacity duration-300 object-contain"
                 />
               </div>
             ))}
