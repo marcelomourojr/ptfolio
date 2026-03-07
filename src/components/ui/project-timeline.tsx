@@ -11,6 +11,7 @@ interface TimelineItem {
   description: string;
   image: string;
   tags: string[];
+  link?: string;
 }
 
 interface ProjectTimelineProps {
@@ -143,6 +144,39 @@ function TimelineCard({ item }: { item: TimelineItem }) {
                 ))}
               </div>
             </motion.div>
+
+            {item.link && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: isFlipped ? 1 : 0, y: isFlipped ? 0 : 10 }}
+                transition={{ delay: 0.5, duration: 0.5 }}
+                className="mt-8"
+              >
+                <a 
+                  href={item.link} 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white font-medium text-sm transition-all duration-300 border border-white/10 backdrop-blur-sm group/link"
+                >
+                  Acesse o site
+                  <svg 
+                    xmlns="http://www.w3.org/2000/svg" 
+                    width="16" 
+                    height="16" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth="2" 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round"
+                    className="transition-transform duration-300 group-hover/link:translate-x-1"
+                  >
+                    <path d="M5 12h14"></path>
+                    <path d="m12 5 7 7-7 7"></path>
+                  </svg>
+                </a>
+              </motion.div>
+            )}
 
             <button
               onClick={(e) => {

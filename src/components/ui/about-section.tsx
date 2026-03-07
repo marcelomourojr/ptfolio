@@ -5,7 +5,7 @@ import Image from "next/image";
 import { InfiniteSlider } from "./infinite-slider";
 import { InfiniteGridBackground } from "./infinite-grid";
 
-// Tool logos - usando imagens personalizadas
+// Tool logos - usando imagens pré-existentes personalizadas com melhor qualidade
 const tools = [
   { name: "Figma", logo: "/images/Ferramenta Figma.webp" },
   { name: "Framer", logo: "/images/Ferramenta Framer.webp" },
@@ -94,7 +94,7 @@ export function AboutSection({
               <div className="absolute inset-0 bg-gradient-to-br from-rose-500/20 to-purple-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 md:p-8 text-center hover:border-rose-500/30 transition-colors duration-300">
                 <div className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-rose-400 to-white mb-2">
-                  5+
+                  2+
                 </div>
                 <div className="text-xs md:text-sm text-white/40 uppercase tracking-widest">
                   Anos
@@ -107,10 +107,10 @@ export function AboutSection({
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 md:p-8 text-center hover:border-purple-500/30 transition-colors duration-300">
                 <div className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-white mb-2">
-                  50+
+                  +100
                 </div>
                 <div className="text-xs md:text-sm text-white/40 uppercase tracking-widest">
-                  Projetos
+                  Telas Criadas
                 </div>
               </div>
             </div>
@@ -120,10 +120,10 @@ export function AboutSection({
               <div className="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-rose-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 md:p-8 text-center hover:border-blue-500/30 transition-colors duration-300">
                 <div className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-white mb-2">
-                  30+
+                  100%
                 </div>
                 <div className="text-xs md:text-sm text-white/40 uppercase tracking-widest">
-                  Clientes
+                  Satisfação
                 </div>
               </div>
             </div>
@@ -145,9 +145,11 @@ export function AboutSection({
                 <Image
                   src={tool.logo}
                   alt={tool.name}
-                  width={40}
-                  height={40}
-                  className="h-10 w-auto opacity-50 group-hover:opacity-100 transition-opacity duration-300 object-contain"
+                  width={200}
+                  height={80}
+                  quality={100}
+                  unoptimized // Mantém a imagem estática sem que o NextJS processe e derrube a qualidade
+                  className="h-10 w-auto opacity-50 group-hover:opacity-100 transition-opacity duration-300 object-contain group-hover:scale-110"
                 />
               </div>
             ))}

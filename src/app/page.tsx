@@ -94,8 +94,9 @@ const timelineData = [
     year: "2024",
     category: "Web App",
     description: "Aplicativo de relacionamentos focado em conexões significativas, com interface moderna e interativa.",
-    image: "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?w=800&h=400&fit=crop",
+    image: "/images/projeto 1.webp",
     tags: ["Figma", "Framer"],
+    link: "https://cupidlove.com.br",
   },
   {
     title: "Verbo",
@@ -108,10 +109,10 @@ const timelineData = [
   {
     title: "Sintony",
     year: "2023",
-    category: "App Design",
-    description: "Plataforma de streaming de música com interface imersiva e personalizada, priorizando a descoberta de novos artistas.",
-    image: "https://images.unsplash.com/photo-1614680376593-902f74cf0d41?w=800&h=400&fit=crop",
-    tags: ["Figma"],
+    category: "Mobile App",
+    description: "Conexões por proximidade: Dê match com pessoas por perto e viva novas conexões.",
+    image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&h=400&fit=crop",
+    tags: ["Figma", "UI/UX", "Mobile"],
   },
   {
     title: "Webchat",
