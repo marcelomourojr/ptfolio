@@ -118,11 +118,7 @@ export const ContactSection = ({
 
       {/* Content Container */}
       <div className="relative z-20 w-full flex flex-col items-center justify-center gap-8 px-6 py-24">
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur-sm">
-          <span className="h-2 w-2 rounded-full bg-rose-500 animate-pulse" />
-          <span className="text-sm font-light tracking-widest text-white/70">CONTATO</span>
-        </div>
+
 
         {/* Title */}
         <h2 className="text-4xl md:text-6xl font-bold text-center tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-rose-400 via-white to-rose-600 drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]">

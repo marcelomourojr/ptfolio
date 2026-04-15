@@ -116,25 +116,7 @@ const TubesCursor = ({
         </p>
       </div>
 
-      {/* Bottom section - desktop notice + scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4">
-        {/* Desktop experience notice - centered above scroll */}
-        <div className="flex items-center gap-2 text-white/30 text-xs font-extralight tracking-wide">
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 0 1-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0 1 15 18.257V17.25m6-12V15a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 15V5.25m18 0A2.25 2.25 0 0 0 18.75 3H5.25A2.25 2.25 0 0 0 3 5.25m18 0V12a2.25 2.25 0 0 1-2.25 2.25H5.25A2.25 2.25 0 0 1 3 12V5.25" />
-          </svg>
-          <span className="hidden md:inline">Melhor experiência em desktop</span>
-          <span className="md:hidden">Abra no desktop</span>
-        </div>
 
-        {/* Animated scroll indicator */}
-        <div className="flex flex-col items-center gap-2 text-white/40">
-          <span className="text-xs font-extralight tracking-widest uppercase">Scroll</span>
-          <div className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center pt-2">
-            <div className="w-1 h-2 bg-white/50 rounded-full animate-bounce" />
-          </div>
-        </div>
-      </div>
 
       {/* Bottom fade transition */}
       <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-black via-black/80 to-transparent z-30 pointer-events-none" />

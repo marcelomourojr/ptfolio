@@ -46,8 +46,7 @@ function CursorProvider({ children, className, ...props }: CursorProviderProps) 
     if (!container) return;
 
     const handleMouseMove = (e: MouseEvent) => {
-      const rect = container.getBoundingClientRect();
-      setCursorPos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
+      setCursorPos({ x: e.clientX, y: e.clientY });
       setIsActive(true);
     };
     const handleMouseLeave = () => setIsActive(false);
@@ -100,7 +99,7 @@ function Cursor({ children, className, style, ...props }: CursorProps) {
           ref={cursorRef}
           data-slot="cursor"
           className={cn(
-            'transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[9999] absolute',
+            'transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[9999] fixed',
             className,
           )}
           style={{ top: y, left: x, ...style }}
@@ -211,7 +210,7 @@ function CursorFollow({
           ref={cursorFollowRef}
           data-slot="cursor-follow"
           className={cn(
-            'transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[9998] absolute',
+            'transform -translate-x-1/2 -translate-y-1/2 pointer-events-none z-[9998] fixed',
             className,
           )}
           style={{ top: springY, left: springX, ...style }}

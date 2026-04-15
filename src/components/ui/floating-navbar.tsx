@@ -70,6 +70,15 @@ export const FloatingNav = ({
           <Link
             key={`link-${idx}`}
             href={navItem.link}
+            onClick={(e) => {
+              if (navItem.link.startsWith("#")) {
+                e.preventDefault();
+                const target = document.querySelector(navItem.link);
+                if (target) {
+                  target.scrollIntoView({ behavior: "smooth" });
+                }
+              }
+            }}
             className="relative text-white/60 items-center flex px-4 py-2 rounded-xl hover:text-white hover:bg-white/10 transition-all duration-200 text-sm font-light"
           >
             {navItem.icon && <span className="block sm:hidden">{navItem.icon}</span>}
@@ -78,6 +87,15 @@ export const FloatingNav = ({
         ))}
         <Link
           href={ctaLink}
+          onClick={(e) => {
+            if (ctaLink.startsWith("#")) {
+              e.preventDefault();
+              const target = document.querySelector(ctaLink);
+              if (target) {
+                target.scrollIntoView({ behavior: "smooth" });
+              }
+            }
+          }}
           className="text-sm font-medium relative text-white px-5 py-2.5 rounded-xl transition-all duration-300 ml-1"
           style={{
             background: "linear-gradient(135deg, rgba(244, 63, 94, 0.3) 0%, rgba(236, 72, 153, 0.3) 100%)",
