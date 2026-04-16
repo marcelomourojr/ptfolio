@@ -1,0 +1,124 @@
+"use client";
+
+import React, { useRef } from "react";
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
+import { ArrowUpRight, Github, Instagram, Linkedin, Mail } from "lucide-react";
+
+interface SocialItem {
+  name: string;
+  handle: string;
+  icon: React.ReactNode;
+  link: string;
+}
+
+const SpotlightCard = ({ social, index }: { social: SocialItem, index: number }) => {
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({
+    currentTarget,
+    clientX,
+    clientY,
+  }: React.MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
+  return (
+    <a
+      href={social.link}
+      target="_blank"
+      rel="noopener noreferrer"
+      onMouseMove={handleMouseMove}
+      className={`group relative flex flex-col items-center justify-center p-12 bg-black hover:bg-white/[0.03] transition-colors duration-500 border-white/10 overflow-hidden
+        ${index === 1 ? "border-t md:border-t-0 md:border-l lg:border-l" : ""}
+        ${index === 2 ? "border-t md:border-t lg:border-t-0 lg:border-l" : ""}
+        ${index === 3 ? "border-t md:border-t md:border-l lg:border-t-0 lg:border-l" : ""}
+      `}
+    >
+      {/* Elemento de iluminação Spotlight invisível por padrão */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100 z-0"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              400px circle at ${mouseX}px ${mouseY}px,
+              rgba(244, 63, 94, 0.15),
+              transparent 80%
+            )
+          `,
+        }}
+      />
+
+      {/* Conteúdo do Card original inalterado (apensas adicionando z-10 mantendo propriedades originais) */}
+      
+      {/* Arrow icon top right */}
+      <div className="absolute top-6 right-6 text-white/20 group-hover:text-white transition-colors duration-500 z-10 w-fit">
+        <ArrowUpRight className="w-5 h-5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-500" />
+      </div>
+
+      {/* Main Icon */}
+      <div className="text-white/40 group-hover:text-rose-400 transition-colors duration-500 mb-6 group-hover:scale-110 transform z-10 relative">
+        {social.icon}
+      </div>
+
+      {/* Text details */}
+      <h3 className="text-white font-medium text-lg mb-1 z-10 relative">{social.name}</h3>
+      <span className="text-white/40 text-sm font-light group-hover:text-white/70 transition-colors duration-500 z-10 relative">
+        {social.handle}
+      </span>
+    </a>
+  );
+};
+
+export const SocialBento = () => {
+  const socials: SocialItem[] = [
+    {
+      name: "LinkedIn",
+      handle: "@marcelomourojr",
+      icon: <Linkedin strokeWidth={1.5} className="w-8 h-8" />,
+      link: "https://www.linkedin.com/in/marcelomourojr/",
+    },
+    {
+      name: "GitHub",
+      handle: "@marcelomourojr",
+      icon: <Github strokeWidth={1.5} className="w-8 h-8" />,
+      link: "https://github.com/marcelomourojr",
+    },
+    {
+      name: "Instagram",
+      handle: "@marcelomourojr",
+      icon: <Instagram strokeWidth={1.5} className="w-8 h-8" />,
+      link: "https://www.instagram.com/marcelomourojr/",
+    },
+    {
+      name: "E-mail",
+      handle: "contato@marcelomouro.com",
+      icon: <Mail strokeWidth={1.5} className="w-8 h-8" />,
+      link: "mailto:contato@marcelomouro.com",
+    },
+  ];
+
+  return (
+    <section id="redes" className="relative w-full bg-black py-24 flex flex-col items-center">
+      <div className="w-full max-w-7xl px-4 md:px-8 mb-16 text-center">
+        <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-4">
+          Vamos Conversar
+        </h2>
+        <p className="text-white/50 font-light max-w-xl mx-auto">
+          Conecte-se comigo através das minhas redes profissionais ou me chame para um café virtual.
+        </p>
+      </div>
+
+      <div className="w-full max-w-7xl mx-auto border border-white/10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+        {socials.map((social, index) => (
+          <SpotlightCard key={social.name} social={social} index={index} />
+        ))}
+      </div>
+
+    </section>
+  );
+};
+
+export default SocialBento;

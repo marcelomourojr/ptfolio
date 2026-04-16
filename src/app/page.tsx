@@ -10,6 +10,7 @@ import { ProjectTimeline } from "@/components/ui/project-timeline";
 import { Cursor, CursorProvider, CursorFollow } from "@/components/ui/cursor";
 
 import { SocialLinks } from "@/components/ui/social-links";
+import { SocialBento } from "@/components/ui/social-bento";
 import { ContactSection } from "@/components/ui/contact-section";
 import { Home as HomeIcon, User, Briefcase, Share2 } from "lucide-react";
 
@@ -111,10 +112,15 @@ const timelineData = [
     category: "Mobile Design",
     description: "Design de interface minimalista e intuitiva para aplicativo de leitura e estudos bíblicos, focado na experiência de leitura imersiva.",
     images: [
-      "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=800&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=800&h=400&fit=crop"
+      "/images/Home.webp",
+      "/images/Mensagens do dia.webp",
+      "/images/Quiz.webp",
+      "/images/Reflexão.webp",
+      "/images/Versiculo.webp"
     ],
     tags: ["Figma"],
+    appStoreLink: "https://apps.apple.com/br/app/verbo-li%C3%A7%C3%B5es-da-b%C3%ADblia/id6751657587",
+    playStoreLink: "https://play.google.com/store/apps/details?id=com.ver.bo&hl=pt_BR",
   },
   {
     title: "Sintony",
@@ -126,6 +132,8 @@ const timelineData = [
       "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?w=800&h=400&fit=crop"
     ],
     tags: ["Figma", "UI/UX", "Mobile"],
+    appStoreLink: "#",
+    playStoreLink: "#",
   },
   {
     title: "Webchat",
@@ -277,6 +285,12 @@ export default function Home() {
       </div>
 
       {/* Transition: Timeline → Contact */}
+      <div className="relative h-24 bg-gradient-to-b from-black to-transparent -mb-24 z-10" />
+
+      {/* Social Links Bento Section */}
+      <SocialBento />
+
+      {/* Transition: Social → Contact */}
       <div className="relative h-24 bg-gradient-to-b from-black to-transparent -mb-24 z-10" />
 
       {/* Contact Section */}

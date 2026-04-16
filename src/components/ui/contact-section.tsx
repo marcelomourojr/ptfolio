@@ -139,7 +139,7 @@ export const ContactSection = ({
 
         {/* Footer text */}
         <p className="text-white/30 text-sm mt-12">
-          © 2024 Marcelo Mouro Jr. Todos os direitos reservados.
+          © {new Date().getFullYear()} Marcelo Mouro Jr. Todos os direitos reservados.
         </p>
       </div>
     </section>

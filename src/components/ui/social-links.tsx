@@ -125,29 +125,20 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
                   href={href}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center justify-between w-44 h-14 px-4 ml-[-120px]
-                             group-hover:ml-[-10px] transition-all duration-500 ease-out
+                  className="flex items-center justify-between w-44 h-14 px-5 ml-[-120px]
+                             group-hover:ml-[-5px] transition-all duration-500 ease-out
                              rounded-r-xl relative overflow-hidden border border-white/10
-                             bg-black/50 backdrop-blur-sm shadow-md hover:shadow-lg"
+                             bg-white/5 backdrop-blur-md shadow-lg group-hover:bg-rose-500/10 group-hover:border-rose-500/40 group-hover:shadow-[0_0_20px_rgba(244,63,94,0.15)]"
                 >
-                  {/* Gradient Overlay */}
-                  <div
-                    className={`absolute inset-0 bg-gradient-to-r ${
-                      hoveredPlatform === platform
-                        ? style.hoverGradient
-                        : style.gradient
-                    } opacity-90 transition-all duration-500`}
-                  />
-
                   {/* Label */}
-                  <span className="relative z-10 text-white font-semibold tracking-wide text-sm group-hover:tracking-widest transition-all duration-300">
+                  <span className="relative z-10 text-white/50 font-medium tracking-wide text-sm group-hover:text-white group-hover:tracking-[0.2em] uppercase transition-all duration-500">
                     {style.label}
                   </span>
 
                   {/* Icon */}
                   <Icon
-                    size={22}
-                    className="relative z-10 text-white drop-shadow-sm group-hover:scale-125 transition-transform duration-500"
+                    size={20}
+                    className="relative z-10 text-white/50 group-hover:text-rose-400 group-hover:scale-125 transition-all duration-500"
                   />
                 </a>
               </li>
@@ -191,11 +182,11 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
                     }}
                   >
                     <div
-                      className={`w-14 h-14 rounded-full bg-gradient-to-br ${style.gradient}
-                                 flex items-center justify-center shadow-lg hover:scale-110
-                                 transition-transform duration-300 border border-white/10`}
+                      className="w-14 h-14 rounded-full bg-white/5 backdrop-blur-md
+                                 flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-rose-500/10 group-hover:border-rose-500/40
+                                 transition-all duration-300 border border-white/10"
                     >
-                      <Icon size={22} className="text-white" />
+                      <Icon size={22} className="text-white/60 group-hover:text-rose-400 transition-colors" />
                     </div>
 
                     {/* Tooltip */}
@@ -211,11 +202,10 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
               })}
             </div>
 
-            {/* Floating Button */}
             <button
               onClick={() => setMobileDockOpen(!mobileDockOpen)}
-              className={`relative flex items-center justify-center w-16 h-16 rounded-full shadow-2xl active:scale-95
-                         transition-all duration-300 border border-white/10 overflow-hidden ${floatingButtonColor}`}
+              className="relative flex items-center justify-center w-16 h-16 rounded-full shadow-[0_0_30px_rgba(244,63,94,0.2)] active:scale-95
+                         transition-all duration-300 border border-rose-500/30 overflow-hidden bg-rose-500/10 backdrop-blur-md hover:bg-rose-500/20"
               aria-label="Toggle social links"
             >
               <div className="relative z-10">
