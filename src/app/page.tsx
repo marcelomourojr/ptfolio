@@ -110,7 +110,7 @@ const timelineData = [
     title: "Verbo",
     year: "2023",
     category: "Mobile Design",
-    description: "Design de interface minimalista e intuitiva para aplicativo de leitura e estudos bíblicos, focado na experiência de leitura imersiva.",
+    description: "App com dinâmica estilo Duolingo, com trilhas, quizzes e progressão gamificada. Bíblia offline em vários idiomas, com navegação simples e intuitiva. Inclui áudio, marcações e busca inteligente para estudo diário. Conta com mais de 100 mil downloads e alto engajamento.",
     images: [
       "/images/Home.webp",
       "/images/Mensagens do dia.webp",
@@ -126,7 +126,7 @@ const timelineData = [
     title: "Sintony",
     year: "2023",
     category: "Mobile App",
-    description: "Conexões por proximidade: Dê match com pessoas por perto e viva novas conexões.",
+    description: "App de relacionamento com IA que gera matches por afinidade real, usando filtros inteligentes de idade, distância e interesses, com chat seguro focado em privacidade e controle, já ultrapassando 500 mil downloads.",
     images: [
       "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&h=400&fit=crop",
       "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?w=800&h=400&fit=crop"

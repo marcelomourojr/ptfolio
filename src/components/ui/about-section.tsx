@@ -7,15 +7,24 @@ import { InfiniteGridBackground } from "./infinite-grid";
 interface AboutSectionProps {
   title?: string;
   subtitle?: string;
-  description?: string;
+  description?: React.ReactNode | string;
   highlightedText?: string;
 }
 
 export function AboutSection({
   title = "Sobre Mim",
   subtitle = "UI/UX Designer",
-  description = "Sou apaixonado por criar experiências digitais que encantam e resolvem problemas reais. Com anos de experiência em design de interfaces, transformo ideias em produtos digitais elegantes e funcionais.",
-  highlightedText = "Criando experiências digitais memoráveis",
+  description = (
+    <div className="space-y-4">
+      <p>
+        Product Designer UI/UX com mais de 5 anos de experiência em testes de software, desenvolvimento de produtos digitais, atuação como analista administrativo e criação de interfaces centradas no usuário, atuando de ponta a ponta com foco em usabilidade, organização, qualidade e resultado.
+      </p>
+      <p>
+        Possuo forte base lógica e analítica, integrando IA, automação e dados à experiência do usuário. Experiência com ferramentas como Figma, Framer, Google AI Studio, Google Labs, ComfyUI, Kling, Sora 2, Wan 2.2 Animate, entre outras, aplicadas na construção de produtos digitais de alto impacto.
+      </p>
+    </div>
+  ),
+  highlightedText = "Criando experiências digitais que unem estratégia, tecnologia e performance.",
 }: AboutSectionProps) {
   return (
     <InfiniteGridBackground
@@ -43,7 +52,7 @@ export function AboutSection({
             >
               <div className="relative aspect-[4/5] w-full max-w-md mx-auto md:max-w-none overflow-hidden rounded-[2.5rem] border border-white/10 shadow-2xl group">
                 <Image
-                  src="/images/eu.webp"
+                  src="/images/eu2.webp"
                   alt="Marcelo Mouro Jr"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -82,9 +91,9 @@ export function AboutSection({
                 </p>
                 
                 {/* Description */}
-                <p className="text-base md:text-lg text-white/50 leading-relaxed font-light">
+                <div className="text-base md:text-lg text-white/50 leading-relaxed font-light">
                   {description}
-                </p>
+                </div>
               </motion.div>
 
               {/* Stats Cards */}
