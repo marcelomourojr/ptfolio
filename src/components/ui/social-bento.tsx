@@ -3,6 +3,8 @@
 import React, { useRef } from "react";
 import { motion, useMotionTemplate, useMotionValue } from "framer-motion";
 import { ArrowUpRight, Github, Instagram, Linkedin, Mail } from "lucide-react";
+import { ShinyButton } from "./shiny-button";
+import Image from "next/image";
 
 interface SocialItem {
   name: string;
@@ -101,22 +103,98 @@ export const SocialBento = () => {
   ];
 
   return (
-    <section id="redes" className="relative w-full bg-black py-24 flex flex-col items-center">
-      <div className="w-full max-w-7xl px-4 md:px-8 mb-16 text-center">
-        <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-4">
-          Vamos Conversar
-        </h2>
-        <p className="text-white/50 font-light max-w-xl mx-auto">
-          Conecte-se comigo através das minhas redes profissionais ou me chame para um café virtual.
+    <section id="contatos" className="relative w-full min-h-screen bg-black flex flex-col items-center justify-center overflow-hidden py-24">
+      {/* Animation Styles */}
+      <style>{`
+        @keyframes spin-slow {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+          animation: spin-slow 60s linear infinite;
+        }
+        @keyframes spin-slow-reverse {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(-360deg); }
+        }
+        .animate-spin-slow-reverse {
+          animation: spin-slow-reverse 60s linear infinite;
+        }
+      `}</style>
+
+      {/* Background Decorative Layer */}
+      <div
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        style={{
+          perspective: "1200px",
+          transform: "perspective(1200px) rotateX(15deg)",
+          transformOrigin: "center bottom",
+          opacity: 1,
+        }}
+      >
+        <div className="absolute inset-0 animate-spin-slow">
+          <div
+            className="absolute top-1/2 left-1/2"
+            style={{ width: "2000px", height: "2000px", transform: "translate(-50%, -50%) rotate(279.05deg)", zIndex: 0 }}
+          >
+            <Image src="https://framerusercontent.com/images/oqZEqzDEgSLygmUDuZAYNh2XQ9U.png?scale-down-to=2048" alt="" fill className="object-cover opacity-50" />
+          </div>
+        </div>
+        <div className="absolute inset-0 animate-spin-slow-reverse">
+          <div
+            className="absolute top-1/2 left-1/2"
+            style={{ width: "1000px", height: "1000px", transform: "translate(-50%, -50%) rotate(304.42deg)", zIndex: 1 }}
+          >
+            <Image src="https://framerusercontent.com/images/UbucGYsHDAUHfaGZNjwyCzViw8.png?scale-down-to=1024" alt="" fill className="object-cover opacity-60" />
+          </div>
+        </div>
+        <div className="absolute inset-0 animate-spin-slow">
+          <div
+            className="absolute top-1/2 left-1/2"
+            style={{ width: "800px", height: "800px", transform: "translate(-50%, -50%) rotate(48.33deg)", zIndex: 2 }}
+          >
+            <Image src="https://framerusercontent.com/images/Ans5PAxtJfg3CwxlrPMSshx2Pqc.png" alt="" fill className="object-cover opacity-80" />
+          </div>
+        </div>
+      </div>
+
+      {/* Gradient Overlay */}
+      <div
+        className="absolute inset-0 z-10 pointer-events-none"
+        style={{
+          background: "linear-gradient(to top, rgba(0,0,0,1) 5%, rgba(0,0,0,0.9) 30%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0.5) 100%)",
+        }}
+      />
+
+      {/* Content Container */}
+      <div className="relative z-20 w-full flex flex-col items-center justify-center gap-8 px-6">
+        <div className="w-full max-w-7xl px-4 md:px-8 mb-6 text-center">
+          <h2 className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-rose-400 via-white to-rose-600 mb-4 drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]">
+            Vamos Conversar
+          </h2>
+          <p className="text-base md:text-lg text-white/50 text-center max-w-xl mx-auto font-light">
+            Conecte-se comigo através das minhas redes ou me chame no Whatsapp.
+          </p>
+        </div>
+
+        <div className="w-full max-w-7xl mx-auto border border-white/10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 bg-black/40 backdrop-blur-sm rounded-3xl overflow-hidden mb-8">
+          {socials.map((social, index) => (
+            <SpotlightCard key={social.name} social={social} index={index} />
+          ))}
+        </div>
+
+        {/* Shiny Button */}
+        <div>
+          <ShinyButton href="mailto:contato@marcelomouro.com">
+            Entrar em Contato
+          </ShinyButton>
+        </div>
+
+        {/* Footer text */}
+        <p className="text-white/30 text-sm mt-12 w-full text-center">
+          © {new Date().getFullYear()} Marcelo Mouro Jr. Todos os direitos reservados.
         </p>
       </div>
-
-      <div className="w-full max-w-7xl mx-auto border border-white/10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-        {socials.map((social, index) => (
-          <SpotlightCard key={social.name} social={social} index={index} />
-        ))}
-      </div>
-
     </section>
   );
 };

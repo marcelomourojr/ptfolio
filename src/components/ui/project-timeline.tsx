@@ -252,25 +252,30 @@ export function ProjectTimeline({
   return (
     <section className="relative py-32 px-4 md:px-8 overflow-hidden">
       {/* Section Header */}
-      <div className="text-center mb-20">
-
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-rose-400 via-white to-rose-600"
-        >
-          {title}
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-6 text-base md:text-lg text-white/50 max-w-2xl mx-auto font-light"
-        >
-          {subtitle}
-        </motion.p>
-      </div>
+      {(title || subtitle) && (
+        <div className="text-center mb-20">
+          {title && (
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-rose-400 via-white to-rose-600"
+            >
+              {title}
+            </motion.h2>
+          )}
+          {subtitle && (
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="mt-6 text-base md:text-lg text-white/50 max-w-2xl mx-auto font-light"
+            >
+              {subtitle}
+            </motion.p>
+          )}
+        </div>
+      )}
 
       {/* Grid Container */}
       <div className="relative max-w-6xl mx-auto">

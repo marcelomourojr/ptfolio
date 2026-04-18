@@ -11,7 +11,7 @@ import { Cursor, CursorProvider, CursorFollow } from "@/components/ui/cursor";
 
 import { SocialLinks } from "@/components/ui/social-links";
 import { SocialBento } from "@/components/ui/social-bento";
-import { ContactSection } from "@/components/ui/contact-section";
+
 import { Home as HomeIcon, User, Briefcase, Share2 } from "lucide-react";
 
 // Menu items
@@ -49,28 +49,28 @@ const projectImages = [
     alt: "Primeiro Portfolio",
   },
   {
-    src: "https://images.unsplash.com/photo-1559028012-481c04fa702d?w=800&h=800&fit=crop",
-    alt: "UI Design",
-    title: "Interface Design",
-    category: "UI/UX",
+    src: "/images/Home.webp",
+    alt: "Verbo",
+    title: "Verbo",
+    category: "Mobile App",
   },
   {
-    src: "https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=1280&h=720&fit=crop",
-    alt: "Website",
-    title: "Website Corporativo",
-    category: "Web",
+    src: "/images/1on.webp",
+    alt: "Onsite Seguros",
+    title: "Onsite Seguros",
+    category: "Website",
   },
   {
-    src: "https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=800&h=800&fit=crop",
-    alt: "Branding",
-    title: "Identidade Visual",
-    category: "Branding",
+    src: "/images/Webchat 1.webp",
+    alt: "Webchat",
+    title: "Webchat",
+    category: "Web App",
   },
   {
-    src: "https://images.unsplash.com/photo-1561070791-2526d30994b5?w=1280&h=720&fit=crop",
-    alt: "Design System",
-    title: "Design System",
-    category: "UI/UX",
+    src: "/images/Isaac1.webp",
+    alt: "Isaac the Barber",
+    title: "Isaac the Barber",
+    category: "Website",
   },
   {
     src: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=1280&h=720&fit=crop",
@@ -85,23 +85,27 @@ const timelineData = [
   {
     title: "Onsite Seguros",
     year: "2024",
-    category: "Web App",
+    category: "Website",
     description: "Plataforma completa para gestão de seguros, com foco na experiência do usuário e otimização de fluxos de contratação.",
     images: [
-      "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=800&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=800&h=400&fit=crop"
+      "/images/1on.webp",
+      "/images/2on.webp",
+      "/images/3on.webp"
     ],
     tags: ["Figma", "Framer"],
   },
   {
     title: "CupidLove",
     year: "2024",
-    category: "Web App",
+    category: "Website",
     description: "Aplicativo de relacionamentos focado em conexões significativas, com interface moderna e interativa.",
     images: [
-      "/images/projeto 1.webp",
-      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=800&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1558655146-d09347e92766?w=800&h=400&fit=crop"
+      "/images/1c.webp",
+      "/images/2c.webp",
+      "/images/3c.webp",
+      "/images/4c.webp",
+      "/images/5c.webp",
+      "/images/6c.webp"
     ],
     tags: ["Figma", "Framer"],
     link: "https://cupidlove.com.br",
@@ -128,8 +132,12 @@ const timelineData = [
     category: "Mobile App",
     description: "App de relacionamento com IA que gera matches por afinidade real, usando filtros inteligentes de idade, distância e interesses, com chat seguro focado em privacidade e controle, já ultrapassando 500 mil downloads.",
     images: [
-      "https://images.unsplash.com/photo-1573164713988-8665fc963095?w=800&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?w=800&h=400&fit=crop"
+      "/images/1sintonywebp.webp",
+      "/images/2sintony.webp",
+      "/images/3sintony.webp",
+      "/images/4sintony.webp",
+      "/images/5sintony.webp",
+      "/images/6sintony.webp"
     ],
     tags: ["Figma", "UI/UX", "Mobile"],
     appStoreLink: "#",
@@ -141,32 +149,49 @@ const timelineData = [
     category: "Web App",
     description: "Aplicação de chat em tempo real com interface moderna, focada em comunicação fluida e expressiva.",
     images: [
-      "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1572061486716-e5229fc9fdb1?w=800&h=400&fit=crop"
+      "/images/Webchat 1.webp"
     ],
     tags: ["Figma", "Antigravity"],
   },
   {
     title: "Zé dos Concursos",
     year: "2024",
-    category: "Mobile App",
+    category: "App Mobile & Website",
     description: "Aplicativo completo para preparação de concursos, com banco de questões e estatísticas de desempenho.",
     images: [
       "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=400&fit=crop",
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop"
     ],
     tags: ["React Native", "Expo", "TypeScript"],
+    link: "#",
+    appStoreLink: "#",
+    playStoreLink: "#",
   },
   {
     title: "Protech",
     year: "2024",
-    category: "Web App",
+    category: "Website",
     description: "Solução tecnológica inovadora com design futurista e foco em automação de processos.",
     images: [
       "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=400&fit=crop",
       "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=400&fit=crop"
     ],
     tags: ["Figma", "Antigravity"],
+  },
+  {
+    title: "Isaac the Barber",
+    year: "2024",
+    category: "Website",
+    description: "Landing page premium desenvolvida para barbearia, com foco em conversão, apresentação de portfólio de serviços e uma identidade visual sofisticada.",
+    images: [
+      "/images/Isaac1.webp",
+      "/images/Isaac2.webp",
+      "/images/Isaac3.webp",
+      "/images/Isaac4.webp",
+      "/images/Isaac5.webp"
+    ],
+    tags: ["Figma", "Web Design", "UI/UX"],
+    link: "https://isaacthebarber.com.br"
   },
 ];
 
@@ -255,10 +280,10 @@ export default function Home() {
         <div className="text-center">
 
           <h2 className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-rose-400 via-white to-rose-600">
-            Meus Projetos
+            Principais Projetos
           </h2>
           <p className="mt-6 text-base md:text-lg text-white/50 max-w-2xl mx-auto font-light px-6">
-            Role para explorar meus trabalhos em UI/UX Design
+            Role para explorar alguns dos meus trabalhos
           </p>
         </div>
       </section>
@@ -278,8 +303,8 @@ export default function Home() {
       {/* Project Timeline */}
       <div className="bg-black relative overflow-hidden">
         <ProjectTimeline
-          title="Minha Jornada"
-          subtitle="Uma linha do tempo dos projetos que marcaram minha carreira"
+          title=""
+          subtitle=""
           data={timelineData}
         />
       </div>
@@ -290,16 +315,7 @@ export default function Home() {
       {/* Social Links Bento Section */}
       <SocialBento />
 
-      {/* Transition: Social → Contact */}
-      <div className="relative h-24 bg-gradient-to-b from-black to-transparent -mb-24 z-10" />
 
-      {/* Contact Section */}
-      <ContactSection 
-        title="Vamos conversar sobre seu projeto?"
-        subtitle="Um clique é suficiente para começarmos. Clique no botão abaixo e vamos fazer acontecer."
-        buttonText="Entrar em Contato"
-        email="contato@marcelomouro.com"
-      />
     </main>
     </CursorProvider>
   );
