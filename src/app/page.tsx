@@ -41,11 +41,11 @@ const navItems = [
 // Imagens dos projetos para parallax
 const projectImages = [
   {
-    src: "/images/projeto 1.webp",
+    src: "/images/projeto-1.webp",
     alt: "Projeto 1",
   },
   {
-    src: "/images/projeto 2 - Primeiro Portfolio.webp",
+    src: "/images/projeto-2---Primeiro-Portfolio.webp",
     alt: "Primeiro Portfolio",
   },
   {
@@ -61,7 +61,7 @@ const projectImages = [
     category: "Website",
   },
   {
-    src: "/images/Webchat 1.webp",
+    src: "/images/Webchat-1.webp",
     alt: "Webchat",
     title: "Webchat",
     category: "Web App",
@@ -117,7 +117,7 @@ const timelineData = [
     description: "App com dinâmica estilo Duolingo, com trilhas, quizzes e progressão gamificada. Bíblia offline em vários idiomas, com navegação simples e intuitiva. Inclui áudio, marcações e busca inteligente para estudo diário. Conta com mais de 100 mil downloads e alto engajamento.",
     images: [
       "/images/Home.webp",
-      "/images/Mensagens do dia.webp",
+      "/images/Mensagens-do-dia.webp",
       "/images/Quiz.webp",
       "/images/Reflexão.webp",
       "/images/Versiculo.webp"
@@ -149,7 +149,7 @@ const timelineData = [
     category: "Web App",
     description: "Aplicação de chat em tempo real com interface moderna, focada em comunicação fluida e expressiva.",
     images: [
-      "/images/Webchat 1.webp"
+      "/images/Webchat-1.webp"
     ],
     tags: ["Figma", "Antigravity"],
   },
