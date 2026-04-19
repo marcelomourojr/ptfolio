@@ -103,7 +103,7 @@ export const SocialBento = () => {
   ];
 
   return (
-    <section id="contatos" className="relative w-full min-h-screen bg-black flex flex-col items-center justify-center overflow-hidden py-24">
+    <section id="contatos" className="relative w-full bg-black flex flex-col items-center justify-center overflow-hidden pt-24 pb-8">
       {/* Animation Styles */}
       <style>{`
         @keyframes spin-slow {

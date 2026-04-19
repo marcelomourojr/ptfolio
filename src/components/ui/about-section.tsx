@@ -27,18 +27,17 @@ export function AboutSection({
   highlightedText = "Criando experiências digitais que unem estratégia, tecnologia e performance.",
 }: AboutSectionProps) {
   return (
-    <InfiniteGridBackground
-      className="min-h-screen bg-black py-24 md:py-32"
-      gridSize={60}
-      speedX={0.2}
-      speedY={0.2}
-      maskRadius={400}
-      baseOpacity={0.04}
-      highlightOpacity={0.2}
-    >
-      <section id="sobre" className="relative">
-
-
+    <section id="sobre" className="w-full">
+      <InfiniteGridBackground
+        className="min-h-screen bg-black py-24 md:py-32"
+        gridSize={60}
+        speedX={0.2}
+        speedY={0.2}
+        maskRadius={400}
+        baseOpacity={0.04}
+        highlightOpacity={0.2}
+      >
+        <div className="relative">
         <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-10">
           <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20">
             
@@ -144,8 +143,8 @@ export function AboutSection({
           </div>
         </div>
 
-
-      </section>
-    </InfiniteGridBackground>
+      </div>
+      </InfiniteGridBackground>
+    </section>
   );
 }

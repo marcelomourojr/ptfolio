@@ -61,7 +61,7 @@ const PLATFORM_STYLES: Record<Platform, PlatformStyle> = {
     hoverGradient: "from-zinc-700 to-zinc-500",
   },
   mail: {
-    label: "Mail",
+    label: "E-mail",
     icon: FaEnvelope,
     gradient: "from-cyan-600 to-blue-500",
     hoverGradient: "from-cyan-500 to-blue-400",
@@ -125,20 +125,20 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
                   href={href}
                   target="_blank"
                   rel="noreferrer"
-                  className="flex items-center justify-between w-44 h-14 px-5 ml-[-120px]
+                  className="flex items-center justify-between w-[185px] h-[55px] px-[22px] ml-[-130px]
                              group-hover:ml-[-5px] transition-all duration-500 ease-out
                              rounded-r-xl relative overflow-hidden border border-white/10
                              bg-white/5 backdrop-blur-md shadow-lg group-hover:bg-rose-500/10 group-hover:border-rose-500/40 group-hover:shadow-[0_0_20px_rgba(244,63,94,0.15)]"
                 >
                   {/* Label */}
-                  <span className="relative z-10 text-white/50 font-medium tracking-wide text-sm group-hover:text-white group-hover:tracking-[0.2em] uppercase transition-all duration-500">
+                  <span className="relative z-10 text-white/50 font-medium tracking-wide text-sm group-hover:text-white group-hover:tracking-wider uppercase transition-all duration-300">
                     {style.label}
                   </span>
 
                   {/* Icon */}
                   <Icon
-                    size={20}
-                    className="relative z-10 text-white/50 group-hover:text-rose-400 group-hover:scale-125 transition-all duration-500"
+                    size={22}
+                    className="relative z-10 text-white/50 group-hover:text-rose-400 group-hover:scale-110 transition-all duration-500"
                   />
                 </a>
               </li>

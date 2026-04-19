@@ -33,7 +33,7 @@ const navItems = [
   },
   {
     name: "Redes",
-    link: "#redes",
+    link: "#contatos",
     icon: <Share2 className="h-4 w-4" />,
   },
 ];
@@ -241,8 +241,8 @@ export default function Home() {
       {/* Floating Navigation */}
       <FloatingNav 
         navItems={navItems} 
-        ctaText="Entre em Contato" 
-        ctaLink="#contato" 
+        ctaText="Vamos Conversar" 
+        ctaLink="#contatos" 
       />
 
       {/* Social Links - Fixed on left side */}
