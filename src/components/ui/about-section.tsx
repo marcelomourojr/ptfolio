@@ -87,7 +87,7 @@ export function AboutSection({
               >
                 {/* Highlighted Quote */}
                 <p className="text-2xl md:text-3xl font-light text-white leading-relaxed mb-6">
-                  &ldquo;{highlightedText}&rdquo;
+                  {highlightedText}
                 </p>
                 
                 {/* Description */}
@@ -108,7 +108,7 @@ export function AboutSection({
                 <div className="group relative">
                   <div className="relative h-full bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 lg:p-6 text-center group-hover:border-rose-500/30 group-hover:bg-rose-500/5 group-hover:shadow-[0_0_40px_rgba(244,63,94,0.15)] transition-all duration-500 flex flex-col justify-center">
                     <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-white group-hover:text-rose-400 transition-colors duration-500 mb-2">
-                      2+
+                      5+
                     </div>
                     <div className="text-[10px] md:text-xs text-white/40 uppercase tracking-widest leading-tight">
                       Anos

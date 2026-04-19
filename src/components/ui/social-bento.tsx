@@ -186,7 +186,7 @@ export const SocialBento = () => {
         {/* Shiny Button */}
         <div>
           <ShinyButton href="mailto:contato@marcelomouro.com">
-            Entrar em Contato
+            Fale Comigo
           </ShinyButton>
         </div>
 

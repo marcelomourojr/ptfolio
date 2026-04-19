@@ -62,8 +62,8 @@ const projectImages = [
   },
   {
     src: "/images/Webchat-1.webp",
-    alt: "Webchat",
-    title: "Webchat",
+    alt: "KingChat",
+    title: "KingChat",
     category: "Web App",
   },
   {
@@ -73,10 +73,10 @@ const projectImages = [
     category: "Website",
   },
   {
-    src: "https://images.unsplash.com/photo-1558655146-9f40138edfeb?w=1280&h=720&fit=crop",
-    alt: "Landing Page",
-    title: "Landing Page",
-    category: "Web",
+    src: "/images/ze1.webp",
+    alt: "Zé dos Concursos",
+    title: "Zé dos Concursos",
+    category: "App Mobile & Website",
   },
 ];
 
@@ -84,7 +84,7 @@ const projectImages = [
 const timelineData = [
   {
     title: "Onsite Seguros",
-    year: "2024",
+    year: "2023",
     category: "Website",
     description: "Plataforma completa para gestão de seguros, com foco na experiência do usuário e otimização de fluxos de contratação.",
     images: [
@@ -96,9 +96,9 @@ const timelineData = [
   },
   {
     title: "CupidLove",
-    year: "2024",
+    year: "2025",
     category: "Website",
-    description: "Aplicativo de relacionamentos focado em conexões significativas, com interface moderna e interativa.",
+    description: "Serviço de criação de sites personalizados como presentes digitais, transformando histórias, fotos e músicas em experiências interativas únicas para eternizar momentos especiais de forma criativa e emocional.",
     images: [
       "/images/1c.webp",
       "/images/2c.webp",
@@ -112,7 +112,7 @@ const timelineData = [
   },
   {
     title: "Verbo",
-    year: "2023",
+    year: "2025",
     category: "Mobile Design",
     description: "App com dinâmica estilo Duolingo, com trilhas, quizzes e progressão gamificada. Bíblia offline em vários idiomas, com navegação simples e intuitiva. Inclui áudio, marcações e busca inteligente para estudo diário. Conta com mais de 100 mil downloads e alto engajamento.",
     images: [
@@ -128,7 +128,7 @@ const timelineData = [
   },
   {
     title: "Sintony",
-    year: "2023",
+    year: "2025",
     category: "Mobile App",
     description: "App de relacionamento com IA que gera matches por afinidade real, usando filtros inteligentes de idade, distância e interesses, com chat seguro focado em privacidade e controle, já ultrapassando 500 mil downloads.",
     images: [
@@ -144,10 +144,10 @@ const timelineData = [
     playStoreLink: "#",
   },
   {
-    title: "Webchat",
-    year: "2023",
+    title: "KingChat",
+    year: "2025",
     category: "Web App",
-    description: "Aplicação de chat em tempo real com interface moderna, focada em comunicação fluida e expressiva.",
+    description: "Plataforma de automação de conversas que utiliza chatbots e fluxos inteligentes para organizar, escalar e otimizar o atendimento, centralizando a comunicação e tornando as interações mais eficientes e estratégicas.",
     images: [
       "/images/Webchat-1.webp"
     ],
@@ -155,12 +155,18 @@ const timelineData = [
   },
   {
     title: "Zé dos Concursos",
-    year: "2024",
+    year: "2025",
     category: "App Mobile & Website",
-    description: "Aplicativo completo para preparação de concursos, com banco de questões e estatísticas de desempenho.",
+    description: "Plataforma web e aplicativo mobile que centralizam informações de concursos públicos, com busca inteligente, notícias atualizadas e assistente com IA, facilitando o acesso a oportunidades e otimizando a jornada de quem está se preparando.",
     images: [
-      "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&h=400&fit=crop"
+      "/images/ze1.webp",
+      "/images/ze2.webp",
+      "/images/ze3.webp",
+      "/images/ze4.webp",
+      "/images/ze5.webp",
+      "/images/ze6.webp",
+      "/images/ze7.webp",
+      "/images/ze8.webp"
     ],
     tags: ["React Native", "Expo", "TypeScript"],
     link: "#",
@@ -169,9 +175,9 @@ const timelineData = [
   },
   {
     title: "Protech",
-    year: "2024",
+    year: "2026",
     category: "Website",
-    description: "Solução tecnológica inovadora com design futurista e foco em automação de processos.",
+    description: "Serviço de criação de sites, páginas e sistemas com foco em conversão, unindo estratégia e design, com investimento acessível e modelo recorrente que garante manutenção contínua e suporte 24h, voltado a fortalecer a presença digital de negócios locais e sustentar seu crescimento.",
     images: [
       "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=400&fit=crop",
       "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=400&fit=crop"
@@ -180,9 +186,9 @@ const timelineData = [
   },
   {
     title: "Isaac the Barber",
-    year: "2024",
+    year: "2026",
     category: "Website",
-    description: "Landing page premium desenvolvida para barbearia, com foco em conversão, apresentação de portfólio de serviços e uma identidade visual sofisticada.",
+    description: "Site premium desenvolvido para barbearia com foco em fortalecer a presença digital local, otimizado para SEO e alta performance, valorizando os serviços e transmitindo uma identidade visual sofisticada que atrai e converte clientes.",
     images: [
       "/images/Isaac1.webp",
       "/images/Isaac2.webp",
