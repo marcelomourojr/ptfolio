@@ -96,7 +96,7 @@ export const FloatingNav = ({
               }
             }
           }}
-          className="text-sm font-medium relative text-white px-5 py-2.5 rounded-xl transition-all duration-300 ml-1"
+          className="text-sm font-medium relative text-white px-4 sm:px-5 py-2.5 rounded-xl transition-all duration-300 ml-1 whitespace-nowrap"
           style={{
             background: "linear-gradient(135deg, rgba(244, 63, 94, 0.3) 0%, rgba(236, 72, 153, 0.3) 100%)",
             border: "1px solid rgba(244, 63, 94, 0.4)",

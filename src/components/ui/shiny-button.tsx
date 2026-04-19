@@ -62,6 +62,7 @@ export function ShinyButton({ children, onClick, className = "", href }: ShinyBu
           isolation: isolate;
           position: relative;
           overflow: hidden;
+          cursor: pointer;
           outline-offset: 4px;
           padding: 1.25rem 2.5rem;
           font-family: "Inter", sans-serif;
@@ -202,15 +203,9 @@ export function ShinyButton({ children, onClick, className = "", href }: ShinyBu
         }
       `}</style>
 
-      {href ? (
-        <a href={href} className={`shiny-cta ${className}`} onClick={onClick}>
-          <span>{children}</span>
-        </a>
-      ) : (
-        <button className={`shiny-cta ${className}`} onClick={onClick}>
-          <span>{children}</span>
-        </button>
-      )}
+      <button className={`shiny-cta ${className}`} onClick={handleClick}>
+        <span>{children}</span>
+      </button>
     </>
   )
 }

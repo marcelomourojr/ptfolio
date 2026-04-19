@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Share2, X } from "lucide-react";
+import { Users, X } from "lucide-react";
 import {
   FaFacebook,
   FaInstagram,
@@ -212,7 +212,7 @@ export const SocialLinks: React.FC<SocialLinksProps> = ({
                 {mobileDockOpen ? (
                   <X size={24} className="text-white" />
                 ) : (
-                  <Share2 size={24} className="text-white" />
+                  <Users size={24} className="text-white" />
                 )}
               </div>
             </button>

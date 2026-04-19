@@ -12,7 +12,7 @@ import { Cursor, CursorProvider, CursorFollow } from "@/components/ui/cursor";
 import { SocialLinks } from "@/components/ui/social-links";
 import { SocialBento } from "@/components/ui/social-bento";
 
-import { Home as HomeIcon, User, Briefcase, Share2 } from "lucide-react";
+import { Home as HomeIcon, User, Briefcase, Users } from "lucide-react";
 
 // Menu items
 const navItems = [
@@ -34,7 +34,7 @@ const navItems = [
   {
     name: "Redes",
     link: "#contatos",
-    icon: <Share2 className="h-4 w-4" />,
+    icon: <Users className="h-4 w-4" />,
   },
 ];
 
@@ -152,6 +152,7 @@ const timelineData = [
       "/images/Webchat-1.webp"
     ],
     tags: ["Figma", "Antigravity"],
+    link: "https://kingchat.com/",
   },
   {
     title: "Zé dos Concursos",
