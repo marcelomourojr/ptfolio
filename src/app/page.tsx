@@ -180,8 +180,14 @@ const timelineData = [
     category: "Website",
     description: "Serviço de criação de sites, páginas e sistemas com foco em conversão, unindo estratégia e design, com investimento acessível e modelo recorrente que garante manutenção contínua e suporte 24h, voltado a fortalecer a presença digital de negócios locais e sustentar seu crescimento.",
     images: [
-      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&h=400&fit=crop",
-      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=400&fit=crop"
+      "/images/pt1.webp",
+      "/images/pt2.webp",
+      "/images/pt3.webp",
+      "/images/pt4.webp",
+      "/images/pt5.webp",
+      "/images/pt6.webp",
+      "/images/pt7.webp",
+      "/images/pt8.webp"
     ],
     tags: ["Figma", "Antigravity"],
   },

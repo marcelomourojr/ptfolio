@@ -124,7 +124,7 @@ export const SocialBento = () => {
 
       {/* Background Decorative Layer */}
       <div
-        className="absolute inset-0 w-full h-full pointer-events-none"
+        className="absolute inset-0 w-full h-full pointer-events-none hidden md:block"
         style={{
           perspective: "1200px",
           transform: "perspective(1200px) rotateX(15deg)",
