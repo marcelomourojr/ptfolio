@@ -74,7 +74,7 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
 										alt={alt || `Parallax image ${index + 1}`}
 										fill
 										sizes="(max-width: 768px) 100vw, 50vw"
-										className={`${(images[index] as any)?.className || 'object-cover'} rounded-lg`}
+										className="object-cover rounded-lg"
 									/>
 								</div>
 							</motion.div>

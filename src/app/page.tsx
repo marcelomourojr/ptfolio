@@ -211,6 +211,10 @@ const timelineData = [
 export default function Home() {
   // Smooth scroll with Lenis
   useEffect(() => {
+    // Respeita quem pediu menos movimento no sistema: o scroll hijacking do
+    // Lenis é o efeito mais desconfortável do site nesse caso.
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     const lenis = new Lenis();
 
     function raf(time: number) {
@@ -226,7 +230,7 @@ export default function Home() {
   }, []);
 
   return (
-    <CursorProvider className="w-full">
+    <CursorProvider className="w-full" data-custom-cursor>
       <Cursor className="z-[9999] mix-blend-difference hidden md:block">
         <svg
           className="size-6 text-white"

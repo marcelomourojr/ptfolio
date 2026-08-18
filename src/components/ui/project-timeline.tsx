@@ -33,7 +33,8 @@ function TimelineCard({ item }: { item: TimelineItem }) {
   const [[page, direction], setPage] = useState([0, 0]);
 
   const images = item.images || (item.image ? [item.image] : []);
-  const currentImage = Math.abs(page % images.length);
+  const currentImage =
+    images.length > 0 ? ((page % images.length) + images.length) % images.length : 0;
 
   const paginate = (newDirection: number, e?: React.MouseEvent) => {
     e?.stopPropagation();
@@ -50,7 +51,7 @@ function TimelineCard({ item }: { item: TimelineItem }) {
         style={{ transformStyle: "preserve-3d" }}
       >
         {/* Front Face - Typography & Content */}
-        <div className="relative w-full h-full backface-hidden bg-zinc-900/60 backdrop-blur-md rounded-2xl overflow-hidden border border-white/5 hover:border-white/20 transition-colors duration-500 flex flex-col justify-between p-6 sm:p-8 shadow-xl">
+        <div inert={isFlipped} className="relative w-full h-full backface-hidden bg-zinc-900/60 backdrop-blur-md rounded-2xl overflow-hidden border border-white/5 hover:border-white/20 transition-colors duration-500 flex flex-col justify-between p-6 sm:p-8 shadow-xl">
           <div>
             <div className="flex justify-between items-start mb-6">
               <div className="px-3 py-1 rounded-full bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-bold uppercase tracking-wider">
@@ -139,7 +140,8 @@ function TimelineCard({ item }: { item: TimelineItem }) {
         </div>
 
         {/* Back Face - Image Carousel */}
-        <div 
+        <div
+          inert={!isFlipped}
           className="absolute inset-0 backface-hidden rounded-2xl overflow-hidden shadow-2xl p-4 bg-zinc-900 border border-white/5"
           style={{ transform: "rotateY(180deg)", backfaceVisibility: "hidden" }}
         >
@@ -196,8 +198,9 @@ function TimelineCard({ item }: { item: TimelineItem }) {
             {images.length > 1 && (
               <>
                 {/* Arrow Left */}
-                <button 
-                  onClick={(e) => paginate(-1, e)} 
+                <button
+                  onClick={(e) => paginate(-1, e)}
+                  aria-label="Imagem anterior"
                   className="absolute left-1 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 text-white flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-all hover:bg-rose-500/80 hover:scale-110 z-20"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -206,8 +209,9 @@ function TimelineCard({ item }: { item: TimelineItem }) {
                 </button>
 
                 {/* Arrow Right */}
-                <button 
-                  onClick={(e) => paginate(1, e)} 
+                <button
+                  onClick={(e) => paginate(1, e)}
+                  aria-label="Próxima imagem"
                   className="absolute right-1 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/40 backdrop-blur-sm border border-white/10 text-white flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-all hover:bg-rose-500/80 hover:scale-110 z-20"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -233,6 +237,7 @@ function TimelineCard({ item }: { item: TimelineItem }) {
                 e.stopPropagation();
                 setIsFlipped(false);
               }}
+              aria-label="Fechar galeria de imagens"
               className="absolute top-2 right-2 w-10 h-10 flex items-center justify-center text-white/80 bg-black/60 backdrop-blur-md rounded-full border border-white/20 hover:text-white hover:bg-rose-500/80 transition-all z-30 shadow-2xl hover:scale-110"
             >
               <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -30,8 +30,25 @@ const TubesCursor = ({
   className = "",
 }: TubesCursorProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const appRef = useRef<any>(null);
+
+  // Os arrays de cores chegam como literais inline, ou seja, com referência nova
+  // a cada render. Guardá-los num ref mantém o efeito rodando só na montagem e
+  // evita recriar o contexto WebGL a cada re-render.
+  const optionsRef = useRef({
+    initialColors,
+    lightColors,
+    lightIntensity,
+    enableRandomizeOnClick,
+  });
+  optionsRef.current = {
+    initialColors,
+    lightColors,
+    lightIntensity,
+    enableRandomizeOnClick,
+  };
 
   useEffect(() => {
     let removeClick: (() => void) | null = null;
@@ -48,27 +65,32 @@ const TubesCursor = ({
 
       if (!canvasRef.current || destroyed) return;
 
+      const opts = optionsRef.current;
+
       const app = TubesCursorCtor(canvasRef.current, {
         tubes: {
-          colors: initialColors,
+          colors: opts.initialColors,
           lights: {
-            intensity: lightIntensity,
-            colors: lightColors,
+            intensity: opts.lightIntensity,
+            colors: opts.lightColors,
           },
         },
       });
 
       appRef.current = app;
 
-      if (enableRandomizeOnClick) {
+      // O listener fica no hero, não no body: antes qualquer clique na página
+      // (inclusive em botões e links) randomizava as cores.
+      const clickTarget = wrapperRef.current;
+
+      if (opts.enableRandomizeOnClick && clickTarget) {
         const handler = () => {
-          const colors = randomColors(initialColors.length);
-          const lights = randomColors(lightColors.length);
-          app.tubes.setColors(colors);
-          app.tubes.setLightsColors(lights);
+          const { initialColors: base, lightColors: lights } = optionsRef.current;
+          app.tubes.setColors(randomColors(base.length));
+          app.tubes.setLightsColors(randomColors(lights.length));
         };
-        document.body.addEventListener("click", handler);
-        removeClick = () => document.body.removeEventListener("click", handler);
+        clickTarget.addEventListener("click", handler);
+        removeClick = () => clickTarget.removeEventListener("click", handler);
       }
     })();
 
@@ -82,10 +104,13 @@ const TubesCursor = ({
         // ignore
       }
     };
-  }, [initialColors, lightColors, lightIntensity, enableRandomizeOnClick]);
+  }, []);
 
   return (
-    <div className={`relative h-screen w-screen overflow-hidden ${className}`}>
+    <div
+      ref={wrapperRef}
+      className={`relative h-screen w-screen overflow-hidden ${className}`}
+    >
       {/* Background canvas */}
       <canvas ref={canvasRef} className="absolute inset-0 block h-full w-full" />
 

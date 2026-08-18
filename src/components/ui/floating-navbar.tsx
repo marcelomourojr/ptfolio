@@ -1,8 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   motion,
-  AnimatePresence,
   useScroll,
   useMotionValueEvent,
 } from "framer-motion";
@@ -25,26 +24,22 @@ export const FloatingNav = ({
 }) => {
   const { scrollYProgress } = useScroll();
   const [visible, setVisible] = useState(true);
+  const lastProgress = useRef(0);
 
   useMotionValueEvent(scrollYProgress, "change", (current) => {
-    if (typeof current === "number") {
-      const direction = current - (scrollYProgress.getPrevious() ?? 0);
+    const direction = current - lastProgress.current;
+    lastProgress.current = current;
 
-      if (scrollYProgress.get() < 0.05) {
-        setVisible(true);
-      } else {
-        if (direction < 0) {
-          setVisible(true);
-        } else {
-          setVisible(false);
-        }
-      }
+    if (current < 0.05) {
+      setVisible(true);
+    } else {
+      setVisible(direction < 0);
     }
   });
 
   return (
-    <AnimatePresence mode="wait">
-      <motion.nav
+    <motion.nav
+        aria-label="Navegação principal"
         initial={{
           opacity: 1,
           y: 0,
@@ -105,7 +100,6 @@ export const FloatingNav = ({
         >
           <span>{ctaText}</span>
         </Link>
-      </motion.nav>
-    </AnimatePresence>
+    </motion.nav>
   );
 };
