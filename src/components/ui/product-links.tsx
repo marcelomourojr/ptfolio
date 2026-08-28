@@ -48,7 +48,7 @@ function ProductCard({ item, featured = false }: { item: ProductLink; featured?:
       )}
 
       {featured && (
-        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-white/35">
+        <span className="font-mono text-[10px] tracking-[0.08em] text-white/35">
           Recomendação da semana
         </span>
       )}
@@ -121,8 +121,8 @@ export function ProductLinks({ products }: { products: ProductLink[] }) {
                   type="button"
                   onClick={() => setActive(category)}
                   aria-pressed={isActive}
-                  className={`whitespace-nowrap rounded-full border px-3.5 py-1.5 font-mono text-[11px] uppercase
-                              tracking-[0.14em] transition-colors duration-200
+                  className={`whitespace-nowrap rounded-full border px-3.5 py-1.5 font-mono text-[11px]
+                              tracking-[0.04em] transition-colors duration-200
                               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50
                               ${
                                 isActive

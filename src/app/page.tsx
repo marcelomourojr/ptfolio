@@ -2,39 +2,43 @@
 
 import { useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
-import { TubesCursor } from "@/components/ui/tube-cursor";
 import { ZoomParallax } from "@/components/ui/zoom-parallax";
-import { FloatingNav } from "@/components/ui/floating-navbar";
+import { SiteHeader } from "@/components/ui/site-header";
+import { Hero } from "@/components/ui/hero";
+import { GridBackground } from "@/components/ui/grid-background";
 import { AboutSection } from "@/components/ui/about-section";
-import { ProjectTimeline } from "@/components/ui/project-timeline";
+import { ProjectBento, type BentoBand, type BentoItem } from "@/components/ui/project-bento";
+import type { ProjectDetail } from "@/components/ui/project-modal";
 import { Cursor, CursorProvider, CursorFollow } from "@/components/ui/cursor";
 
-import { SocialLinks } from "@/components/ui/social-links";
-import { SocialBento } from "@/components/ui/social-bento";
+import { ContactSection } from "@/components/ui/contact-section";
 
-import { Home as HomeIcon, User, Briefcase, Users } from "lucide-react";
+const navLinks = [
+  { label: "Início", href: "#inicio" },
+  { label: "Sobre", href: "#sobre" },
+  { label: "Projetos", href: "#projetos" },
+  { label: "Contato", href: "#contatos" },
+];
 
-// Menu items
-const navItems = [
+const contactLinks = [
+  { label: "E-mail", href: "mailto:contato@marcelomouro.com" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/marcelomourojr/" },
+  { label: "Instagram", href: "https://www.instagram.com/marcelomourojr/" },
+  { label: "GitHub", href: "https://github.com/marcelomourojr" },
+];
+
+const heroMeta = [
   {
-    name: "Início",
-    link: "#inicio",
-    icon: <HomeIcon className="h-4 w-4" />,
+    label: "\u00A92026",
+    body: "Product Designer UI/UX h\u00e1 mais de 5 anos. Interfaces que precisam funcionar fora do Figma.",
   },
   {
-    name: "Sobre Mim",
-    link: "#sobre",
-    icon: <User className="h-4 w-4" />,
+    label: "Produto",
+    body: "Da pesquisa ao handoff: fluxo, prot\u00f3tipo, interface e a conversa dif\u00edcil sobre escopo.",
   },
   {
-    name: "Projetos",
-    link: "#projetos",
-    icon: <Briefcase className="h-4 w-4" />,
-  },
-  {
-    name: "Redes",
-    link: "#contatos",
-    icon: <Users className="h-4 w-4" />,
+    label: "UI/UX",
+    body: "Design claro, acess\u00edvel e r\u00e1pido. Menos efeito, mais decis\u00e3o.",
   },
 ];
 
@@ -81,7 +85,7 @@ const projectImages = [
 ];
 
 // Timeline data - projetos detalhados
-const timelineData = [
+const timelineData: ProjectDetail[] = [
   {
     title: "Onsite Seguros",
     year: "2023",
@@ -208,6 +212,35 @@ const timelineData = [
   },
 ];
 
+// Capa e proporção EXATA de cada capa (medidas dos arquivos reais).
+// A proporção é o que garante bloco sem recorte: retratos ficam retratos,
+// paisagens ficam paisagens, e nada estica.
+const bentoCovers: Record<string, { cover: string; aspect: string }> = {
+  "Verbo":            { cover: "/images/Home.webp",         aspect: "738 / 1600" },
+  "Sintony":          { cover: "/images/1sintonywebp.webp", aspect: "416 / 900" },
+  "KingChat":         { cover: "/images/Webchat-1.webp",    aspect: "1600 / 1005" },
+  "Onsite Seguros":   { cover: "/images/1on.webp",          aspect: "1600 / 1005" },
+  "Zé dos Concursos": { cover: "/images/ze1.webp",          aspect: "1600 / 1005" },
+  "Isaac the Barber": { cover: "/images/Isaac1.webp",       aspect: "1600 / 1005" },
+  "Protech":          { cover: "/images/pt1.webp",          aspect: "1600 / 1005" },
+  "CupidLove":        { cover: "/images/1c.webp",           aspect: "1600 / 1005" },
+};
+
+function bentoItem(titulo: string): BentoItem {
+  const dados = timelineData.find((p) => p.title === titulo);
+  if (!dados) throw new Error(`Projeto "${titulo}" não existe em timelineData`);
+  const portrait = titulo === "Verbo" || titulo === "Sintony";
+  return { ...dados, ...bentoCovers[titulo], portrait };
+}
+
+// Quatro faixas: retrato+paisagem espelhados nas pontas, pares no meio.
+const bentoBands: BentoBand[] = [
+  { layout: "portraitLeft",  items: [bentoItem("Verbo"), bentoItem("KingChat")] },
+  { layout: "pair",          items: [bentoItem("Onsite Seguros"), bentoItem("Zé dos Concursos")] },
+  { layout: "portraitRight", items: [bentoItem("Isaac the Barber"), bentoItem("Sintony")] },
+  { layout: "pair",          items: [bentoItem("Protech"), bentoItem("CupidLove")] },
+];
+
 export default function Home() {
   // Smooth scroll with Lenis
   useEffect(() => {
@@ -231,106 +264,74 @@ export default function Home() {
 
   return (
     <CursorProvider className="w-full" data-custom-cursor>
-      <Cursor className="z-[9999] mix-blend-difference hidden md:block">
+      {/* Sem mix-blend-mode: o `difference` fundia a seta com o que estivesse
+          atrás dela — e como o brilho da grade é revelado exatamente sob o
+          cursor, a grade atravessava a seta o tempo todo. O contraste sobre
+          fundo claro, que era o motivo do blend, agora vem do contorno. */}
+      <Cursor className="z-[9999] hidden md:block">
         <svg
-          className="size-6 text-white"
+          className="size-6"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 40 40"
         >
           <path
-            fill="currentColor"
             d="M1.8 4.4 7 36.2c.3 1.8 2.6 2.3 3.6.8l3.9-5.7c1.7-2.5 4.5-4.1 7.5-4.3l6.9-.5c1.8-.1 2.5-2.4 1.1-3.5L5 2.5c-1.4-1.1-3.5 0-3.3 1.9Z"
+            fill="#fff"
+            stroke="#000"
+            strokeWidth={3}
+            strokeLinejoin="round"
+            paintOrder="stroke"
           />
         </svg>
       </Cursor>
       <CursorFollow align="bottom-right" sideOffset={10} className="z-[9998] pointer-events-none hidden md:block">
-        <div className="bg-white/10 border border-white/20 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-semibold uppercase tracking-widest shadow-xl">
+        <div className="bg-white/10 border border-white/20 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-semibold tracking-[0.04em] shadow-xl">
           Você
         </div>
       </CursorFollow>
-      <main className="bg-black cursor-none">
-      {/* Floating Navigation */}
-      <FloatingNav 
-        navItems={navItems} 
-        ctaText="Vamos Conversar" 
-        ctaLink="#contatos" 
+      <main className="cursor-none">
+      <GridBackground />
+
+      <SiteHeader
+        wordmark="Marcelo Mouro"
+        available="Disponível para projetos"
+        links={navLinks}
+        contact={contactLinks}
       />
 
-      {/* Social Links - Fixed on left side */}
-      <SocialLinks
-        links={[
-          { platform: "linkedin", href: "https://www.linkedin.com/in/marcelomourojr/" },
-          { platform: "github", href: "https://github.com/marcelomourojr" },
-          { platform: "instagram", href: "https://www.instagram.com/marcelomourojr/" },
-          { platform: "mail", href: "mailto:contato@marcelomouro.com" },
-        ]}
-        floatingButtonColor="bg-gradient-to-r from-rose-500 to-purple-600"
+      <Hero
+        eyebrow="Product Designer · UI/UX"
+        statement="Desenho produtos digitais que as pessoas entendem sem precisar de manual."
+        wordmark="Marcelo Mouro"
+        meta={heroMeta}
       />
 
-      {/* Hero Section */}
-      <section id="inicio" className="relative">
-        <TubesCursor
-          title="Marcelo Mouro Jr"
-          subtitle="UI/UX"
-          caption="Clique para mudar as cores"
-          initialColors={["#9333ea", "#06b6d4", "#ec4899"]}
-          lightColors={["#8b5cf6", "#22d3ee", "#f472b6", "#a855f7"]}
-          lightIntensity={250}
-          titleSize="text-[48px] md:text-[70px] lg:text-[90px]"
-          subtitleSize="text-[32px] md:text-[50px] lg:text-[60px]"
-          captionSize="text-sm md:text-lg"
-          enableRandomizeOnClick
-        />
-      </section>
-
-      {/* Transition: Hero → About */}
-      <div className="h-24 bg-gradient-to-b from-black via-black to-transparent -mb-24 relative z-10" />
 
       {/* About Section */}
       <AboutSection />
 
-      {/* Transition: About → Projects Header */}
-      <div className="h-32 bg-gradient-to-b from-black to-transparent -mb-32 relative z-10" />
 
-      {/* Projects Section Header */}
-      <section id="projetos" className="relative flex h-[50vh] items-center justify-center bg-black">
-        <div className="text-center">
-
-          <h2 className="text-4xl md:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-rose-400 via-white to-rose-600">
-            Principais Projetos
-          </h2>
-          <p className="mt-6 text-base md:text-lg text-white/50 max-w-2xl mx-auto font-light px-6">
-            Role para explorar alguns dos meus trabalhos
+      {/* Projetos: cabeçalho à esquerda, sem gradiente em texto */}
+      <section id="projetos" className="px-6 pt-24 sm:px-10 sm:pt-32">
+        <header className="max-w-3xl">
+          <p className="font-mono text-[11px] tracking-[0.08em] text-white/40">
+            Trabalho selecionado
           </p>
-        </div>
+          <h2 className="mt-5 text-[clamp(2rem,6vw,4.5rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-white">
+            Projetos
+          </h2>
+          <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/50">
+            Produtos que foram para a rua e continuam em uso. Role para ver de perto.
+          </p>
+        </header>
       </section>
 
-      {/* Transition: Projects Header → Parallax */}
-      <div className="h-20 bg-gradient-to-b from-black to-transparent -mb-20 relative z-10" />
-
-      {/* Zoom Parallax Projects */}
       <ZoomParallax images={projectImages} />
 
-      {/* Transition: Parallax → Timeline */}
-      <div className="h-32 bg-gradient-to-b from-black to-transparent -mb-32 relative z-10" />
+      <ProjectBento bands={bentoBands} />
 
-      {/* Transition: Parallax → Timeline */}
-      <div className="relative h-32 bg-gradient-to-b from-black via-black to-transparent -mb-32 z-10" />
 
-      {/* Project Timeline */}
-      <div className="bg-black relative overflow-hidden">
-        <ProjectTimeline
-          title=""
-          subtitle=""
-          data={timelineData}
-        />
-      </div>
-
-      {/* Transition: Timeline → Contact */}
-      <div className="relative h-24 bg-gradient-to-b from-black to-transparent -mb-24 z-10" />
-
-      {/* Social Links Bento Section */}
-      <SocialBento />
+      <ContactSection />
 
 
     </main>

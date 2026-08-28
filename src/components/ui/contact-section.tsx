@@ -1,149 +1,169 @@
-"use client"
+"use client";
 
-import { ShinyButton } from "./shiny-button"
-import Image from "next/image"
+import dynamic from "next/dynamic";
+import { motion, useReducedMotion } from "framer-motion";
+import { ArrowUpRight, Github, Instagram, Linkedin, Mail } from "lucide-react";
 
-interface ContactSectionProps {
-  title?: string;
-  subtitle?: string;
-  buttonText?: string;
-  email?: string;
-}
-
-export const ContactSection = ({
-  title = "Vamos Criar Algo Incrível?",
-  subtitle = "Deixe seu email e vamos conversar sobre seu próximo projeto.",
-  buttonText = "Entrar em Contato",
-  email = "contato@marcelomouro.com",
-}: ContactSectionProps) => {
-
-  return (
-    <section id="contato" className="relative w-full min-h-screen bg-black flex items-center justify-center overflow-hidden">
-      {/* Animation Styles */}
-      <style>{`
-        @keyframes spin-slow {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-          animation: spin-slow 60s linear infinite;
-        }
-        @keyframes spin-slow-reverse {
-          from { transform: rotate(0deg); }
-          to { transform: rotate(-360deg); }
-        }
-        .animate-spin-slow-reverse {
-          animation: spin-slow-reverse 60s linear infinite;
-        }
-      `}</style>
-
-      {/* Background Decorative Layer */}
-      <div
-        className="absolute inset-0 w-full h-full pointer-events-none"
+// O shader WebGL do CTA fica fora do JS inicial; o placeholder tem o mesmo
+// tamanho e aparência de repouso, então não há salto de layout.
+const LiquidMetalButton = dynamic(
+  () => import("./liquid-metal-button").then((m) => m.LiquidMetalButton),
+  {
+    ssr: false,
+    loading: () => (
+      <span
+        aria-hidden
+        className="inline-block rounded-full"
         style={{
-          perspective: "1200px",
-          transform: "perspective(1200px) rotateX(15deg)",
-          transformOrigin: "center bottom",
-          opacity: 1,
-        }}
-      >
-        {/* Image 3 (Back) - spins clockwise */}
-        <div className="absolute inset-0 animate-spin-slow">
-          <div
-            className="absolute top-1/2 left-1/2"
-            style={{
-              width: "2000px",
-              height: "2000px",
-              transform: "translate(-50%, -50%) rotate(279.05deg)",
-              zIndex: 0,
-            }}
-          >
-            <Image
-              src="https://framerusercontent.com/images/oqZEqzDEgSLygmUDuZAYNh2XQ9U.png?scale-down-to=2048"
-              alt=""
-              fill
-              className="object-cover opacity-50"
-            />
-          </div>
-        </div>
-
-        {/* Image 2 (Middle) - spins counter-clockwise */}
-        <div className="absolute inset-0 animate-spin-slow-reverse">
-          <div
-            className="absolute top-1/2 left-1/2"
-            style={{
-              width: "1000px",
-              height: "1000px",
-              transform: "translate(-50%, -50%) rotate(304.42deg)",
-              zIndex: 1,
-            }}
-          >
-            <Image
-              src="https://framerusercontent.com/images/UbucGYsHDAUHfaGZNjwyCzViw8.png?scale-down-to=1024"
-              alt=""
-              fill
-              className="object-cover opacity-60"
-            />
-          </div>
-        </div>
-
-        {/* Image 1 (Front) - spins clockwise */}
-        <div className="absolute inset-0 animate-spin-slow">
-          <div
-            className="absolute top-1/2 left-1/2"
-            style={{
-              width: "800px",
-              height: "800px",
-              transform: "translate(-50%, -50%) rotate(48.33deg)",
-              zIndex: 2,
-            }}
-          >
-            <Image
-              src="https://framerusercontent.com/images/Ans5PAxtJfg3CwxlrPMSshx2Pqc.png"
-              alt=""
-              fill
-              className="object-cover opacity-80"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* Gradient Overlay */}
-      <div
-        className="absolute inset-0 z-10 pointer-events-none"
-        style={{
-          background: "linear-gradient(to top, rgba(0,0,0,1) 5%, rgba(0,0,0,0.9) 30%, rgba(0,0,0,0.7) 60%, rgba(0,0,0,0.5) 100%)",
+          width: 224,
+          height: 58,
+          background: "linear-gradient(180deg, #202020 0%, #000000 100%)",
+          boxShadow: "0 0 0 2px #2a2a2a",
         }}
       />
+    ),
+  },
+);
 
-      {/* Content Container */}
-      <div className="relative z-20 w-full flex flex-col items-center justify-center gap-8 px-6 py-24">
-
-
-        {/* Title */}
-        <h2 className="text-4xl md:text-6xl font-bold text-center tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-rose-400 via-white to-rose-600 drop-shadow-[0_0_30px_rgba(0,0,0,0.8)]">
-          {title}
-        </h2>
-
-        {/* Subtitle */}
-        <p className="text-base md:text-lg text-white/50 text-center max-w-xl font-light">
-          {subtitle}
-        </p>
-
-        {/* Shiny Button */}
-        <div className="mt-4">
-          <ShinyButton href={`mailto:${email}`}>
-            {buttonText}
-          </ShinyButton>
-        </div>
-
-        {/* Footer text */}
-        <p className="text-white/30 text-sm mt-12">
-          © {new Date().getFullYear()} Marcelo Mouro Jr. Todos os direitos reservados.
-        </p>
-      </div>
-    </section>
-  )
+interface Channel {
+  label: string;
+  handle: string;
+  href: string;
+  icon: React.ReactNode;
 }
 
-export default ContactSection
+interface ContactSectionProps {
+  eyebrow?: string;
+  title?: string;
+  email?: string;
+  channels?: Channel[];
+  owner?: string;
+}
+
+const defaultChannels: Channel[] = [
+  {
+    label: "LinkedIn",
+    handle: "@marcelomourojr",
+    href: "https://www.linkedin.com/in/marcelomourojr/",
+    icon: <Linkedin strokeWidth={1.5} className="size-6" />,
+  },
+  {
+    label: "GitHub",
+    handle: "@marcelomourojr",
+    href: "https://github.com/marcelomourojr",
+    icon: <Github strokeWidth={1.5} className="size-6" />,
+  },
+  {
+    label: "Instagram",
+    handle: "@marcelomourojr",
+    href: "https://www.instagram.com/marcelomourojr/",
+    icon: <Instagram strokeWidth={1.5} className="size-6" />,
+  },
+  {
+    label: "E-mail",
+    handle: "contato@marcelomouro.com",
+    href: "mailto:contato@marcelomouro.com",
+    icon: <Mail strokeWidth={1.5} className="size-6" />,
+  },
+];
+
+export function ContactSection({
+  eyebrow = "Contato",
+  title = "Vamos conversar",
+  email = "contato@marcelomouro.com",
+  channels = defaultChannels,
+  owner = "Marcelo Mouro Jr",
+}: ContactSectionProps) {
+  const reduceMotion = useReducedMotion();
+
+  const reveal = (delay = 0) => ({
+    initial: reduceMotion ? false : { opacity: 0, y: 24 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-80px" },
+    transition: {
+      duration: 0.6,
+      delay: reduceMotion ? 0 : delay,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+  });
+
+  return (
+    <section id="contatos" className="px-6 pb-10 pt-24 sm:px-10 sm:pb-14 sm:pt-32">
+      <motion.header {...reveal()} className="max-w-3xl">
+        <p className="font-mono text-[11px] tracking-[0.08em] text-white/40">
+          {eyebrow}
+        </p>
+        <h2 className="mt-5 text-[clamp(2rem,6vw,4.5rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-white">
+          {title}
+        </h2>
+        <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/50">
+          Conecte-se comigo pelas redes ou me chame direto no e-mail.
+        </p>
+      </motion.header>
+
+      {/* Cards compactos, um por rede. O efeito: a marca de canto rose acende
+          e cresce no hover — a assinatura do site virando resposta ao toque. */}
+      <motion.ul
+        {...reveal(0.08)}
+        className="mt-12 grid grid-cols-2 gap-3 border-t border-white/10 pt-10 sm:gap-4 md:grid-cols-4"
+      >
+        {channels.map(({ label, handle, href, icon }) => (
+          <li key={label}>
+            <a
+              href={href}
+              target={href.startsWith("http") ? "_blank" : undefined}
+              rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
+              className="group relative flex flex-col gap-6 overflow-hidden rounded-xl border border-white/10
+                         bg-white/[0.02] p-5 transition-colors duration-300 hover:border-white/25 hover:bg-white/[0.05]
+                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:p-6"
+            >
+              <span
+                aria-hidden
+                className="absolute left-4 top-4 size-2 border-l border-t border-white/15
+                           transition-all duration-300 group-hover:size-3 group-hover:border-rose-500"
+              />
+
+              <span className="ml-auto text-white/35 transition-colors duration-300 group-hover:text-white">
+                {icon}
+              </span>
+
+              <span className="flex items-end justify-between gap-3">
+                <span className="min-w-0">
+                  <span className="block text-[15px] font-semibold tracking-[-0.02em] text-white">
+                    {label}
+                  </span>
+                  <span className="mt-1 block truncate font-mono text-[11px] text-white/35 transition-colors group-hover:text-white/60">
+                    {handle}
+                  </span>
+                </span>
+                <ArrowUpRight
+                  aria-hidden
+                  className="mb-0.5 size-4 shrink-0 text-white/25 transition-all duration-300
+                             group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-rose-500"
+                />
+              </span>
+            </a>
+          </li>
+        ))}
+      </motion.ul>
+
+      {/* O CTA: aro de metal líquido, link real para o e-mail */}
+      <motion.div {...reveal(0.16)} className="mt-14 flex justify-center">
+        <LiquidMetalButton label="Fale comigo" href={`mailto:${email}`} width={224} height={58} />
+      </motion.div>
+
+      <footer className="mt-16 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <p className="font-mono text-[10px] tracking-[0.06em] text-white/25">
+          © {new Date().getFullYear()} {owner}
+        </p>
+        <a
+          href="#inicio"
+          className="font-mono text-[10px] tracking-[0.06em] text-white/40 transition-colors hover:text-white
+                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+        >
+          Voltar ao topo ↑
+        </a>
+      </footer>
+    </section>
+  );
+}

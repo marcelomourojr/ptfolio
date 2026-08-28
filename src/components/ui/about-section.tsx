@@ -1,150 +1,118 @@
 "use client";
 
-import { motion } from "framer-motion";
 import Image from "next/image";
-import { InfiniteGridBackground } from "./infinite-grid";
+import { motion, useReducedMotion } from "framer-motion";
+
+interface Stat {
+  value: string;
+  label: string;
+}
 
 interface AboutSectionProps {
   title?: string;
-  subtitle?: string;
-  description?: React.ReactNode | string;
-  highlightedText?: string;
+  statement?: string;
+  paragraphs?: string[];
+  stats?: Stat[];
+  photo?: string;
+}
+
+/** Mesma marca de canto do hero e do bento. */
+function Bracket() {
+  return (
+    <span
+      aria-hidden
+      className="absolute -top-3 left-0 size-2 border-l border-t border-rose-500"
+    />
+  );
 }
 
 export function AboutSection({
-  title = "Sobre Mim",
-  subtitle = "UI/UX Designer",
-  description = (
-    <div className="space-y-4">
-      <p>
-        Product Designer UI/UX com mais de 5 anos de experiência em testes de software, desenvolvimento de produtos digitais, atuação como analista administrativo e criação de interfaces centradas no usuário, atuando de ponta a ponta com foco em usabilidade, organização, qualidade e resultado.
-      </p>
-      <p>
-        Possuo forte base lógica e analítica, integrando IA, automação e dados à experiência do usuário. Experiência com ferramentas como Figma, Framer, Google AI Studio, Google Labs, ComfyUI, Kling, Sora 2, Wan 2.2 Animate, entre outras, aplicadas na construção de produtos digitais de alto impacto.
-      </p>
-    </div>
-  ),
-  highlightedText = "Criando experiências digitais que unem estratégia, tecnologia e performance.",
+  title = "Sobre mim",
+  statement = "Criando experiências digitais que unem estratégia, tecnologia e performance.",
+  paragraphs = [
+    "Product Designer UI/UX com mais de 5 anos de experiência em testes de software, desenvolvimento de produtos digitais, atuação como analista administrativo e criação de interfaces centradas no usuário, atuando de ponta a ponta com foco em usabilidade, organização, qualidade e resultado.",
+    "Possuo forte base lógica e analítica, integrando IA, automação e dados à experiência do usuário. Experiência com ferramentas como Figma, Framer, Google AI Studio, Google Labs, ComfyUI, Kling, Sora 2, Wan 2.2 Animate, entre outras, aplicadas na construção de produtos digitais de alto impacto.",
+  ],
+  stats = [
+    { value: "5+", label: "Anos" },
+    { value: "+100", label: "Telas Criadas" },
+    { value: "100%", label: "Satisfação" },
+  ],
+  photo = "/images/sobre-eu.webp",
 }: AboutSectionProps) {
+  const reduceMotion = useReducedMotion();
+
+  const reveal = (delay = 0) => ({
+    initial: reduceMotion ? false : { opacity: 0, y: 24 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-80px" },
+    transition: {
+      duration: 0.6,
+      delay: reduceMotion ? 0 : delay,
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
+  });
+
   return (
-    <section id="sobre" className="w-full">
-      <InfiniteGridBackground
-        className="min-h-screen bg-black py-24 md:py-32"
-        gridSize={60}
-        speedX={0.2}
-        speedY={0.2}
-        maskRadius={400}
-        baseOpacity={0.04}
-        highlightOpacity={0.2}
-      >
-        <div className="relative">
-        <div className="relative z-10 max-w-6xl mx-auto px-6 md:px-10">
-          <div className="flex flex-col md:flex-row items-center gap-12 md:gap-20">
-            
-            {/* Left Column - Image */}
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8 }}
-              viewport={{ once: true }}
-              className="w-full md:w-5/12 flex-shrink-0"
-            >
-              <div className="relative aspect-[4/5] w-full max-w-md mx-auto md:max-w-none overflow-hidden rounded-[2.5rem] border border-white/10 shadow-2xl group">
-                <Image
-                  src="/images/eu2.webp"
-                  alt="Marcelo Mouro Jr"
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover bg-zinc-900 md:grayscale group-hover:grayscale-0 transition-all duration-700 ease-in-out group-hover:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60" />
-              </div>
-            </motion.div>
-
-            {/* Right Column - Content */}
-            <div className="w-full md:w-7/12 flex flex-col md:text-left text-center">
-              {/* Header */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="mb-8"
-              >
-                <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-rose-400 via-white to-rose-600">
-                  {title}
-                </h2>
-              </motion.div>
-
-              {/* Main Content */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.3 }}
-                viewport={{ once: true }}
-                className="mb-12"
-              >
-                {/* Highlighted Quote */}
-                <p className="text-2xl md:text-3xl font-light text-white leading-relaxed mb-6">
-                  {highlightedText}
-                </p>
-                
-                {/* Description */}
-                <div className="text-base md:text-lg text-white/50 leading-relaxed font-light">
-                  {description}
-                </div>
-              </motion.div>
-
-              {/* Stats Cards */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-                viewport={{ once: true }}
-                className="grid grid-cols-3 gap-3 md:gap-6 mb-10 w-full"
-              >
-                {/* Stat 1 */}
-                <div className="group relative">
-                  <div className="relative h-full bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 lg:p-6 text-center group-hover:border-rose-500/30 group-hover:bg-rose-500/5 group-hover:shadow-[0_0_40px_rgba(244,63,94,0.15)] transition-all duration-500 flex flex-col justify-center">
-                    <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-white group-hover:text-rose-400 transition-colors duration-500 mb-2">
-                      5+
-                    </div>
-                    <div className="text-[10px] md:text-xs text-white/40 uppercase tracking-widest leading-tight">
-                      Anos
-                    </div>
-                  </div>
-                </div>
-
-                {/* Stat 2 */}
-                <div className="group relative">
-                  <div className="relative h-full bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 lg:p-6 text-center group-hover:border-rose-500/30 group-hover:bg-rose-500/5 group-hover:shadow-[0_0_40px_rgba(244,63,94,0.15)] transition-all duration-500 flex flex-col justify-center">
-                    <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-white group-hover:text-rose-400 transition-colors duration-500 mb-2">
-                      +100
-                    </div>
-                    <div className="text-[10px] md:text-xs text-white/40 uppercase tracking-widest leading-tight">
-                      Telas Criadas
-                    </div>
-                  </div>
-                </div>
-
-                {/* Stat 3 */}
-                <div className="group relative">
-                  <div className="relative h-full bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-4 lg:p-6 text-center group-hover:border-rose-500/30 group-hover:bg-rose-500/5 group-hover:shadow-[0_0_40px_rgba(244,63,94,0.15)] transition-all duration-500 flex flex-col justify-center">
-                    <div className="text-2xl md:text-3xl lg:text-4xl font-bold text-white group-hover:text-rose-400 transition-colors duration-500 mb-2">
-                      100%
-                    </div>
-                    <div className="text-[10px] md:text-xs text-white/40 uppercase tracking-widest leading-tight">
-                      Satisfação
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
+    <section id="sobre" className="px-6 py-24 sm:px-10 sm:py-32">
+      {/* Foto à esquerda; título, texto e números todos na coluna da direita.
+          `h-full` na foto + o stretch padrão da grade fazem topo e base das
+          duas colunas coincidirem. */}
+      <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
+        <motion.div {...reveal()} className="lg:col-span-5">
+          {/* aspect fixo, não h-full: esticar até a altura da coluna de texto
+              (457px) achatava a foto de retrato para 1.17 de proporção. Com o
+              retrato preservado é a FOTO que define a altura da faixa, e o
+              `mt-auto` dos números continua encostando na base. */}
+          <div className="relative aspect-[1086/1448] w-full overflow-hidden rounded-lg border border-white/10">
+            <Image
+              src={photo}
+              alt="Marcelo Mouro Jr"
+              fill
+              sizes="(max-width: 1024px) 100vw, 40vw"
+              draggable={false}
+              className="bg-zinc-900 object-cover object-top grayscale transition-all duration-700 hover:grayscale-0"
+            />
           </div>
-        </div>
+        </motion.div>
 
+        <motion.div {...reveal(0.08)} className="flex flex-col lg:col-span-7">
+          <h2 className="text-[clamp(2rem,5.5vw,4rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-white">
+            {title}
+          </h2>
+
+          <p className="mt-7 text-[clamp(1.125rem,2.2vw,1.625rem)] font-medium leading-[1.2] tracking-[-0.02em] text-white">
+            {statement}
+          </p>
+
+          <div className="mt-7 space-y-5">
+            {paragraphs.map((text) => (
+              <p key={text.slice(0, 32)} className="text-[15px] leading-relaxed text-white/50">
+                {text}
+              </p>
+            ))}
+          </div>
+
+          {/* mt-auto encosta os números na base da coluna, alinhando-os com o
+              rodapé da foto quando a foto é quem define a altura da linha. */}
+          <dl className="mt-auto grid gap-y-8 border-t border-white/10 pt-10 sm:grid-cols-3 sm:gap-x-8">
+            {stats.map(({ value, label }) => (
+              <div key={label} className="relative">
+                <Bracket />
+                <dt className="sr-only">{label}</dt>
+                <dd>
+                  <span className="block text-[clamp(1.75rem,3.4vw,2.75rem)] font-semibold leading-none tracking-[-0.04em] text-white">
+                    {value}
+                  </span>
+                  <span className="mt-3 block font-mono text-[10px] tracking-[0.06em] text-white/40">
+                    {label}
+                  </span>
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </motion.div>
       </div>
-      </InfiniteGridBackground>
     </section>
   );
 }

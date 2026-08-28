@@ -42,7 +42,7 @@ export default function LinksPage() {
             {socials.map(({ label, href }) => {
               const isInternal = href.startsWith("/");
               const className =
-                "font-mono text-[11px] uppercase tracking-[0.16em] text-white/40 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded";
+                "font-mono text-[11px] tracking-[0.06em] text-white/40 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded";
 
               return (
                 <li key={label}>
@@ -65,7 +65,7 @@ export default function LinksPage() {
             })}
           </ul>
 
-          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-white/20">
+          <p className="font-mono text-[10px] tracking-[0.06em] text-white/20">
             © {new Date().getFullYear()} {profile.name}
           </p>
         </footer>
