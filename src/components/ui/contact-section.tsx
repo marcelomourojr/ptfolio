@@ -4,6 +4,9 @@ import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Github, Instagram, Linkedin, Mail } from "lucide-react";
 
+import { BlurFade } from "@/components/ui/blur-fade";
+import { WhisperText } from "@/components/ui/whisper-text";
+
 // O shader WebGL do CTA fica fora do JS inicial; o placeholder tem o mesmo
 // tamanho e aparência de repouso, então não há salto de layout.
 const LiquidMetalButton = dynamic(
@@ -33,7 +36,6 @@ interface Channel {
 }
 
 interface ContactSectionProps {
-  eyebrow?: string;
   title?: string;
   email?: string;
   channels?: Channel[];
@@ -68,8 +70,7 @@ const defaultChannels: Channel[] = [
 ];
 
 export function ContactSection({
-  eyebrow = "Contato",
-  title = "Vamos conversar",
+  title = "Vamos Conversar",
   email = "contato@marcelomouro.com",
   channels = defaultChannels,
   owner = "Marcelo Mouro Jr",
@@ -89,26 +90,25 @@ export function ContactSection({
 
   return (
     <section id="contatos" className="px-6 pb-10 pt-24 sm:px-10 sm:pb-14 sm:pt-32">
-      <motion.header {...reveal()} className="max-w-3xl">
-        <p className="font-mono text-[11px] tracking-[0.08em] text-white/40">
-          {eyebrow}
-        </p>
-        <h2 className="mt-5 text-[clamp(2rem,6vw,4.5rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-white">
-          {title}
+      {/* Sem reveal no contêiner: cada elemento tem o próprio efeito, visível
+          quando a seção chega — um contêiner invisível escondia o whisper. */}
+      <header className="max-w-3xl">
+        <h2 className="text-[clamp(2rem,6vw,4.5rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-white">
+          <WhisperText text={title} />
         </h2>
-        <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/50">
-          Conecte-se comigo pelas redes ou me chame direto no e-mail.
-        </p>
-      </motion.header>
+        <BlurFade delay={0.15}>
+          <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/50">
+            Conecte-se comigo através das minhas redes ou me chame no Whatsapp.
+          </p>
+        </BlurFade>
+      </header>
 
-      {/* Cards compactos, um por rede. O efeito: a marca de canto rose acende
-          e cresce no hover — a assinatura do site virando resposta ao toque. */}
-      <motion.ul
-        {...reveal(0.08)}
-        className="mt-12 grid grid-cols-2 gap-3 border-t border-white/10 pt-10 sm:gap-4 md:grid-cols-4"
-      >
-        {channels.map(({ label, handle, href, icon }) => (
+      {/* Cards compactos, um por rede, entrando em cascata. O hover: a marca
+          de canto rose acende e cresce — a assinatura do site como resposta. */}
+      <ul className="mt-12 grid grid-cols-2 gap-3 border-t border-white/10 pt-10 sm:gap-4 md:grid-cols-4">
+        {channels.map(({ label, handle, href, icon }, i) => (
           <li key={label}>
+            <BlurFade delay={0.1 + i * 0.08} className="h-full">
             <a
               href={href}
               target={href.startsWith("http") ? "_blank" : undefined}
@@ -143,9 +143,10 @@ export function ContactSection({
                 />
               </span>
             </a>
+            </BlurFade>
           </li>
         ))}
-      </motion.ul>
+      </ul>
 
       {/* O CTA: aro de metal líquido, link real para o e-mail */}
       <motion.div {...reveal(0.16)} className="mt-14 flex justify-center">

@@ -3,6 +3,9 @@
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 
+import { BlurFade } from "@/components/ui/blur-fade";
+import { WhisperText } from "@/components/ui/whisper-text";
+
 interface Stat {
   value: string;
   label: string;
@@ -16,18 +19,8 @@ interface AboutSectionProps {
   photo?: string;
 }
 
-/** Mesma marca de canto do hero e do bento. */
-function Bracket() {
-  return (
-    <span
-      aria-hidden
-      className="absolute -top-3 left-0 size-2 border-l border-t border-rose-500"
-    />
-  );
-}
-
 export function AboutSection({
-  title = "Sobre mim",
+  title = "Sobre Mim",
   statement = "Criando experiências digitais que unem estratégia, tecnologia e performance.",
   paragraphs = [
     "Product Designer UI/UX com mais de 5 anos de experiência em testes de software, desenvolvimento de produtos digitais, atuação como analista administrativo e criação de interfaces centradas no usuário, atuando de ponta a ponta com foco em usabilidade, organização, qualidade e resultado.",
@@ -59,59 +52,77 @@ export function AboutSection({
           `h-full` na foto + o stretch padrão da grade fazem topo e base das
           duas colunas coincidirem. */}
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
-        <motion.div {...reveal()} className="lg:col-span-5">
+        <motion.div {...reveal()} className="lg:col-span-4">
           {/* aspect fixo, não h-full: esticar até a altura da coluna de texto
-              (457px) achatava a foto de retrato para 1.17 de proporção. Com o
-              retrato preservado é a FOTO que define a altura da faixa, e o
-              `mt-auto` dos números continua encostando na base. */}
-          <div className="relative aspect-[1086/1448] w-full overflow-hidden rounded-lg border border-white/10">
+              achatava a foto de retrato para 1.17 de proporção. E a largura é
+              LIMITADA por faixa: com w-full puro, abaixo de lg a coluna é a
+              página inteira e a foto virava um retrato de ~900px de altura
+              num tablet. Alinhada à esquerda, como todo o site. */}
+          <div className="relative aspect-[1086/1448] w-full max-w-[300px] overflow-hidden rounded-lg border border-white/10 max-sm:mx-auto sm:max-w-[360px] lg:max-w-[420px]">
             <Image
               src={photo}
               alt="Marcelo Mouro Jr"
               fill
-              sizes="(max-width: 1024px) 100vw, 40vw"
+              sizes="(max-width: 640px) 300px, (max-width: 1024px) 360px, 420px"
               draggable={false}
-              className="bg-zinc-900 object-cover object-top grayscale transition-all duration-700 hover:grayscale-0"
+              /* P&B → cor no hover só faz sentido com mouse; no toque não há
+                 hover e a foto ficava apagada para sempre. `pointer-fine`
+                 restringe o efeito a mouse/trackpad — em celular e tablet a
+                 foto fica sempre em cor. */
+              className="bg-zinc-900 object-cover object-top transition-all duration-700 pointer-fine:grayscale pointer-fine:hover:grayscale-0"
             />
           </div>
         </motion.div>
 
-        <motion.div {...reveal(0.08)} className="flex flex-col lg:col-span-7">
+        {/* Sem reveal no contêiner: cada elemento tem seu próprio efeito —
+            um contêiner invisível por cima escondia o whisper do título. */}
+        <div className="flex flex-col lg:col-span-8">
           <h2 className="text-[clamp(2rem,5.5vw,4rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-white">
-            {title}
+            <WhisperText text={title} />
           </h2>
 
-          <p className="mt-7 text-[clamp(1.125rem,2.2vw,1.625rem)] font-medium leading-[1.2] tracking-[-0.02em] text-white">
-            {statement}
-          </p>
+          <BlurFade delay={0.1}>
+            <p className="mt-7 text-[clamp(1.125rem,2.2vw,1.625rem)] font-medium leading-[1.2] tracking-[-0.02em] text-white">
+              {statement}
+            </p>
+          </BlurFade>
 
-          <div className="mt-7 space-y-5">
+          <BlurFade delay={0.2} className="mt-7 space-y-5">
             {paragraphs.map((text) => (
               <p key={text.slice(0, 32)} className="text-[15px] leading-relaxed text-white/50">
                 {text}
               </p>
             ))}
-          </div>
+          </BlurFade>
 
           {/* mt-auto encosta os números na base da coluna, alinhando-os com o
               rodapé da foto quando a foto é quem define a altura da linha. */}
-          <dl className="mt-auto grid gap-y-8 border-t border-white/10 pt-10 sm:grid-cols-3 sm:gap-x-8">
-            {stats.map(({ value, label }) => (
-              <div key={label} className="relative">
-                <Bracket />
-                <dt className="sr-only">{label}</dt>
-                <dd>
-                  <span className="block text-[clamp(1.75rem,3.4vw,2.75rem)] font-semibold leading-none tracking-[-0.04em] text-white">
-                    {value}
-                  </span>
-                  <span className="mt-3 block font-mono text-[10px] tracking-[0.06em] text-white/40">
-                    {label}
-                  </span>
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </motion.div>
+          <BlurFade delay={0.3} className="mt-auto">
+            {/* No celular os números vivem centralizados; o alinhamento à
+                esquerda volta junto com as 3 colunas */}
+            <dl className="grid gap-y-8 border-t border-white/10 pt-10 max-sm:text-center sm:grid-cols-3 sm:gap-x-8">
+              {stats.map(({ value, label }) => (
+                <div key={label} className="relative">
+                  {/* A marca de canto só existe onde há canto: no celular os
+                      números são centralizados e ela saía como ruído solto */}
+                  <span
+                    aria-hidden
+                    className="absolute -top-3 left-0 size-2 border-l border-t border-rose-500 max-sm:hidden"
+                  />
+                  <dt className="sr-only">{label}</dt>
+                  <dd>
+                    <span className="block text-[clamp(1.75rem,3.4vw,2.75rem)] font-semibold leading-none tracking-[-0.04em] text-white">
+                      {value}
+                    </span>
+                    <span className="mt-3 block font-mono text-[10px] tracking-[0.06em] text-white/40">
+                      {label}
+                    </span>
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </BlurFade>
+        </div>
       </div>
     </section>
   );

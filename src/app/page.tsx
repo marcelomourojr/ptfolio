@@ -3,11 +3,16 @@
 import { useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
 import { ZoomParallax } from "@/components/ui/zoom-parallax";
-import { SiteHeader } from "@/components/ui/site-header";
+import { NotchHeader } from "@/components/ui/notch-header";
 import { Hero } from "@/components/ui/hero";
+import { VelocityText } from "@/components/ui/velocity-text";
+import { WhisperText } from "@/components/ui/whisper-text";
+import { BlurFade } from "@/components/ui/blur-fade";
 import { GridBackground } from "@/components/ui/grid-background";
 import { AboutSection } from "@/components/ui/about-section";
 import { ProjectBento, type BentoBand, type BentoItem } from "@/components/ui/project-bento";
+import { CreativesSection } from "@/components/ui/creatives-section";
+import type { Creative } from "@/components/ui/creative-stack";
 import type { ProjectDetail } from "@/components/ui/project-modal";
 import { Cursor, CursorProvider, CursorFollow } from "@/components/ui/cursor";
 
@@ -17,14 +22,8 @@ const navLinks = [
   { label: "Início", href: "#inicio" },
   { label: "Sobre", href: "#sobre" },
   { label: "Projetos", href: "#projetos" },
+  { label: "Criativos", href: "#criativos" },
   { label: "Contato", href: "#contatos" },
-];
-
-const contactLinks = [
-  { label: "E-mail", href: "mailto:contato@marcelomouro.com" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/marcelomourojr/" },
-  { label: "Instagram", href: "https://www.instagram.com/marcelomourojr/" },
-  { label: "GitHub", href: "https://github.com/marcelomourojr" },
 ];
 
 const heroMeta = [
@@ -233,6 +232,17 @@ function bentoItem(titulo: string): BentoItem {
   return { ...dados, ...bentoCovers[titulo], portrait };
 }
 
+// Criativos em vídeo feitos com IA (Verbo). `slug` aponta para os arquivos
+// em /public/videos: slug.webm (VP9) + slug.mp4 (fallback) + slug.webp (poster).
+const creativesData: Creative[] = [
+  { slug: "verbo-ugc4",     title: "UGC 4",  meta: "tour completa · narração" },
+  { slug: "verbo-ugc5",     title: "UGC 5",  meta: "tour completa · narração" },
+  { slug: "verbo-ugc6",     title: "UGC 6",  meta: "tour completa · narração" },
+  { slug: "verbo-ugc2",     title: "UGC 2",  meta: "tour do app" },
+  { slug: "verbo-espanto1", title: "Espanto", meta: "menu · quiz" },
+  { slug: "verbo-gancho1",  title: "Gancho",  meta: "pastor · depoimento" },
+];
+
 // Quatro faixas: retrato+paisagem espelhados nas pontas, pares no meio.
 const bentoBands: BentoBand[] = [
   { layout: "portraitLeft",  items: [bentoItem("Verbo"), bentoItem("KingChat")] },
@@ -249,6 +259,8 @@ export default function Home() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const lenis = new Lenis();
+    // A navbar usa o Lenis para rolar suave até as âncoras
+    (window as { __lenis?: Lenis }).__lenis = lenis;
 
     function raf(time: number) {
       lenis.raf(time);
@@ -258,6 +270,7 @@ export default function Home() {
     requestAnimationFrame(raf);
 
     return () => {
+      delete (window as { __lenis?: Lenis }).__lenis;
       lenis.destroy();
     };
   }, []);
@@ -292,12 +305,9 @@ export default function Home() {
       <main className="cursor-none">
       <GridBackground />
 
-      <SiteHeader
-        wordmark="Marcelo Mouro"
-        available="Disponível para projetos"
-        links={navLinks}
-        contact={contactLinks}
-      />
+      {/* Navbar em notch: menu com scrollspy no centro, wordmark solto na
+          quina esquerda; ilha única com gaveta no mobile */}
+      <NotchHeader wordmark="Marcelo Mouro" links={navLinks} />
 
       <Hero
         eyebrow="Product Designer · UI/UX"
@@ -307,6 +317,11 @@ export default function Home() {
       />
 
 
+      {/* Frase em parallax horizontal: tela cheia, presa até a última letra
+          da última palavra terminar de passar. */}
+      <VelocityText phrase="Design com lógica, movimento com propósito — do primeiro rabisco ao produto no ar." />
+
+
       {/* About Section */}
       <AboutSection />
 
@@ -314,21 +329,24 @@ export default function Home() {
       {/* Projetos: cabeçalho à esquerda, sem gradiente em texto */}
       <section id="projetos" className="px-6 pt-24 sm:px-10 sm:pt-32">
         <header className="max-w-3xl">
-          <p className="font-mono text-[11px] tracking-[0.08em] text-white/40">
-            Trabalho selecionado
-          </p>
-          <h2 className="mt-5 text-[clamp(2rem,6vw,4.5rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-white">
-            Projetos
+          <h2 className="text-[clamp(2rem,6vw,4.5rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-white">
+            <WhisperText text="Projetos" />
           </h2>
-          <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/50">
-            Produtos que foram para a rua e continuam em uso. Role para ver de perto.
-          </p>
+          <BlurFade delay={0.15}>
+            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/50">
+              Produtos que foram para a rua e continuam em uso. Role para ver de perto.
+            </p>
+          </BlurFade>
         </header>
       </section>
 
       <ZoomParallax images={projectImages} />
 
       <ProjectBento bands={bentoBands} />
+
+
+      {/* Criativos: galeria 3D de vídeos + pilha vertical */}
+      <CreativesSection items={creativesData} />
 
 
       <ContactSection />
