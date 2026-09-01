@@ -47,34 +47,48 @@ function ProductCard({ item, featured = false }: { item: ProductLink; featured?:
         </div>
       )}
 
-      {featured && (
-        <span className="font-mono text-[10px] tracking-[0.08em] text-white/35">
-          Recomendação da semana
-        </span>
-      )}
 
       <div className="flex items-center gap-4">
-        {/* Card normal com foto: miniatura quadrada à esquerda */}
+        {/* Card normal com foto: miniatura larga à esquerda. object-contain
+            sobre branco (as fotos dos anúncios são sobre branco) mostra o
+            produto INTEIRO — o recorte quadrado decapitava os controles. */}
         {!featured && item.image && (
-          <div className="relative size-14 shrink-0 overflow-hidden rounded-lg bg-white/5 sm:size-16">
+          <div className="relative h-14 w-20 shrink-0 overflow-hidden rounded-lg bg-white sm:h-16 sm:w-24">
             <Image
               src={item.image}
               alt=""
               fill
-              sizes="64px"
-              className="object-cover"
+              sizes="96px"
+              className="object-contain p-1"
             />
           </div>
         )}
 
         <div className="min-w-0 flex-1">
-          <h3
-            className={`font-medium leading-snug text-white ${
-              featured ? "text-lg sm:text-xl" : "text-[15px] sm:text-base"
-            }`}
-          >
-            {item.title}
-          </h3>
+          {/* Título em DUAS linhas em todos os cards: nome do produto em
+              cima, plataforma embaixo (quebra no "—"). */}
+          {item.title.includes(" — ") ? (
+            <h3
+              className={`font-medium leading-snug text-white ${
+                featured ? "text-base sm:text-lg" : "text-[13px] sm:text-sm"
+              }`}
+            >
+              <span className="block">{item.title.split(" — ")[0]}</span>
+              <span
+                className={`block text-white/50 ${featured ? "text-sm sm:text-base" : ""}`}
+              >
+                {item.title.split(" — ")[1]}
+              </span>
+            </h3>
+          ) : (
+            <h3
+              className={`font-medium leading-snug text-white ${
+                featured ? "text-base sm:text-lg" : "text-[13px] sm:text-sm"
+              }`}
+            >
+              {item.title}
+            </h3>
+          )}
         </div>
 
         <ArrowUpRight

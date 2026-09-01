@@ -28,10 +28,6 @@ export default function LinksPage() {
           <h1 className="text-2xl font-semibold tracking-[-0.02em] text-white sm:text-3xl">
             {profile.title}
           </h1>
-
-          <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/55">
-            {profile.bio}
-          </p>
         </header>
 
         <ProductLinks products={products} />

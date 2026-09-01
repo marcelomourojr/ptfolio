@@ -43,7 +43,6 @@ export const profile = {
   title: "Links dos produtos",
   /** Não aparece no corpo da página — só no © do rodapé. */
   name: "Marcelo Mouro Jr",
-  bio: "Testo equipamento de setup, áudio e casa antes de indicar. Se não presta, não entra na lista.",
 };
 
 export const socials = [
@@ -53,86 +52,42 @@ export const socials = [
   { label: "Portfólio", href: "/" },
 ];
 
-// Dados fictícios — troque pelos produtos e links de afiliado reais.
-// As fotos são do Unsplash só para demonstração; os dois últimos itens ficaram
-// sem `image` de propósito, para mostrar como o card se comporta sem foto.
+// Produtos reais, com os links de afiliado do usuário (encurtadores do ML e
+// da Shopee — eles carregam a atribuição, não trocar pela URL longa). As
+// fotos são a imagem principal do carrossel de cada anúncio, reexportadas
+// para /public/images/links a q75.
 export const products: ProductLink[] = [
   {
-    id: "fone-anc",
-    image:
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=640&q=75&auto=format&fit=crop",
-    title: "Fone Bluetooth com cancelamento ativo",
+    id: "easysmx-s15",
+    image: "/images/links/easysmx-s15.webp",
+    title: "Controle EasySMX S15 — Switch",
     store: "mercadolivre",
-    category: "Áudio",
-    url: "https://exemplo.com/afiliado/fone-anc",
+    category: "Controles",
+    url: "https://meli.la/1jyAoru",
     featured: true,
   },
   {
-    id: "teclado-75",
-    image:
-      "https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=640&q=75&auto=format&fit=crop",
-    title: "Teclado mecânico 75% hot-swap",
-    store: "amazon",
-    category: "Setup",
-    url: "https://exemplo.com/afiliado/teclado-75",
-  },
-  {
-    id: "monitor-27",
-    image:
-      "https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=640&q=75&auto=format&fit=crop",
-    title: 'Monitor 27" QHD 144Hz',
-    store: "amazon",
-    category: "Setup",
-    url: "https://exemplo.com/afiliado/monitor-27",
-  },
-  {
-    id: "microfone",
-    image:
-      "https://images.unsplash.com/photo-1590602847861-f357a9332bbc?w=640&q=75&auto=format&fit=crop",
-    title: "Microfone condensador USB",
+    id: "ks42-hall",
+    image: "/images/links/ks42-hall.webp",
+    title: "Controle LinYuvo KS42 Efeito Hall — Switch",
     store: "mercadolivre",
-    category: "Áudio",
-    url: "https://exemplo.com/afiliado/microfone",
+    category: "Controles",
+    url: "https://meli.la/2CBuSYN",
   },
   {
-    id: "suporte-notebook",
-    image:
-      "https://images.unsplash.com/photo-1593642532744-d377ab507dc8?w=640&q=75&auto=format&fit=crop",
-    title: "Suporte de notebook em alumínio",
+    id: "ks42-branco",
+    image: "/images/links/ks42-branco.webp",
+    title: "Controle LinYuvo KS42 Branco — Switch",
+    store: "mercadolivre",
+    category: "Controles",
+    url: "https://meli.la/2Tv4B3Z",
+  },
+  {
+    id: "gamepad-pro",
+    image: "/images/links/gamepad-pro.webp",
+    title: "Gamepad Pro Bluetooth — Switch/PC/Android",
     store: "shopee",
-    category: "Setup",
-    url: "https://exemplo.com/afiliado/suporte-notebook",
-  },
-  {
-    id: "luminaria",
-    image:
-      "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=640&q=75&auto=format&fit=crop",
-    title: "Luminária de mesa com temperatura ajustável",
-    store: "shopee",
-    category: "Casa",
-    url: "https://exemplo.com/afiliado/luminaria",
-  },
-  {
-    id: "mousepad",
-    image:
-      "https://images.unsplash.com/photo-1527814050087-3793815479db?w=640&q=75&auto=format&fit=crop",
-    title: "Mousepad extenso 90x40cm",
-    store: "shopee",
-    category: "Setup",
-    url: "https://exemplo.com/afiliado/mousepad",
-  },
-  {
-    id: "cabo-usbc",
-    title: "Cabo USB-C trançado 2m — 100W",
-    store: "aliexpress",
-    category: "Setup",
-    url: "https://exemplo.com/afiliado/cabo-usbc",
-  },
-  {
-    id: "organizador-cabos",
-    title: "Kit organizador de cabos adesivo",
-    store: "aliexpress",
-    category: "Casa",
-    url: "https://exemplo.com/afiliado/organizador-cabos",
+    category: "Controles",
+    url: "https://s.shopee.com.br/4qFHVjXKQk",
   },
 ];

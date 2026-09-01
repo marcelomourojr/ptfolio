@@ -104,12 +104,15 @@ const fragmentShader = /* glsl */ `
   void main() {
     vec4 color = texture2D(map, vUv);
 
+    // 3x3 com passo largo, não 5x5: 9 leituras por pixel em vez de 25 — em
+    // GPU fraca era o item mais caro do frame, com resultado visual igual
+    // (o desfoque é de plano em movimento, ninguém inspeciona).
     if (blurAmount > 0.0) {
       vec4 blurred = vec4(0.0);
       float total = 0.0;
-      for (float x = -2.0; x <= 2.0; x += 1.0) {
-        for (float y = -2.0; y <= 2.0; y += 1.0) {
-          vec2 offset = vec2(x, y) * texel * blurAmount;
+      for (float x = -1.0; x <= 1.0; x += 1.0) {
+        for (float y = -1.0; y <= 1.0; y += 1.0) {
+          vec2 offset = vec2(x, y) * texel * blurAmount * 1.8;
           float weight = 1.0 / (1.0 + length(vec2(x, y)));
           blurred += texture2D(map, vUv + offset) * weight;
           total += weight;
@@ -141,13 +144,17 @@ function criarPlayer(slug: string): Player {
   video.playsInline = true;
   video.preload = "auto";
   video.crossOrigin = "anonymous";
-  const webm = document.createElement("source");
-  webm.src = `/videos/${slug}-480.webm`;
-  webm.type = "video/webm";
+  // MP4 (H.264) PRIMEIRO, de propósito: H.264 tem decode por HARDWARE em
+  // praticamente qualquer máquina desde ~2010; VP9 vira decode por software
+  // em CPUs antigas — e 6 streams simultâneos moíam o computador inteiro
+  // ("travando sem parar"). Os MP4 480p daqui são inclusive menores.
   const mp4 = document.createElement("source");
   mp4.src = `/videos/${slug}-480.mp4`;
   mp4.type = "video/mp4";
-  video.append(webm, mp4);
+  const webm = document.createElement("source");
+  webm.src = `/videos/${slug}-480.webm`;
+  webm.type = "video/webm";
+  video.append(mp4, webm);
   video.load();
 
   const texture = new THREE.VideoTexture(video);
@@ -228,12 +235,15 @@ function GalleryScene({
 
   // Os vídeos tocam na ZONA QUENTE (antes do pin): tocar é o que força o
   // decode — sem isso a textura ficava preta até o buffer chegar, e a cena
-  // parecia vazia ou demorada. Fora da zona, pausam.
+  // parecia vazia ou demorada. Fora da zona, pausam. Com o efeito rodando,
+  // o useFrame refina: só tocam os planos em cena (ver tocandoRef).
+  const tocandoRef = useRef<boolean[]>([]);
   useEffect(() => {
     players.forEach(({ video }) => {
       if (aquecido) void video.play().catch(() => {});
       else video.pause();
     });
+    tocandoRef.current = players.map(() => aquecido);
   }, [players, aquecido]);
 
   // No PIN (entrada de verdade), todos recomeçam do zero: o gancho de cada
@@ -308,8 +318,20 @@ function GalleryScene({
       else if (t >= BLUR.outStart) blur = BLUR.max * ((t - BLUR.outStart) / (BLUR.outEnd - BLUR.outStart));
 
       // Plano invisível não desenha: economiza o caminho mais caro do shader
-      // (blur 5x5 em tela) exatamente quando ele não contribui com nada.
+      // exatamente quando ele não contribui com nada.
       mesh.visible = opacity > 0.001;
+
+      // E vídeo de plano fora de cena não DECODIFICA: dos 6, só ~3 aparecem
+      // por vez no túnel — tocar todos o tempo todo moía CPUs fracas. Toca
+      // no corredor visível (t < 0.5) e um pouco antes de reentrar (t > 0.9),
+      // para o frame já existir na volta. Só chama play/pause na TROCA.
+      const deveTocar = t < 0.5 || t > 0.9;
+      if (tocandoRef.current[i] !== deveTocar) {
+        tocandoRef.current[i] = deveTocar;
+        const { video } = players[i];
+        if (deveTocar) void video.play().catch(() => {});
+        else video.pause();
+      }
 
       material.uniforms.opacity.value = opacity;
       material.uniforms.blurAmount.value = Math.max(0, Math.min(BLUR.max, blur));
@@ -361,7 +383,9 @@ export default function CreativeGallery({
     <div className={className} aria-hidden>
       <Canvas
         camera={{ position: [0, 0, 0], fov: 55 }}
-        gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
+        // Sem antialias: em tela cheia ele custa caro em GPU modesta, e as
+        // bordas aqui são de planos de vídeo em movimento — não aparece.
+        gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
         dpr={[1, 1.5]}
         frameloop={pausado ? "never" : "always"}
       >

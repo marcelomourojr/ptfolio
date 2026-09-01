@@ -70,9 +70,30 @@ export function CreativesSection({
         setAquecida(entry.isIntersecting);
         if (entry.isIntersecting && !jaChecou.current) {
           jaChecou.current = true;
+          // Máquina muito fraca nem tenta: mesmo com GPU real, 6 decodes de
+          // vídeo + WebGL derrubam 2 núcleos / 2GB. Cartela estática serve.
+          const nav = navigator as Navigator & { deviceMemory?: number };
+          if ((nav.hardwareConcurrency ?? 8) <= 2 || (nav.deviceMemory ?? 8) <= 2) {
+            setSemWebgl(true);
+            setMontada(true);
+            return;
+          }
           try {
             const canvas = document.createElement("canvas");
-            if (!canvas.getContext("webgl2") && !canvas.getContext("webgl")) setSemWebgl(true);
+            const gl = canvas.getContext("webgl2") ?? canvas.getContext("webgl");
+            if (!gl) {
+              setSemWebgl(true);
+            } else {
+              // WebGL "de mentira" também conta como sem WebGL: com a
+              // aceleração de GPU desligada o Chrome entrega SwiftShader
+              // (render por CPU) — a galeria vira um moedor e trava a
+              // máquina inteira. Nesses casos a grade estática serve melhor.
+              const info = gl.getExtension("WEBGL_debug_renderer_info");
+              const renderer = info
+                ? String(gl.getParameter(info.UNMASKED_RENDERER_WEBGL))
+                : "";
+              if (/swiftshader|llvmpipe|software|basic render/i.test(renderer)) setSemWebgl(true);
+            }
           } catch {
             setSemWebgl(true);
           }
