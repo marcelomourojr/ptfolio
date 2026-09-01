@@ -12,7 +12,6 @@ interface NavLink {
 }
 
 interface NotchHeaderProps {
-  wordmark: string;
   links: NavLink[];
 }
 
@@ -63,7 +62,7 @@ function Wing({ lado, className }: { lado: "esq" | "dir"; className?: string }) 
   );
 }
 
-export function NotchHeader({ wordmark, links }: NotchHeaderProps) {
+export function NotchHeader({ links }: NotchHeaderProps) {
   const [ativo, setAtivo] = useState(links[0]?.href ?? "");
   const [aberto, setAberto] = useState(false);
   const ilhaRef = useRef<HTMLDivElement>(null);
@@ -120,16 +119,8 @@ export function NotchHeader({ wordmark, links }: NotchHeaderProps) {
 
   return (
     <div className="pointer-events-none fixed inset-x-0 top-0 z-50">
-      {/* Wordmark solto no canto esquerdo, FORA do notch */}
-      <a
-        href="#inicio"
-        onClick={(e) => navegar(e, "#inicio")}
-        className="pointer-events-auto absolute left-6 top-0 flex h-11 items-center text-xs font-semibold tracking-[-0.02em] text-white sm:left-10 lg:h-12 lg:text-sm"
-      >
-        {wordmark}
-        <span className="align-super text-[0.6em] font-normal">®</span>
-      </a>
-
+      {/* Sem wordmark no header, por decisão do usuário: o notch central é a
+          única presença — o nome já domina o hero logo abaixo. */}
       {/* Notch central: o menu (desktop) */}
       <nav
         aria-label="Seções do site"

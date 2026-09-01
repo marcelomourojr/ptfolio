@@ -125,7 +125,7 @@ export function ProductLinks({ products }: { products: ProductLink[] }) {
       {/* Filtros — rolagem horizontal no mobile, sem barra visível */}
       {/* Poucas categorias: quebrar em linhas centralizadas mostra todas de uma
           vez. Rolagem horizontal esconderia opções e não centraliza no mobile. */}
-      <nav aria-label="Filtrar por categoria" className="mt-10">
+      <nav aria-label="Filtrar por categoria" className="mt-8">
         <ul className="flex flex-wrap justify-center gap-2">
           {categories.map((category) => {
             const isActive = category === active;
@@ -153,7 +153,7 @@ export function ProductLinks({ products }: { products: ProductLink[] }) {
       </nav>
 
       {/* Lista. A key remonta a lista ao trocar de filtro, refazendo o stagger. */}
-      <ul key={active} className="mt-6 flex flex-col gap-3">
+      <ul key={active} className="mt-8 flex flex-col gap-3">
         {[featured, ...rest].filter(Boolean).map((item, index) => {
           const product = item as ProductLink;
           return (

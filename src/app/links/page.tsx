@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Instagram } from "lucide-react";
 
 import { ProductLinks } from "@/components/ui/product-links";
 import { products, profile, socials } from "@/lib/links-data";
@@ -22,10 +22,10 @@ export const metadata: Metadata = {
 export default function LinksPage() {
   return (
     <main className="min-h-screen bg-black">
-      <div className="mx-auto flex w-full max-w-lg flex-col px-6 pb-16 pt-16 sm:pt-24">
+      <div className="mx-auto flex w-full max-w-lg flex-col px-6 pb-16 pt-20 sm:pt-28">
         {/* Perfil */}
         <header className="flex flex-col items-center text-center">
-          <h1 className="text-2xl font-semibold tracking-[-0.02em] text-white sm:text-3xl">
+          <h1 className="text-xl font-medium tracking-[-0.02em] text-white sm:text-2xl">
             {profile.title}
           </h1>
         </header>
@@ -34,32 +34,19 @@ export default function LinksPage() {
 
         {/* Rodapé */}
         <footer className="mt-14 flex flex-col items-center gap-6">
-          <ul className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
-            {socials.map(({ label, href }) => {
-              const isInternal = href.startsWith("/");
-              const className =
-                "font-mono text-[11px] tracking-[0.06em] text-white/40 transition-colors hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50 rounded";
-
-              return (
-                <li key={label}>
-                  {isInternal ? (
-                    <Link href={href} className={className}>
-                      {label}
-                    </Link>
-                  ) : (
-                    <a
-                      href={href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className={className}
-                    >
-                      {label}
-                    </a>
-                  )}
-                </li>
-              );
-            })}
-          </ul>
+          {socials.map(({ label, href }) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={label}
+              className="rounded-full p-2 text-white/40 transition-colors hover:text-white
+                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
+            >
+              <Instagram aria-hidden className="size-5" />
+            </a>
+          ))}
 
           <p className="font-mono text-[10px] tracking-[0.06em] text-white/20">
             © {new Date().getFullYear()} {profile.name}

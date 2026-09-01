@@ -47,9 +47,6 @@ export const profile = {
 
 export const socials = [
   { label: "Instagram", href: "https://www.instagram.com/marcelomourojr/" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/marcelomourojr/" },
-  { label: "GitHub", href: "https://github.com/marcelomourojr" },
-  { label: "Portfólio", href: "/" },
 ];
 
 // Produtos reais, com os links de afiliado do usuário (encurtadores do ML e

@@ -305,9 +305,9 @@ export default function Home() {
       <main className="cursor-none">
       <GridBackground />
 
-      {/* Navbar em notch: menu com scrollspy no centro, wordmark solto na
-          quina esquerda; ilha única com gaveta no mobile */}
-      <NotchHeader wordmark="Marcelo Mouro" links={navLinks} />
+      {/* Navbar em notch: menu com scrollspy no centro (desktop); ilha única
+          com gaveta no mobile. Sem wordmark — o nome domina o hero. */}
+      <NotchHeader links={navLinks} />
 
       <Hero
         eyebrow="Product Designer · UI/UX"
