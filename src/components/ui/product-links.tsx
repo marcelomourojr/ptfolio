@@ -41,6 +41,7 @@ function ProductCard({ item, featured = false }: { item: ProductLink; featured?:
             alt=""
             fill
             sizes="(max-width: 640px) 100vw, 512px"
+            draggable={false}
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
@@ -59,6 +60,7 @@ function ProductCard({ item, featured = false }: { item: ProductLink; featured?:
               alt=""
               fill
               sizes="96px"
+              draggable={false}
               className="object-contain p-1"
             />
           </div>
@@ -68,33 +70,33 @@ function ProductCard({ item, featured = false }: { item: ProductLink; featured?:
           {/* Título em DUAS linhas em todos os cards: nome do produto em
               cima, plataforma embaixo (quebra no "—"). */}
           {item.title.includes(" — ") ? (
-            <h3
+            <h2
               className={`font-medium leading-snug text-white ${
-                featured ? "text-base sm:text-lg" : "text-[13px] sm:text-sm"
+                featured ? "text-destaque" : "text-corpo"
               }`}
             >
               <span className="block">{item.title.split(" — ")[0]}</span>
               <span
-                className={`block text-white/50 ${featured ? "text-sm sm:text-base" : ""}`}
+                className={`block text-white/50 ${featured ? "text-corpo" : ""}`}
               >
                 {item.title.split(" — ")[1]}
               </span>
-            </h3>
+            </h2>
           ) : (
-            <h3
+            <h2
               className={`font-medium leading-snug text-white ${
-                featured ? "text-base sm:text-lg" : "text-[13px] sm:text-sm"
+                featured ? "text-destaque" : "text-corpo"
               }`}
             >
               {item.title}
-            </h3>
+            </h2>
           )}
         </div>
 
         <ArrowUpRight
           aria-hidden
           style={{ ["--accent" as string]: ACCENT }}
-          className="size-4 shrink-0 text-white/25 transition-all duration-300
+          className="size-4 shrink-0 text-white/50 transition-all duration-300
                      group-hover:-translate-y-0.5 group-hover:translate-x-0.5
                      group-hover:text-[var(--accent)]"
         />
@@ -135,7 +137,7 @@ export function ProductLinks({ products }: { products: ProductLink[] }) {
                   type="button"
                   onClick={() => setActive(category)}
                   aria-pressed={isActive}
-                  className={`whitespace-nowrap rounded-full border px-3.5 py-1.5 font-mono text-[11px]
+                  className={`whitespace-nowrap rounded-full border px-3.5 py-1.5 font-mono text-micro
                               tracking-[0.04em] transition-colors duration-200
                               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50
                               ${
@@ -174,7 +176,7 @@ export function ProductLinks({ products }: { products: ProductLink[] }) {
       </ul>
 
       {visible.length === 0 && (
-        <p className="mt-10 text-center text-sm text-white/40">
+        <p className="mt-10 text-center text-corpo text-white/50">
           Nada nesta categoria ainda. Escolha outra ou volte em alguns dias.
         </p>
       )}

@@ -172,10 +172,10 @@ export function GalleryStrip({ images, title }: GalleryStripProps) {
   return (
     <div className="mt-12 border-t border-white/10 pt-8">
       <div className="flex items-center justify-between">
-        <p className="font-mono text-[10px] tracking-[0.08em] text-white/35">Telas</p>
+        <p className="font-mono text-micro tracking-[0.08em] text-white/50">Telas</p>
         {n > 1 && (
           <div className="flex items-center gap-2">
-            <span className="mr-2 font-mono text-[11px] tabular-nums text-white/35">
+            <span className="mr-2 font-mono text-micro tabular-nums text-white/50">
               {String(slide + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}
             </span>
             <button

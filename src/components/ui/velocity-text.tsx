@@ -66,7 +66,10 @@ export function VelocityText({ phrase, className }: VelocityTextProps) {
     return (
       <section className={className}>
         <div className="flex min-h-[50vh] items-center px-6 py-24 sm:px-10">
-          <p className="max-w-4xl text-[clamp(2rem,6vw,4.5rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-white">
+          {/* Mesmo corpo do ramo animado: antes o ramo sem movimento caía
+              para metade do tamanho, mudando a composição de quem tem
+              prefers-reduced-motion ligado. */}
+          <p className="max-w-4xl text-[clamp(3.5rem,10vw,9rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-white">
             {phrase}
           </p>
         </div>

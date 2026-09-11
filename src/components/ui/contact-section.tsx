@@ -38,11 +38,23 @@ interface Channel {
 interface ContactSectionProps {
   title?: string;
   email?: string;
+  /** Só dígitos, com código do país: 55 + DDD + número. */
+  whatsapp?: string;
   channels?: Channel[];
   owner?: string;
 }
 
-const defaultChannels: Channel[] = [
+/**
+ * Link de conversa do WhatsApp. `wa.me` é o encurtador oficial: abre o app no
+ * celular e o WhatsApp Web no desktop, sem depender de o número estar salvo.
+ * O texto vem pré-preenchido só para o Marcelo saber de onde veio o contato.
+ */
+function whatsappHref(numero: string) {
+  const texto = encodeURIComponent("Oi, Marcelo! Vim pelo seu portfólio.");
+  return `https://wa.me/${numero}?text=${texto}`;
+}
+
+const canaisPadrao = (email: string): Channel[] => [
   {
     label: "LinkedIn",
     handle: "@marcelomourojr",
@@ -63,8 +75,8 @@ const defaultChannels: Channel[] = [
   },
   {
     label: "E-mail",
-    handle: "contato@marcelomouro.com",
-    href: "mailto:contato@marcelomouro.com",
+    handle: email,
+    href: `mailto:${email}`,
     icon: <Mail strokeWidth={1.5} className="size-6" />,
   },
 ];
@@ -72,9 +84,11 @@ const defaultChannels: Channel[] = [
 export function ContactSection({
   title = "Vamos Conversar",
   email = "contato@marcelomouro.com",
-  channels = defaultChannels,
+  whatsapp = "5514997000646",
+  channels,
   owner = "Marcelo Mouro Jr",
 }: ContactSectionProps) {
+  const canais = channels ?? canaisPadrao(email);
   const reduceMotion = useReducedMotion();
 
   const reveal = (delay = 0) => ({
@@ -93,11 +107,11 @@ export function ContactSection({
       {/* Sem reveal no contêiner: cada elemento tem o próprio efeito, visível
           quando a seção chega — um contêiner invisível escondia o whisper. */}
       <header className="max-w-3xl">
-        <h2 className="text-[clamp(2rem,6vw,4.5rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-white">
+        <h2 className="text-display font-semibold text-white">
           <WhisperText text={title} />
         </h2>
         <BlurFade delay={0.15}>
-          <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/50">
+          <p className="mt-5 max-w-md text-corpo text-white/50">
             Conecte-se comigo através das minhas redes ou me chame no Whatsapp.
           </p>
         </BlurFade>
@@ -106,7 +120,7 @@ export function ContactSection({
       {/* Cards compactos, um por rede, entrando em cascata. O hover: a marca
           de canto rose acende e cresce — a assinatura do site como resposta. */}
       <ul className="mt-12 grid grid-cols-2 gap-3 border-t border-white/10 pt-10 sm:gap-4 md:grid-cols-4">
-        {channels.map(({ label, handle, href, icon }, i) => (
+        {canais.map(({ label, handle, href, icon }, i) => (
           <li key={label}>
             <BlurFade delay={0.1 + i * 0.08} className="h-full">
             <a
@@ -123,22 +137,22 @@ export function ContactSection({
                            transition-all duration-300 group-hover:size-3 group-hover:border-rose-500"
               />
 
-              <span className="ml-auto text-white/35 transition-colors duration-300 group-hover:text-white">
+              <span className="ml-auto text-white/50 transition-colors duration-300 group-hover:text-white">
                 {icon}
               </span>
 
               <span className="flex items-end justify-between gap-3">
                 <span className="min-w-0">
-                  <span className="block text-[15px] font-semibold tracking-[-0.02em] text-white">
+                  <span className="block text-corpo font-semibold tracking-[-0.02em] text-white">
                     {label}
                   </span>
-                  <span className="mt-1 block truncate font-mono text-[11px] text-white/35 transition-colors group-hover:text-white/60">
+                  <span className="mt-1 block truncate font-mono text-micro text-white/50 transition-colors group-hover:text-white/60">
                     {handle}
                   </span>
                 </span>
                 <ArrowUpRight
                   aria-hidden
-                  className="mb-0.5 size-4 shrink-0 text-white/25 transition-all duration-300
+                  className="mb-0.5 size-4 shrink-0 text-white/50 transition-all duration-300
                              group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-rose-500"
                 />
               </span>
@@ -148,18 +162,20 @@ export function ContactSection({
         ))}
       </ul>
 
-      {/* O CTA: aro de metal líquido, link real para o e-mail */}
+      {/* O CTA: aro de metal líquido, abrindo conversa no WhatsApp. Era um
+          mailto:, que a Cloudflare reescrevia para /cdn-cgi/l/email-protection
+          (404 sem JS) — o wa.me não sofre essa ofuscação. */}
       <motion.div {...reveal(0.16)} className="mt-14 flex justify-center">
-        <LiquidMetalButton label="Fale comigo" href={`mailto:${email}`} width={224} height={58} />
+        <LiquidMetalButton label="Fale comigo" href={whatsappHref(whatsapp)} width={224} height={58} />
       </motion.div>
 
       <footer className="mt-16 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="font-mono text-[10px] tracking-[0.06em] text-white/25">
+        <p className="font-mono text-micro tracking-[0.06em] text-white/50">
           © {new Date().getFullYear()} {owner}
         </p>
         <a
           href="#inicio"
-          className="font-mono text-[10px] tracking-[0.06em] text-white/40 transition-colors hover:text-white
+          className="font-mono text-micro tracking-[0.06em] text-white/50 transition-colors hover:text-white
                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
         >
           Voltar ao topo ↑

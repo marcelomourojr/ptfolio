@@ -54,7 +54,6 @@ export function ZoomParallax({ images }: ZoomParallaxProps) {
 									alt={alt ?? ''}
 									fill
 									sizes="(max-width: 768px) 100vw, 50vw"
-									priority={index === 0}
 									draggable={false}
 						className="object-cover"
 								/>

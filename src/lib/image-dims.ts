@@ -35,7 +35,7 @@ export const IMAGE_DIMS: Record<string, string> = {
   "/images/Isaac5.webp": "1600 / 1005",
   "/images/Mensagens-do-dia.webp": "738 / 1600",
   "/images/Quiz.webp": "738 / 1600",
-  "/images/Reflexão.webp": "738 / 1600",
+  "/images/reflexao.webp": "738 / 1600",
   "/images/Sobre-mim.webp": "724 / 1080",
   "/images/Versiculo.webp": "738 / 1600",
   "/images/Webchat-1.webp": "1600 / 1005",

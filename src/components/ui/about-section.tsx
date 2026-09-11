@@ -77,19 +77,19 @@ export function AboutSection({
         {/* Sem reveal no contêiner: cada elemento tem seu próprio efeito —
             um contêiner invisível por cima escondia o whisper do título. */}
         <div className="flex flex-col lg:col-span-8">
-          <h2 className="text-[clamp(2rem,5.5vw,4rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-white">
+          <h2 className="text-display font-semibold text-white">
             <WhisperText text={title} />
           </h2>
 
           <BlurFade delay={0.1}>
-            <p className="mt-7 text-[clamp(1.125rem,2.2vw,1.625rem)] font-medium leading-[1.2] tracking-[-0.02em] text-white">
+            <p className="mt-7 max-w-3xl text-destaque font-medium text-white">
               {statement}
             </p>
           </BlurFade>
 
           <BlurFade delay={0.2} className="mt-7 space-y-5">
             {paragraphs.map((text) => (
-              <p key={text.slice(0, 32)} className="text-[15px] leading-relaxed text-white/50">
+              <p key={text.slice(0, 32)} className="max-w-measure text-corpo text-white/60">
                 {text}
               </p>
             ))}
@@ -111,10 +111,10 @@ export function AboutSection({
                   />
                   <dt className="sr-only">{label}</dt>
                   <dd>
-                    <span className="block text-[clamp(1.75rem,3.4vw,2.75rem)] font-semibold leading-none tracking-[-0.04em] text-white">
+                    <span className="block text-display-contido font-semibold text-white">
                       {value}
                     </span>
-                    <span className="mt-3 block font-mono text-[10px] tracking-[0.06em] text-white/40">
+                    <span className="mt-3 block font-mono text-micro tracking-[0.06em] text-white/50">
                       {label}
                     </span>
                   </dd>

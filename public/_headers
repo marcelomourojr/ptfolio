@@ -1,0 +1,22 @@
+# Cache dos assets estáticos na Cloudflare Pages.
+#
+# Por que aqui e não no next.config: com o @cloudflare/next-on-pages os
+# arquivos de /public são servidos pelo handler de assets estáticos da
+# Cloudflare, que não passa pelo headers() do Next — mas lê este arquivo.
+#
+# O padrão do Next para /public é max-age=14400 (4h) + must-revalidate, então
+# quem volta no dia seguinte revalida imagem por imagem e vídeo por vídeo.
+# Nada aqui tem hash no nome, então uso 30 dias com stale-while-revalidate:
+# serve do cache na hora e atualiza em segundo plano.
+
+/images/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+/videos/*
+  Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
+
+# Trocar um destes exige trocar o nome do arquivo (ou purgar o cache).
+
+# Bundles do Next: o nome muda a cada build (hash), então nunca envelhecem.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable

@@ -17,7 +17,7 @@ interface NotchHeaderProps {
 
 /** O Lenis da página, exposto em window pela home para a rolagem suave. */
 interface LenisLike {
-  scrollTo: (alvo: string, opts?: { duration?: number }) => void;
+  scrollTo: (alvo: string, opts?: { duration?: number; offset?: number }) => void;
 }
 
 /**
@@ -109,7 +109,9 @@ export function NotchHeader({ links }: NotchHeaderProps) {
       if (reduceMotion) return;
       e.preventDefault();
       const lenis = (window as { __lenis?: LenisLike }).__lenis;
-      if (lenis) lenis.scrollTo(href, { duration: 1.4 });
+      // offset compensa a barra fixa (h-12) — sem ele o título da seção
+      // parava debaixo do cabeçalho.
+      if (lenis) lenis.scrollTo(href, { duration: 1.4, offset: -72 });
       else document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
     },
     [reduceMotion],
@@ -136,8 +138,8 @@ export function NotchHeader({ links }: NotchHeaderProps) {
                 href={l.href}
                 onClick={(e) => navegar(e, l.href)}
                 aria-current={ativo === l.href ? "true" : undefined}
-                className="relative flex h-9 items-center rounded-full px-3.5 text-sm font-medium outline-none
-                           focus-visible:ring-2 focus-visible:ring-black/40"
+                className="relative flex h-9 items-center rounded-full px-3.5 text-meta font-medium outline-none
+                           focus-visible:ring-2 focus-visible:ring-black/70"
               >
                 {ativo === l.href && (
                   <motion.span
@@ -177,8 +179,8 @@ export function NotchHeader({ links }: NotchHeaderProps) {
             aria-haspopup="true"
             aria-label="Abrir navegação"
             onClick={() => setAberto((a) => !a)}
-            className="flex h-8 items-center gap-1.5 rounded-full px-2.5 text-[13px] font-semibold text-black outline-none
-                       focus-visible:ring-2 focus-visible:ring-black/40"
+            className="flex h-8 items-center gap-1.5 rounded-full px-2.5 text-meta font-semibold text-black outline-none
+                       focus-visible:ring-2 focus-visible:ring-black/70"
           >
             <span className="leading-none">{rotuloAtivo}</span>
             <ChevronDown
@@ -199,7 +201,11 @@ export function NotchHeader({ links }: NotchHeaderProps) {
             aberto ? "grid-rows-[1fr]" : "pointer-events-none grid-rows-[0fr]",
           )}
         >
-          <div className="overflow-hidden">
+          {/* `inert` quando fechada: opacity-0 + pointer-events-none escondem
+              do olho e do mouse, mas os 5 links continuavam na ordem de
+              tabulação — quem navega por teclado passava por destinos
+              invisíveis. `inert` tira do foco e da árvore de acessibilidade. */}
+          <div className="overflow-hidden" inert={!aberto}>
             <nav aria-label="Seções do site" className="flex flex-col gap-0.5 px-0.5 pb-2.5 pt-1">
               {links.map((l, i) => (
                 <a
@@ -209,7 +215,7 @@ export function NotchHeader({ links }: NotchHeaderProps) {
                   aria-current={ativo === l.href ? "true" : undefined}
                   style={{ transitionDelay: aberto ? `${80 + i * 45}ms` : "0ms" }}
                   className={cn(
-                    "rounded-xl px-3 py-2 text-sm outline-none focus-visible:ring-2 focus-visible:ring-black/40",
+                    "rounded-xl px-3 py-2 text-meta outline-none focus-visible:ring-2 focus-visible:ring-black/70",
                     "transition-[opacity,transform,background-color,color] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)]",
                     aberto ? "translate-y-0 opacity-100" : "translate-y-1.5 opacity-0",
                     ativo === l.href

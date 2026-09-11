@@ -35,8 +35,28 @@ export interface BentoItem extends ProjectDetail {
  * nenhuma imagem é recortada nem deformada.
  */
 export interface BentoBand {
-  layout: "portraitLeft" | "portraitRight" | "pair";
-  items: [BentoItem, BentoItem];
+  items: BentoItem[];
+}
+
+/**
+ * Colunas em `fr` derivadas da proporção real de cada capa.
+ *
+ * Numa linha onde todos os cards têm a MESMA altura e mantêm a proporção, a
+ * largura de cada um é proporcional ao seu aspecto — então usar o aspecto
+ * como fração já resolve. É a generalização daquela conta de 22.46/77.54 que
+ * estava escrita à mão: agora vale para 2, 3 ou N cards, com qualquer mistura
+ * de retrato e paisagem, e some quando um projeto entra ou sai.
+ *
+ * `fr` (e não porcentagem) porque ele distribui o que sobra DEPOIS do gap —
+ * a razão se mantém exata em qualquer largura e com qualquer espaçamento.
+ */
+function colunasPorProporcao(items: BentoItem[]) {
+  return items
+    .map((it) => {
+      const [w, h] = it.aspect.split("/").map((n) => parseFloat(n));
+      return `${((w / h) * 100).toFixed(2)}fr`;
+    })
+    .join(" ");
 }
 
 /** Mesma marca de canto do hero e do Sobre. */
@@ -51,16 +71,13 @@ function Bracket() {
 
 function Card({
   project,
-  fillBand,
   fill,
   className,
   onOpen,
 }: {
   project: BentoItem;
-  /** true = a altura vem da faixa (o par paisagem manda); o retrato estica
-      para acompanhar, com desvio de proporção < 0.2% — invisível. */
-  fillBand?: boolean;
-  /** Como fillBand, mas em qualquer largura (superfaixas do mosaico mobile). */
+  /** Estica para a altura do contêiner (retrato do mosaico mobile, que
+      acompanha a pilha de duas paisagens ao lado). */
   fill?: boolean;
   className?: string;
   onOpen: (project: BentoItem, trigger: HTMLButtonElement) => void;
@@ -77,55 +94,44 @@ function Card({
         "group relative block w-full overflow-hidden rounded-xl border border-white/10 bg-white/[0.02] sm:rounded-2xl",
         "text-left transition-colors duration-500 hover:border-white/25",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60",
-        // O aspect-ratio dimensiona o bloco em qualquer largura; a partir de
-        // md, se a faixa tiver altura própria (par paisagem), o h-full vence
-        // o aspect-ratio e o retrato acompanha a altura exata da faixa.
-        fillBand && "md:h-full",
         fill && "h-full",
         className,
       )}
-      style={{ aspectRatio: project.aspect }}
+      style={fill ? undefined : { aspectRatio: project.aspect }}
     >
       <Image
         src={project.cover}
         alt=""
         fill
-        sizes="(max-width: 768px) 60vw, 80vw"
+        sizes="(max-width: 768px) 60vw, 40vw"
         draggable={false}
-              className="object-cover object-top transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
+        className="object-cover object-top transition-transform duration-[900ms] ease-out group-hover:scale-[1.03]"
       />
 
-      {/* Véu de altura fixa na base, só onde o texto vive — mais baixo nos
-          blocos pequenos do mosaico mobile */}
-      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black via-black/70 to-transparent sm:h-40" />
+      {/* Véu de altura fixa na base, só onde o texto vive */}
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black via-black/70 to-transparent sm:h-32" />
 
       <Bracket />
 
-      <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-2 p-3 sm:gap-4 sm:p-7">
+      {/* Padding menor que o original (era p-7): num card retrato de 168px,
+          28px de cada lado comiam metade da largura útil do título. */}
+      <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-2 p-3 sm:gap-3 sm:p-5">
         <div className="min-w-0">
-          <p className="font-mono text-[9px] tracking-[0.08em] text-white/45 sm:text-[10px]">
+          <p className="font-mono text-micro tracking-[0.08em] text-white/50">
             {project.year} · {project.category}
           </p>
-          <h3 className="mt-1 truncate text-[clamp(0.9375rem,2.4vw,1.875rem)] font-semibold leading-tight tracking-[-0.03em] text-white sm:mt-2">
-            {project.title}
-          </h3>
+          <h3 className="mt-1 text-item font-semibold text-white">{project.title}</h3>
         </div>
 
         <ArrowUpRight
           aria-hidden
-          className="mb-1 hidden size-5 shrink-0 text-white/40 transition-all duration-300
+          className="mb-0.5 hidden size-5 shrink-0 text-white/50 transition-all duration-300
                      group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-rose-500 sm:block"
         />
       </div>
     </button>
   );
 }
-
-const BAND_COLS: Record<BentoBand["layout"], string> = {
-  portraitLeft: "md:grid-cols-[22.46fr_77.54fr]",
-  portraitRight: "md:grid-cols-[77.54fr_22.46fr]",
-  pair: "grid-cols-2",
-};
 
 /* ── Mosaico mobile ─────────────────────────────────────────────────────────
    Abaixo de md as colunas de proporção exata do desktop dariam um retrato de
@@ -274,29 +280,18 @@ export function ProjectBento({ bands }: { bands: BentoBand[] }) {
 
       {/* Mosaico md+: as faixas de proporção exata originais */}
       <div className="hidden flex-col gap-4 md:flex">
-        {bands.map((band, i) => {
-          // Na faixa mista, quem dita a altura é a paisagem (aspect no card);
-          // o retrato acompanha com h-full.
-          const portraitIndex =
-            band.layout === "portraitLeft" ? 0 : band.layout === "portraitRight" ? 1 : -1;
-
-          return (
-            <motion.div
-              key={band.items[0].title}
-              {...revealFaixa(i)}
-              className={cn("grid gap-4", BAND_COLS[band.layout])}
-            >
-              {band.items.map((item, j) => (
-                <Card
-                  key={item.title}
-                  project={item}
-                  fillBand={j === portraitIndex}
-                  onOpen={open}
-                />
-              ))}
-            </motion.div>
-          );
-        })}
+        {bands.map((band, i) => (
+          <motion.div
+            key={band.items[0].title}
+            {...revealFaixa(i)}
+            className="grid gap-4 md:[grid-template-columns:var(--cols)]"
+            style={{ ["--cols" as string]: colunasPorProporcao(band.items) }}
+          >
+            {band.items.map((item) => (
+              <Card key={item.title} project={item} onOpen={open} />
+            ))}
+          </motion.div>
+        ))}
       </div>
 
       <ProjectModal project={active} onClose={close} />

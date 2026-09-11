@@ -12,6 +12,7 @@ import { GridBackground } from "@/components/ui/grid-background";
 import { AboutSection } from "@/components/ui/about-section";
 import { ProjectBento, type BentoBand, type BentoItem } from "@/components/ui/project-bento";
 import { CreativesSection } from "@/components/ui/creatives-section";
+import { CertificatesSection, type Certificate } from "@/components/ui/certificates-section";
 import type { Creative } from "@/components/ui/creative-stack";
 import type { ProjectDetail } from "@/components/ui/project-modal";
 import { Cursor, CursorProvider, CursorFollow } from "@/components/ui/cursor";
@@ -122,7 +123,7 @@ const timelineData: ProjectDetail[] = [
       "/images/Home.webp",
       "/images/Mensagens-do-dia.webp",
       "/images/Quiz.webp",
-      "/images/Reflexão.webp",
+      "/images/reflexao.webp",
       "/images/Versiculo.webp"
     ],
     tags: ["Figma"],
@@ -143,8 +144,8 @@ const timelineData: ProjectDetail[] = [
       "/images/6sintony.webp"
     ],
     tags: ["Figma", "UI/UX", "Mobile"],
-    appStoreLink: "#",
-    playStoreLink: "#",
+    appStoreLink: "https://apps.apple.com/br/app/sintony-namoro-e-match-por-ia/id6746660562",
+    playStoreLink: "https://play.google.com/store/apps/details?id=com.sintony.go&hl=pt_BR",
   },
   {
     title: "KingChat",
@@ -155,7 +156,6 @@ const timelineData: ProjectDetail[] = [
       "/images/Webchat-1.webp"
     ],
     tags: ["Figma", "Antigravity"],
-    link: "https://kingchat.com/",
   },
   {
     title: "Zé dos Concursos",
@@ -173,9 +173,9 @@ const timelineData: ProjectDetail[] = [
       "/images/ze8.webp"
     ],
     tags: ["React Native", "Expo", "TypeScript"],
-    link: "#",
-    appStoreLink: "#",
-    playStoreLink: "#",
+    link: "https://zedosconcursos.com.br",
+    appStoreLink: "https://apps.apple.com/br/app/z%C3%A9-dos-concursos/id6757822635",
+    playStoreLink: "https://play.google.com/store/apps/details?id=com.zedosconcursos.app&hl=pt_BR",
   },
   {
     title: "Protech",
@@ -244,11 +244,83 @@ const creativesData: Creative[] = [
 ];
 
 // Quatro faixas: retrato+paisagem espelhados nas pontas, pares no meio.
+// Três por linha no desktop. Os dois retratos ficam em faixas diferentes: dois
+// retratos na mesma linha empurrariam a altura para 528px, e sozinhos numa
+// linha, para 1440px — a proporção manda na altura, então retrato precisa de
+// paisagem ao lado para a faixa não crescer.
 const bentoBands: BentoBand[] = [
-  { layout: "portraitLeft",  items: [bentoItem("Verbo"), bentoItem("KingChat")] },
-  { layout: "pair",          items: [bentoItem("Onsite Seguros"), bentoItem("Zé dos Concursos")] },
-  { layout: "portraitRight", items: [bentoItem("Isaac the Barber"), bentoItem("Sintony")] },
-  { layout: "pair",          items: [bentoItem("Protech"), bentoItem("CupidLove")] },
+  { items: [bentoItem("Verbo"), bentoItem("KingChat"), bentoItem("Onsite Seguros")] },
+  { items: [bentoItem("Zé dos Concursos"), bentoItem("Sintony"), bentoItem("Isaac the Barber")] },
+  { items: [bentoItem("Protech"), bentoItem("CupidLove")] },
+];
+
+// Certificados, do mais recente para o mais antigo.
+//
+// Google e USP apontam para a página pública de verificação da Coursera
+// (abre sem login e mostra o nome do aluno). Os outros quatro ainda caem na
+// lista do LinkedIn, que para visitante deslogado vira tela de login —
+// PENDENTE: trocar pelo link do "Exibir credencial" de cada um.
+//
+// Google e USP apontam para a página pública de verificação da Coursera —
+// abre sem login e mostra o nome do aluno (testado: HTTP 200).
+//
+// FIAP e The Cloud Bootcamp abrem o próprio certificado (webp local): a
+// validação da FIAP é formulário AJAX sem link direto, então a chave continua
+// no card ao lado da data para quem quiser validar em
+// on.fiap.com.br/local/nanocourses/validar-certificado. Coursera e LinkedIn
+// Learning são páginas públicas de verificação; Imagenation é PDF no Drive.
+
+const certificatesData: Certificate[] = [
+  {
+    title: "MultiCloud, DevOps & IA",
+    issuer: "The Cloud Bootcamp",
+    date: "Emitida em jan de 2025",
+    logo: "/images/certificados/tcb.svg",
+    // O badge "Eu sou um VIP Challenger" do challenge — não há página de
+    // credencial; abre em lightbox.
+    image: "/images/certificados/the-cloud-bootcamp-badge.webp",
+  },
+  {
+    title: "User Experience",
+    issuer: "FIAP",
+    date: "Emitida em dez de 2024",
+    logo: "/images/certificados/fiap.svg",
+    credentialId: "87fb913f0d45a0df274d44e8f6993da3",
+    // Certificado em lightbox; a validação da FIAP é formulário AJAX, então
+    // vira o link "Validar no site do emissor" no rodapé, com a chave ao lado.
+    image: "/images/certificados/fiap-user-experience.webp",
+    url: "https://on.fiap.com.br/local/nanocourses/validar-certificado",
+  },
+  {
+    title: "Workshop do Figma ao Framer",
+    issuer: "Imagenation.art",
+    date: "Emitida em nov de 2024",
+    logo: "/images/certificados/imagenation.webp",
+    url: "https://drive.google.com/file/d/1nhB1R4U6ZmtKYG4NoOGw7Uebtr1sQKyO/view",
+  },
+  {
+    title: "Create High-Fidelity Designs and Prototypes in Figma",
+    issuer: "Google",
+    date: "Emitida em nov de 2024",
+    logo: "/images/certificados/google.svg",
+    credentialId: "L949901N4JCZ",
+    url: "https://www.coursera.org/account/accomplishments/verify/L949901N4JCZ",
+  },
+  {
+    title: "Fundamentos para Desenvolvimento de Software",
+    issuer: "Microsoft",
+    date: "Emitida em out de 2024",
+    logo: "/images/certificados/microsoft.svg",
+    url: "https://www.linkedin.com/learning/certificates/21b9b19c51c9a7bb4336643ba7c78335c4c9b6479937c9c4f18fbce30da4f407",
+  },
+  {
+    title: "Marketing Digital",
+    issuer: "Universidade de São Paulo",
+    date: "Emitida em ago de 2024",
+    logo: "/images/certificados/usp.png",
+    credentialId: "DX2IHW7X6YJ8",
+    url: "https://www.coursera.org/account/accomplishments/verify/DX2IHW7X6YJ8",
+  },
 ];
 
 export default function Home() {
@@ -298,7 +370,7 @@ export default function Home() {
         </svg>
       </Cursor>
       <CursorFollow align="bottom-right" sideOffset={10} className="z-[9998] pointer-events-none hidden md:block">
-        <div className="bg-white/10 border border-white/20 backdrop-blur-md text-white px-3 py-1 rounded-full text-[10px] font-semibold tracking-[0.04em] shadow-xl">
+        <div className="bg-white/10 border border-white/20 backdrop-blur-md text-white px-3 py-1 rounded-full text-micro font-semibold tracking-[0.04em] shadow-xl">
           Você
         </div>
       </CursorFollow>
@@ -329,11 +401,11 @@ export default function Home() {
       {/* Projetos: cabeçalho à esquerda, sem gradiente em texto */}
       <section id="projetos" className="px-6 pt-24 sm:px-10 sm:pt-32">
         <header className="max-w-3xl">
-          <h2 className="text-[clamp(2rem,6vw,4.5rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-white">
+          <h2 className="text-display font-semibold text-white">
             <WhisperText text="Projetos" />
           </h2>
           <BlurFade delay={0.15}>
-            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/50">
+            <p className="mt-5 max-w-md text-corpo text-white/50">
               Produtos que foram para a rua e continuam em uso. Role para ver de perto.
             </p>
           </BlurFade>
@@ -347,6 +419,9 @@ export default function Home() {
 
       {/* Criativos: galeria 3D de vídeos + pilha vertical */}
       <CreativesSection items={creativesData} />
+
+
+      <CertificatesSection items={certificatesData} />
 
 
       <ContactSection />

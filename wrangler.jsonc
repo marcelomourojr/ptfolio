@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Deploy no Cloudflare Workers via @opennextjs/cloudflare — substitui o
+  // @cloudflare/next-on-pages, depreciado e sem suporte ao Next 16.
+  //
+  // O nome precisa ser IGUAL ao do Worker no painel: o Workers Builds
+  // falha o build se divergir.
+  "name": "marcelomouro",
+  "main": ".open-next/worker.js",
+  // Teto do workerd instalado (1.20260910.1). O OpenNext exige >= 2024-09-23.
+  "compatibility_date": "2026-09-10",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  // Workers Logs: se algo quebrar em produção, o motivo aparece no painel.
+  "observability": { "enabled": true }
+
+  // Fora de propósito, em relação ao template do OpenNext:
+  //  - r2_buckets: o cache incremental lê dos static assets (site estático)
+  //  - images: next.config tem images.unoptimized — não há otimização a fazer
+  //  - services (WORKER_SELF_REFERENCE): só serve para revalidação, que não existe
+}

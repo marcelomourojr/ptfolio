@@ -47,6 +47,9 @@ export const profile = {
 
 export const socials = [
   { label: "Instagram", href: "https://www.instagram.com/marcelomourojr/" },
+  // Caminho de volta ao portfólio: sem ele a /links fica sem nenhum link
+  // interno de entrada nem de saída, e o buscador a trata como página solta.
+  { label: "Portfólio", href: "/" },
 ];
 
 // Produtos reais, com os links de afiliado do usuário (encurtadores do ML e

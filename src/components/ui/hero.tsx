@@ -36,7 +36,7 @@ export function Hero({ eyebrow, statement, wordmark, meta }: HeroProps) {
         <TextEffect
           per="char"
           preset="blur"
-          className="font-mono text-[11px] tracking-[0.08em] text-white/40"
+          className="font-mono text-micro tracking-[0.08em] text-white/50"
         >
           {eyebrow}
         </TextEffect>
@@ -44,7 +44,7 @@ export function Hero({ eyebrow, statement, wordmark, meta }: HeroProps) {
           per="word"
           preset="slide"
           delay={0.35}
-          className="mt-6 text-[clamp(1.25rem,3.2vw,2.25rem)] font-medium leading-[1.15] tracking-[-0.025em] text-white/90"
+          className="mt-6 text-destaque font-medium text-white/90"
         >
           {statement}
         </TextEffect>
@@ -54,7 +54,7 @@ export function Hero({ eyebrow, statement, wordmark, meta }: HeroProps) {
           cascata de entrada do topo (rótulo → declaração → nome → metas) */}
       <div>
         <BlurFade delay={0.5} yOffset={20} blur="10px">
-          <h1 className="text-[clamp(2.75rem,14vw,15rem)] font-semibold leading-[0.82] tracking-[-0.05em] text-white">
+          <h1 className="text-marca font-semibold text-white">
             {wordmark}
             {/* Inline, não flex: assim o ® acompanha a última palavra quando o
                 nome quebra em duas linhas no mobile. */}
@@ -66,8 +66,8 @@ export function Hero({ eyebrow, statement, wordmark, meta }: HeroProps) {
           {meta.map(({ label, body }, i) => (
             <BlurFade key={label} delay={0.75 + i * 0.15} className="relative">
               <Bracket />
-              <h2 className="text-lg font-semibold tracking-[-0.02em] text-white">{label}</h2>
-              <p className="mt-2 max-w-xs text-[13px] leading-relaxed text-white/50">{body}</p>
+              <h2 className="text-corpo font-semibold text-white">{label}</h2>
+              <p className="mt-2 max-w-xs text-meta leading-relaxed text-white/50">{body}</p>
             </BlurFade>
           ))}
         </div>

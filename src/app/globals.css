@@ -3,6 +3,77 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ---------------------------------------------------------------------------
+   Escala tipográfica.
+
+   Sete papéis no lugar dos 27 tamanhos avulsos que existiam antes. Bloco
+   `@theme` normal (não `inline`) de propósito: no inline os valores são
+   embutidos nas utilities e não sobram como custom properties para uso em
+   CSS solto.
+
+   Peso fica FORA do token de propósito: em Tailwind v4 quem vence é a ordem
+   no CSS compilado, não a ordem no className — `text-display font-normal`
+   pode não sobrescrever. Tamanho, entrelinha e tracking sim; peso é decisão
+   de cada uso.
+
+   O andar fixo (corpo/meta/micro) nunca escala com a viewport, como no
+   billysweeney.com: quem dá zoom no navegador não briga com vw.
+--------------------------------------------------------------------------- */
+@theme {
+  /* Apaga a escala padrão do Tailwind (text-xs..text-9xl), para não existir
+     uma segunda escala competindo com esta.
+
+     ATENÇÃO: isto NÃO quebra o build. Testado: o Tailwind v4 ignora utilitário
+     desconhecido em silêncio, então um `text-sm` perdido fica inerte e herda o
+     tamanho do pai — sem erro, sem aviso. Quem realmente barra é o
+     `npm run lint`, que roda scripts/checa-tipografia.mjs. */
+  --text-*: initial;
+
+  /* Lettering do wordmark — não é degrau de leitura, é peça que preenche a caixa */
+  --text-marca: clamp(2.75rem, 14vw, 15rem);
+  --text-marca--line-height: 0.82;
+  --text-marca--letter-spacing: -0.04em;
+
+  /* Título de seção em coluna larga */
+  --text-display: clamp(2rem, 5vw, 5rem);
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.03em;
+
+  /* Mesmo papel, coluna estreita (Certificados, números do Sobre) */
+  --text-display-contido: clamp(1.875rem, 3.4vw, 3.25rem);
+  --text-display-contido--line-height: 1.02;
+  --text-display-contido--letter-spacing: -0.035em;
+
+  /* Título de ITEM: card do bento. Papel próprio porque não é nem frase de
+     destaque nem título de seção — e porque a 36px do Destaque ele não cabe
+     no card retrato de 168px, que só tem 74px úteis para o título. */
+  --text-item: clamp(1.125rem, 0.563vw + 0.993rem, 1.5rem);
+  --text-item--line-height: 1.15;
+  --text-item--letter-spacing: -0.02em;
+
+  /* Frases: hero, statements, h3 de certificado */
+  --text-destaque: clamp(1.25rem, 2.5vw, 2.25rem);
+  --text-destaque--line-height: 1.15;
+  --text-destaque--letter-spacing: -0.02em;
+
+  /* Todo texto corrido e rótulo de botão */
+  --text-corpo: 1rem;
+  --text-corpo--line-height: 1.5;
+
+  /* Secundário legível, não-mono */
+  --text-meta: 0.8125rem;
+  --text-meta--line-height: 1.4;
+
+  /* Mono: eyebrows, tags, datas, contadores */
+  --text-micro: 0.6875rem;
+  --text-micro--line-height: 1.25;
+  --text-micro--letter-spacing: 0.06em;
+
+  /* Medida de linha única do texto corrido: 440px = 59 a 65 caracteres a 16px */
+  --container-measure: 27.5rem;
+}
+
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -126,6 +197,12 @@
 }
 
 @layer base {
+  /* A barra do cabeçalho é fixa: sem isto, pular para #sobre/#projetos deixa
+     o título da seção escondido atrás dela. Cobre âncora nativa e
+     scrollIntoView; o caminho do Lenis usa `offset` no notch-header. */
+  html {
+    scroll-padding-top: 72px;
+  }
   * {
     @apply border-border outline-ring/50;
   }

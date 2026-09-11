@@ -180,15 +180,15 @@ export function CreativeStack({ items, className }: CreativeStackProps) {
       <div className="relative flex items-center justify-center gap-4 sm:gap-8 lg:gap-16">
         {/* Informações à esquerda: contador + criativo atual */}
         <div className="hidden w-36 shrink-0 flex-col items-end text-right md:flex">
-          <span className="text-4xl font-light tabular-nums text-white">
+          <span className="text-display-contido font-light tabular-nums text-white">
             {String(current + 1).padStart(2, "0")}
           </span>
           <span aria-hidden className="my-3 h-px w-8 bg-white/20" />
-          <span className="font-mono text-[11px] tabular-nums text-white/35">
+          <span className="font-mono text-micro tabular-nums text-white/50">
             {String(items.length).padStart(2, "0")}
           </span>
-          <p className="mt-8 text-[15px] font-medium tracking-[-0.01em] text-white">{atual.title}</p>
-          <p className="mt-1 font-mono text-[10px] tracking-[0.04em] text-white/40">{atual.meta}</p>
+          <p className="mt-8 text-corpo font-medium tracking-[-0.01em] text-white">{atual.title}</p>
+          <p className="mt-1 font-mono text-micro tracking-[0.04em] text-white/50">{atual.meta}</p>
         </div>
 
         {/* A pilha */}
@@ -242,8 +242,11 @@ export function CreativeStack({ items, className }: CreativeStackProps) {
                     aria-label={`${item.title} — ${item.meta}`}
                     className="pointer-events-none size-full select-none object-cover"
                   >
-                    <source src={`/videos/${item.slug}.webm`} type="video/webm" />
+                    {/* mp4 primeiro, como na galeria: o H.264 decodifica por
+                        hardware em qualquer máquina e, aqui, os arquivos .mp4
+                        ainda são menores que os .webm em todos os 5 vídeos. */}
                     <source src={`/videos/${item.slug}.mp4`} type="video/mp4" />
+                    <source src={`/videos/${item.slug}.webm`} type="video/webm" />
                   </video>
 
                   {/* Assinatura do site no card ativo */}
@@ -346,10 +349,10 @@ export function CreativeStack({ items, className }: CreativeStackProps) {
       {/* No mobile as laterais somem: título e contador vêm para baixo */}
       <div className="mt-4 flex items-baseline justify-between px-1 md:hidden">
         <div>
-          <p className="text-[15px] font-medium tracking-[-0.01em] text-white">{atual.title}</p>
-          <p className="mt-1 font-mono text-[10px] tracking-[0.04em] text-white/40">{atual.meta}</p>
+          <p className="text-corpo font-medium tracking-[-0.01em] text-white">{atual.title}</p>
+          <p className="mt-1 font-mono text-micro tracking-[0.04em] text-white/50">{atual.meta}</p>
         </div>
-        <p className="font-mono text-[11px] tabular-nums text-white/35">
+        <p className="font-mono text-micro tabular-nums text-white/50">
           {String(current + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}
         </p>
       </div>

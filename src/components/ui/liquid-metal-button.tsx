@@ -155,7 +155,7 @@ export function LiquidMetalButton({
         onMouseDown={() => setIsPressed(true)}
         onMouseUp={() => setIsPressed(false)}
         className="absolute inset-0 z-10 flex items-center justify-center overflow-hidden rounded-full
-                   text-[15px] font-medium tracking-[-0.01em] text-[#c8c8c8] transition-colors hover:text-white
+                   text-corpo font-medium tracking-[-0.01em] text-[#c8c8c8] transition-colors hover:text-white
                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
         style={{ textShadow: "0 1px 2px rgba(0,0,0,0.6)" }}
       >

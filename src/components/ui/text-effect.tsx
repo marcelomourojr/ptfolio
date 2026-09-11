@@ -148,7 +148,6 @@ export function TextEffect({
     : { container: defaultContainerVariants, item: defaultItemVariants };
   const containerVariants = variants?.container || selectedVariants.container;
   const itemVariants = variants?.item || selectedVariants.item;
-  const ariaLabel = per === "line" ? undefined : children;
   const stagger = defaultStaggerTimes[per];
 
   const delayedContainerVariants: Variants = {
@@ -170,10 +169,20 @@ export function TextEffect({
       <MotionTag
         initial="hidden"
         animate="visible"
-        aria-label={ariaLabel}
         variants={delayedContainerVariants}
         className={cn("whitespace-pre-wrap", className)}
       >
+        {/* O texto de verdade, para leitor de tela. Antes isto era um
+            aria-label no próprio elemento — mas o papel ARIA `paragraph` tem
+            "Name from: prohibited", então o rótulo era descartado e, como
+            cada pedaço animado é aria-hidden, a frase inteira ficava sem
+            nome acessível. Um nó de texto oculto não tem essa restrição.
+
+            Só em `word` e `char`: no modo `line` os segmentos NÃO são
+            aria-hidden, então o texto já é lido — duplicar aqui faria o
+            leitor anunciar a frase duas vezes. */}
+        {per !== "line" && <span className="sr-only">{children}</span>}
+
         {segments.map((segment, index) => (
           <AnimationComponent
             key={`${per}-${index}-${segment}`}

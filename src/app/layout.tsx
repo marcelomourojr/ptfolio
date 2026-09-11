@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter_Tight, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -26,14 +26,6 @@ export const metadata: Metadata = {
     template: "%s | Marcelo Mouro Jr",
   },
   description: siteDescription,
-  keywords: [
-    "Product Designer",
-    "UI/UX Designer",
-    "Design de Interface",
-    "Figma",
-    "Framer",
-    "Marcelo Mouro",
-  ],
   authors: [{ name: "Marcelo Mouro Jr", url: siteUrl }],
   creator: "Marcelo Mouro Jr",
   alternates: {
@@ -46,11 +38,12 @@ export const metadata: Metadata = {
     siteName: "Marcelo Mouro Jr",
     title: siteTitle,
     description: siteDescription,
-    // TODO: trocar por uma imagem dedicada de 1200x630 (ex.: /images/og.png).
-    // A foto abaixo é retrato 4:5 e vai aparecer cortada em alguns previews.
     images: [
       {
-        url: "/images/eu2.webp",
+        url: "/images/og.png",
+        width: 1200,
+        height: 630,
+        type: "image/png",
         alt: "Marcelo Mouro Jr — Product Designer UI/UX",
       },
     ],
@@ -59,12 +52,18 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteTitle,
     description: siteDescription,
-    images: ["/images/eu2.webp"],
+    images: [
+      { url: "/images/og.png", alt: "Marcelo Mouro Jr — Product Designer UI/UX" },
+    ],
   },
   robots: {
     index: true,
     follow: true,
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#000000",
 };
 
 export default function RootLayout({

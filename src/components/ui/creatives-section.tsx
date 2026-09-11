@@ -125,11 +125,11 @@ export function CreativesSection({
       {/* Sem reveal no contêiner: cada elemento tem o próprio efeito, visível
           quando a seção chega — um contêiner invisível escondia o whisper. */}
       <header className="relative max-w-3xl">
-        <h2 className="text-[clamp(2rem,6vw,4.5rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-white">
+        <h2 className="text-display font-semibold text-white">
           <WhisperText text={title} />
         </h2>
         <BlurFade delay={0.15}>
-          <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/50">{subtitle}</p>
+          <p className="mt-5 max-w-md text-corpo text-white/50">{subtitle}</p>
         </BlurFade>
       </header>
 
@@ -152,7 +152,7 @@ export function CreativesSection({
               />
             )}
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-6 text-center mix-blend-exclusion">
-              <p className="text-[clamp(1.75rem,5vw,3.75rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-white">
+              <p className="text-display-contido font-semibold text-white">
                 {phrase}
               </p>
             </div>
@@ -163,13 +163,18 @@ export function CreativesSection({
       {/* Entre o efeito e o carrossel: o respiro que explica os feitos.
           Depois do trilho de propósito — antes dele já existe o cabeçalho da
           seção, e o ritmo espelha Projetos: mostrar → explicar → explorar. */}
-      <div className="relative mt-16 max-w-3xl sm:mt-24">
-        <span aria-hidden className="absolute -top-3 left-0 size-2 border-l border-t border-rose-500" />
-        <p className="text-[clamp(1.25rem,2.4vw,1.875rem)] font-medium leading-[1.2] tracking-[-0.02em] text-white">
+      <div className="relative mx-auto mt-16 max-w-3xl text-center sm:mt-24">
+        {/* Marca de canto centralizada junto com o texto — ancorada à
+            esquerda ela ficaria órfã, longe do bloco que assina. */}
+        <span
+          aria-hidden
+          className="absolute -top-3 left-1/2 size-2 -translate-x-1/2 border-l border-t border-rose-500"
+        />
+        <p className="text-destaque font-medium text-white">
           <WhisperText text={featStatement} />
         </p>
         <BlurFade delay={0.2}>
-          <p className="mt-4 max-w-md text-[15px] leading-relaxed text-white/50">{featText}</p>
+          <p className="mx-auto mt-4 max-w-md text-corpo text-white/50">{featText}</p>
         </BlurFade>
       </div>
 

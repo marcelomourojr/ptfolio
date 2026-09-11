@@ -32,13 +32,13 @@ function ActionButton({ href, children }: { href: string; children: React.ReactN
       target="_blank"
       rel="noopener noreferrer"
       className="group inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5
-                 text-[14px] font-medium text-white transition-colors hover:border-white/40 hover:bg-white/[0.06]
+                 text-corpo font-medium text-white transition-colors hover:border-white/40 hover:bg-white/[0.06]
                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
     >
       {children}
       <ArrowUpRight
         aria-hidden
-        className="size-4 text-white/40 transition-all duration-300
+        className="size-4 text-white/50 transition-all duration-300
                    group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-rose-500"
       />
     </a>
@@ -99,7 +99,7 @@ export function ProjectModal({
               ref={closeRef}
               type="button"
               onClick={onClose}
-              className="group flex items-center gap-3 rounded-full bg-white/[0.07] py-2.5 pl-5 pr-4 text-[14px]
+              className="group flex items-center gap-3 rounded-full bg-white/[0.07] py-2.5 pl-5 pr-4 text-corpo
                          font-medium text-white transition-colors hover:bg-white/[0.12]
                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
             >
@@ -122,30 +122,30 @@ export function ProjectModal({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
             >
-              <p className="font-mono text-[11px] tracking-[0.08em] text-white/40">
+              <p className="font-mono text-micro tracking-[0.08em] text-white/50">
                 {project.year} · {project.category}
               </p>
               <h2
                 id="titulo-projeto"
-                className="mt-4 text-[clamp(2rem,5.5vw,4.25rem)] font-semibold leading-[0.95] tracking-[-0.045em] text-white"
+                className="mt-4 text-display font-semibold text-white"
               >
                 {project.title}
               </h2>
 
               <div className="mt-8 grid gap-8 border-t border-white/10 pt-8 lg:grid-cols-12 lg:gap-16">
-                <p className="text-[15px] leading-relaxed text-white/55 lg:col-span-7">
+                <p className="max-w-measure text-corpo text-white/60 lg:col-span-7">
                   {project.description}
                 </p>
 
                 <div className="lg:col-span-5">
-                  <p className="font-mono text-[10px] tracking-[0.08em] text-white/35">
+                  <p className="font-mono text-micro tracking-[0.08em] text-white/50">
                     Ferramentas
                   </p>
                   <ul className="mt-4 flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
                       <li
                         key={tag}
-                        className="rounded-full border border-white/10 px-3.5 py-1.5 font-mono text-[11px]
+                        className="rounded-full border border-white/10 px-3.5 py-1.5 font-mono text-micro
                                    tracking-[0.04em] text-white/60"
                       >
                         {tag}
