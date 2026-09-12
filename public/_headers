@@ -1,14 +1,20 @@
-# Cache dos assets estáticos na Cloudflare Pages.
+# Cabeçalhos dos arquivos servidos pelo binding ASSETS do Worker.
 #
-# Por que aqui e não no next.config: com o @cloudflare/next-on-pages os
-# arquivos de /public são servidos pelo handler de assets estáticos da
-# Cloudflare, que não passa pelo headers() do Next — mas lê este arquivo.
-#
+# Por que aqui e não no next.config: os arquivos de /public são entregues pelo
+# Workers Static Assets, que não passa pelo headers() do Next — mas lê este
+# arquivo. O INVERSO também é verdade e foi medido no workerd local: o HTML das
+# páginas não passa por aqui. Por isso os cabeçalhos de segurança do site vivem
+# no next.config.ts, e aqui fica só o que é específico de arquivo estático.
+
+# nosniff vale para arquivo também: impede o navegador de "adivinhar" um tipo
+# diferente do que o servidor declarou.
+/*
+  X-Content-Type-Options: nosniff
+
 # O padrão do Next para /public é max-age=14400 (4h) + must-revalidate, então
 # quem volta no dia seguinte revalida imagem por imagem e vídeo por vídeo.
 # Nada aqui tem hash no nome, então uso 30 dias com stale-while-revalidate:
 # serve do cache na hora e atualiza em segundo plano.
-
 /images/*
   Cache-Control: public, max-age=2592000, stale-while-revalidate=86400
 
