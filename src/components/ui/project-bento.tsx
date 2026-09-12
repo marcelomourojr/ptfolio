@@ -2,13 +2,14 @@
 
 import { useCallback, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
 import dynamic from "next/dynamic";
 
 import { cn } from "@/lib/utils";
-import type { ProjectDetail } from "./project-modal";
+import type { Projeto } from "@/lib/projects-data";
 
 // O modal (e a galeria dentro dele) só é necessário quando um card é
 // clicado — sob demanda ele sai do JS inicial da página.
@@ -17,7 +18,7 @@ const ProjectModal = dynamic(
   { ssr: false },
 );
 
-export interface BentoItem extends ProjectDetail {
+export interface BentoItem extends Projeto {
   /** Imagem de capa do bloco. */
   cover: string;
   /** Proporção EXATA da capa, ex. "1179/2556". É ela que dimensiona o bloco. */
@@ -80,16 +81,28 @@ function Card({
       acompanha a pilha de duas paisagens ao lado). */
   fill?: boolean;
   className?: string;
-  onOpen: (project: BentoItem, trigger: HTMLButtonElement) => void;
+  onOpen: (project: BentoItem, trigger: HTMLAnchorElement) => void;
 }) {
-  const ref = useRef<HTMLButtonElement>(null);
+  const ref = useRef<HTMLAnchorElement>(null);
 
   return (
-    <button
+    // Link de VERDADE, não botão: o clique comum continua abrindo o modal
+    // (preventDefault abaixo), mas agora o card tem endereço — dá para copiar,
+    // abrir em nova aba com cmd+clique, e o buscador enxerga a página do
+    // projeto. Clique com modificador é deixado em paz de propósito, senão
+    // cmd+clique abriria o modal em vez da aba nova.
+    // `prefetch={false}`: o destino quase nunca é visitado por clique comum,
+    // então baixar as 8 páginas à toa só pesaria a home.
+    <Link
       ref={ref}
-      type="button"
-      onClick={() => ref.current && onOpen(project, ref.current)}
-      aria-label={`Abrir detalhes de ${project.title}`}
+      href={`/projetos/${project.slug}`}
+      prefetch={false}
+      onClick={(e) => {
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
+        e.preventDefault();
+        if (ref.current) onOpen(project, ref.current);
+      }}
+      aria-label={`Ver o projeto ${project.title}`}
       className={cn(
         "group relative block w-full overflow-hidden rounded-xl border border-white/10 bg-white/[0.02] sm:rounded-2xl",
         "text-left transition-colors duration-500 hover:border-white/25",
@@ -129,7 +142,7 @@ function Card({
                      group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-rose-500 sm:block"
         />
       </div>
-    </button>
+    </Link>
   );
 }
 
@@ -183,16 +196,16 @@ function composeMobileRows(bands: BentoBand[]): MobileRow[] {
 
 export function ProjectBento({ bands }: { bands: BentoBand[] }) {
   const [active, setActive] = useState<BentoItem | null>(null);
-  const triggerRef = useRef<HTMLButtonElement | null>(null);
+  const triggerRef = useRef<HTMLAnchorElement | null>(null);
   const reduceMotion = useReducedMotion();
 
-  const open = useCallback((project: BentoItem, trigger: HTMLButtonElement) => {
+  const open = useCallback((project: BentoItem, trigger: HTMLAnchorElement) => {
     triggerRef.current = trigger;
     setActive(project);
   }, []);
 
   // Devolve o foco ao card que abriu o modal. Se aquele botão saiu de cena
-  // (girou o aparelho e o outro bloco do dual-render assumiu), foca o botão
+  // (girou o aparelho e o outro bloco do dual-render assumiu), foca o card
   // VISÍVEL do mesmo projeto — senão o foco cairia no body (WCAG 2.4.3).
   const close = useCallback(() => {
     setActive(null);
@@ -203,7 +216,7 @@ export function ProjectBento({ bands }: { bands: BentoBand[] }) {
     }
     const rotulo = alvo?.getAttribute("aria-label");
     if (rotulo) {
-      const visivel = [...document.querySelectorAll<HTMLButtonElement>("button[aria-label]")].find(
+      const visivel = [...document.querySelectorAll<HTMLAnchorElement>("a[aria-label]")].find(
         (b) => b.getAttribute("aria-label") === rotulo && b.offsetParent !== null,
       );
       visivel?.focus();

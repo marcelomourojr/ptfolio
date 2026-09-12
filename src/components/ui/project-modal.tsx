@@ -2,23 +2,11 @@
 
 import { useEffect, useRef } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
 import { GalleryStrip } from "./gallery-strip";
-
-export interface ProjectDetail {
-  title: string;
-  year: string;
-  category: string;
-  description: string;
-  images: string[];
-  tags: string[];
-  link?: string;
-  appStoreLink?: string;
-  playStoreLink?: string;
-  /** Capturas de celular ficam num slide mais estreito. */
-  portrait?: boolean;
-}
+import type { Projeto } from "@/lib/projects-data";
 
 /** Links "#" são placeholders — não viram botão. */
 function realHref(href?: string) {
@@ -49,7 +37,7 @@ export function ProjectModal({
   project,
   onClose,
 }: {
-  project: ProjectDetail | null;
+  project: Projeto | null;
   onClose: () => void;
 }) {
   const reduceMotion = useReducedMotion();
@@ -160,6 +148,22 @@ export function ProjectModal({
                       {playStore && <ActionButton href={playStore}>Google Play</ActionButton>}
                     </div>
                   )}
+
+                  {/* O modal não mexe no endereço da página, então quem chegou
+                      por aqui não tem o que copiar para mandar o case a
+                      alguém. Este link leva à página de verdade do projeto. */}
+                  <Link
+                    href={`/projetos/${project.slug}`}
+                    className="group mt-7 inline-flex items-center gap-2 font-mono text-micro tracking-[0.06em]
+                               text-white/50 transition-colors hover:text-white
+                               focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                  >
+                    Ver a página do projeto
+                    <ArrowUpRight
+                      aria-hidden
+                      className="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                    />
+                  </Link>
                 </div>
               </div>
             </motion.div>
