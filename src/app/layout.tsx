@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter_Tight, Geist_Mono } from "next/font/google";
+import { Inter_Tight, Chivo_Mono } from "next/font/google";
 import "./globals.css";
 
 // Equivalente livre mais próximo da Helvetica Now Display / Neue Haas Grotesk.
@@ -9,9 +9,25 @@ const displaySans = Inter_Tight({
   display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+// Chivo Mono no lugar da Geist Mono por causa do ZERO cortado, que aparece
+// em 8 dos 8 cards de projeto ("2026 · Website") e em todo contador do site.
+//
+// A Geist não tem saída: as features do arquivo que o next/font serve são
+// ccmp, dnom, frac, locl e numr — não existe zero, ss01 nem cv01 para
+// desligar a barra, ela está na própria outline do glifo.
+//
+// A escolha foi medida, não chutada: desenhei o "0" de 15 monoespaçadas num
+// canvas e contei a tinta no centro do glifo. Cortam o zero — Roboto (70%),
+// DM (62%), PT (64%), Space (84%), Ubuntu (92%), Cousine (100%), Noto Sans
+// (74%), Overpass (87%), Red Hat (63%), Spline Sans (72%), Martian (78%),
+// Anonymous Pro (55%). Passam limpas — Chivo (0%), Azeret (0%) e Courier
+// Prime (0%). Chivo ganhou por ser a mais próxima em largura da Geist
+// (95 contra 92 unidades), então nenhum rótulo do bento muda de quebra;
+// a Azeret é 16% mais larga e a Courier Prime é máquina de escrever.
+const monoRotulos = Chivo_Mono({
+  variable: "--font-mono-rotulos",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const siteUrl = "https://marcelomouro.com";
@@ -74,7 +90,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body
-        className={`${displaySans.variable} ${geistMono.variable} antialiased`}
+        className={`${displaySans.variable} ${monoRotulos.variable} antialiased`}
       >
         {children}
       </body>

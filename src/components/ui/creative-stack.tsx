@@ -347,7 +347,7 @@ export function CreativeStack({ items, className }: CreativeStackProps) {
       </div>
 
       {/* No mobile as laterais somem: título e contador vêm para baixo */}
-      <div className="mt-4 flex items-baseline justify-between px-1 md:hidden">
+      <div className="mt-8 flex items-baseline justify-between px-1 md:hidden">
         <div>
           <p className="text-corpo font-medium tracking-[-0.01em] text-white">{atual.title}</p>
           <p className="mt-1 font-mono text-micro tracking-[0.04em] text-white/50">{atual.meta}</p>

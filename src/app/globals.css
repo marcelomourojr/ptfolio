@@ -35,7 +35,7 @@
   --text-marca--letter-spacing: -0.04em;
 
   /* Título de seção em coluna larga */
-  --text-display: clamp(2rem, 5vw, 5rem);
+  --text-display: clamp(2.5rem, 5vw, 5rem);
   --text-display--line-height: 0.95;
   --text-display--letter-spacing: -0.03em;
 
@@ -52,7 +52,7 @@
   --text-item--letter-spacing: -0.02em;
 
   /* Frases: hero, statements, h3 de certificado */
-  --text-destaque: clamp(1.25rem, 2.5vw, 2.25rem);
+  --text-destaque: clamp(1.375rem, 2.5vw, 2.25rem);
   --text-destaque--line-height: 1.15;
   --text-destaque--letter-spacing: -0.02em;
 
@@ -78,7 +78,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans-display);
-  --font-mono: var(--font-geist-mono);
+  --font-mono: var(--font-mono-rotulos);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);

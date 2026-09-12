@@ -164,12 +164,6 @@ export function CreativesSection({
           Depois do trilho de propósito — antes dele já existe o cabeçalho da
           seção, e o ritmo espelha Projetos: mostrar → explicar → explorar. */}
       <div className="relative mx-auto mt-16 max-w-3xl text-center sm:mt-24">
-        {/* Marca de canto centralizada junto com o texto — ancorada à
-            esquerda ela ficaria órfã, longe do bloco que assina. */}
-        <span
-          aria-hidden
-          className="absolute -top-3 left-1/2 size-2 -translate-x-1/2 border-l border-t border-rose-500"
-        />
         <p className="text-destaque font-medium text-white">
           <WhisperText text={featStatement} />
         </p>

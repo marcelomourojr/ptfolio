@@ -16,9 +16,15 @@ import type { NextConfig } from "next";
  * para fora. O site não busca nada externo: 26 recursos, todos da própria
  * origem.
  */
+// Em desenvolvimento o React usa eval() para reconstruir pilhas de erro e
+// outras ferramentas de depuração; sem 'unsafe-eval' o console enche de erro
+// de CSP e o Fast Refresh perde recurso. Em produção o React nunca usa eval,
+// então a política estrita vale onde importa.
+const dev = process.env.NODE_ENV === "development";
+
 const csp = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline'",
+  `script-src 'self' 'unsafe-inline'${dev ? " 'unsafe-eval'" : ""}`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: blob:",
   "media-src 'self' blob:",

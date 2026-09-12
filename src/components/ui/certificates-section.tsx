@@ -126,9 +126,12 @@ export function CertificatesSection({
             {/* Só a marca de canto: o rótulo "Formação" saiu a pedido. */}
             <span aria-hidden className="block size-2 border-l border-t border-rose-500" />
 
-            {/* Escala menor que a das outras seções: aqui o título divide a
-                coluna com a logo, e o clamp de 4.5rem do padrão a engoliria. */}
-            <h2 className="mt-4 text-display-contido font-semibold text-white">
+            {/* Só a partir de lg a escala é menor: aqui o título divide a
+                coluna com a logo e o clamp do padrão a engoliria. No celular
+                não existe coluna, então ele acompanha o tamanho das outras
+                seções — senão fica visivelmente menor que "Projetos" e
+                "Criativos", que é como estava. */}
+            <h2 className="mt-4 text-display font-semibold text-white lg:text-display-contido">
               {title}
             </h2>
 

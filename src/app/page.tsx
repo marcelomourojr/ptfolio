@@ -331,7 +331,16 @@ export default function Home() {
     // Lenis é o efeito mais desconfortável do site nesse caso.
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const lenis = new Lenis();
+    // O padrão do Lenis é lerp 0.1: a cada quadro a página anda só 10% do que
+    // falta, então uma rolada leva ~44 quadros (cerca de 700ms) para assentar.
+    // É isso que dá a sensação de rolagem arrastada, sempre atrás do gesto.
+    // Com 0.16 ela assenta em ~26 quadros (~430ms): continua suave, mas
+    // acompanha quem está rolando.
+    //
+    // O toque fica NATIVO de propósito (syncTouch padrão é false): no celular
+    // a rolagem do sistema é melhor que qualquer interpolação, e sincronizar
+    // as duas costuma criar atraso e brigar com o gesto do dedo.
+    const lenis = new Lenis({ lerp: 0.16 });
     // A navbar usa o Lenis para rolar suave até as âncoras
     (window as { __lenis?: Lenis }).__lenis = lenis;
 
