@@ -193,6 +193,7 @@ const timelineData: ProjectDetail[] = [
       "/images/pt8.webp"
     ],
     tags: ["Figma", "Antigravity"],
+    link: "https://protech.studio",
   },
   {
     title: "Isaac the Barber",
