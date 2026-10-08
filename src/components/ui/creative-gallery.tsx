@@ -48,6 +48,10 @@ interface Player {
   video: HTMLVideoElement;
   texture: THREE.VideoTexture;
   material: THREE.ShaderMaterial;
+  /** Entrega as fontes ao vídeo e começa o download. Chamar de novo não faz nada. */
+  carregar: () => void;
+  /** Libera vídeo, textura e material. Depois disso, carregar() não faz nada. */
+  descartar: () => void;
 }
 
 const DEPTH_RANGE = 50;
@@ -60,6 +64,39 @@ const FASE = 4;
 // Fade/blur em função da posição normalizada no túnel (0 = fundo, 0.5 = câmera).
 // Os planos somem ANTES de atravessar a câmera (0.4–0.43), como na referência.
 const FADE = { inStart: 0.05, inEnd: 0.25, outStart: 0.4, outEnd: 0.43 };
+
+/** Opacidade de um plano na posição t (0..1) do túnel. Usada pelo useFrame e
+ *  pela ordem do aquecimento — uma conta só, para as duas nunca divergirem. */
+function opacidadeEm(t: number): number {
+  let o = 1;
+  if (t < FADE.inStart) o = 0;
+  else if (t <= FADE.inEnd) o = (t - FADE.inStart) / (FADE.inEnd - FADE.inStart);
+  else if (t > FADE.outEnd) o = 0;
+  else if (t >= FADE.outStart) o = 1 - (t - FADE.outStart) / (FADE.outEnd - FADE.outStart);
+  return Math.max(0, Math.min(1, o));
+}
+
+/**
+ * Ordem em que os planos aparecem para quem chega rolando de cima: primeiro
+ * os que já estão em cena no pin, do mais visível ao menos; depois os outros,
+ * na ordem em que entram no túnel. Com 6 vídeos dá 1, 2, 0, 5, 4, 3 — e não
+ * 0..5, que fazia a fila gastar banda com o último plano a aparecer antes do
+ * primeiro. Calculada pela mesma fórmula do useFrame, então continua certa
+ * se o número de vídeos mudar.
+ */
+function ordemDeAparicao(n: number): number[] {
+  const t0 = (i: number) => {
+    const z = ((((DEPTH_RANGE / n) * i + FASE) % DEPTH_RANGE) + DEPTH_RANGE) % DEPTH_RANGE;
+    return z / DEPTH_RANGE;
+  };
+  const indices = Array.from({ length: n }, (_, i) => i);
+  const emCena = indices
+    .filter((i) => opacidadeEm(t0(i)) > 0.001)
+    .sort((a, b) => opacidadeEm(t0(b)) - opacidadeEm(t0(a)));
+  const ateEntrar = (i: number) => (FADE.inStart - t0(i) + 1) % 1;
+  const fora = indices.filter((i) => opacidadeEm(t0(i)) <= 0.001).sort((a, b) => ateEntrar(a) - ateEntrar(b));
+  return [...emCena, ...fora];
+}
 const BLUR = { inStart: 0.0, inEnd: 0.1, outStart: 0.4, outEnd: 0.43, max: 8.0 };
 
 const vertexShader = /* glsl */ `
@@ -125,6 +162,11 @@ const fragmentShader = /* glsl */ `
   }
 `;
 
+/** Quantos vídeos começam a baixar juntos no aquecimento. */
+const LOTE_INICIAL = 2;
+/** Vídeo que não responde em tanto tempo deixa de segurar a fila. */
+const ESPERA_MAX_MS = 4000;
+
 /** Distribuição espacial dos planos: ângulo áureo, como na referência. */
 function spatialPosition(i: number): { x: number; y: number } {
   const hAngle = (i * 2.618) % (Math.PI * 2);
@@ -148,14 +190,28 @@ function criarPlayer(slug: string): Player {
   // praticamente qualquer máquina desde ~2010; VP9 vira decode por software
   // em CPUs antigas — e 6 streams simultâneos moíam o computador inteiro
   // ("travando sem parar"). Os MP4 480p daqui são inclusive menores.
-  const mp4 = document.createElement("source");
-  mp4.src = `/videos/${slug}-480.mp4`;
-  mp4.type = "video/mp4";
-  const webm = document.createElement("source");
-  webm.src = `/videos/${slug}-480.webm`;
-  webm.type = "video/webm";
-  video.append(mp4, webm);
-  video.load();
+  //
+  // O vídeo NASCE SEM FONTE, e só a recebe quando o aquecimento escalonado
+  // chega nele (ou quando o plano entra em cena). Não dá para adiar pelo
+  // `preload`: medido no Chromium, `preload="none"` + load() baixa o arquivo
+  // inteiro do mesmo jeito (readyState 4 sem nenhum play). Sem fonte, não há
+  // o que buscar. Ter fonte é o próprio estado de "carregado" — o descarte
+  // abaixo remove as fontes, então tudo volta ao começo de forma coerente.
+  // Marca de descarte: no Fast Refresh o React refaz os efeitos com os
+  // players JÁ descartados, e sem ela carregar() devolvia a fonte a eles —
+  // vídeos órfãos baixando e tocando soltos até recarregar a página.
+  const estado = { descartado: false };
+  const carregar = () => {
+    if (estado.descartado || video.firstChild) return;
+    const mp4 = document.createElement("source");
+    mp4.src = `/videos/${slug}-480.mp4`;
+    mp4.type = "video/mp4";
+    const webm = document.createElement("source");
+    webm.src = `/videos/${slug}-480.webm`;
+    webm.type = "video/webm";
+    video.append(mp4, webm);
+    video.load();
+  };
 
   const texture = new THREE.VideoTexture(video);
   texture.colorSpace = THREE.SRGBColorSpace;
@@ -178,17 +234,19 @@ function criarPlayer(slug: string): Player {
     fragmentShader,
   });
 
-  return { video, texture, material };
+  const descartar = () => {
+    estado.descartado = true;
+    video.pause();
+    video.removeAttribute("src");
+    while (video.firstChild) video.firstChild.remove();
+    video.load();
+    texture.dispose();
+    material.dispose();
+  };
+
+  return { video, texture, material, carregar, descartar };
 }
 
-function descartarPlayer({ video, texture, material }: Player) {
-  video.pause();
-  video.removeAttribute("src");
-  while (video.firstChild) video.firstChild.remove();
-  video.load();
-  texture.dispose();
-  material.dispose();
-}
 
 function GalleryScene({
   items,
@@ -229,7 +287,7 @@ function GalleryScene({
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setPlayers(novos);
     return () => {
-      novos.forEach(descartarPlayer);
+      novos.forEach((p) => p.descartar());
     };
   }, [slugs]);
 
@@ -237,22 +295,78 @@ function GalleryScene({
   // decode — sem isso a textura ficava preta até o buffer chegar, e a cena
   // parecia vazia ou demorada. Fora da zona, pausam. Com o efeito rodando,
   // o useFrame refina: só tocam os planos em cena (ver tocandoRef).
+  //
+  // Aquecimento ESCALONADO. Antes os 6 recebiam play() juntos a 900px da
+  // seção: 9,14 MB disputando a banda ao mesmo tempo, e num celular comum em
+  // dados móveis todos chegavam devagar — inclusive os primeiros, que são os
+  // que aparecem logo no pin. Agora entram em fila: começam os dois primeiros
+  // e cada um que fica pronto (canplay) libera o próximo.
+  //
+  // Um vídeo travado não segura a fila: erro ou ESPERA_MAX_MS sem resposta
+  // também liberam o próximo. E tocandoRef só marca quem a fila de fato
+  // iniciou — se o pin chegar antes de a fila terminar, o useFrame vê o plano
+  // como parado e dá o play() ele mesmo. Nenhum plano fica esperando no preto.
   const tocandoRef = useRef<boolean[]>([]);
   useEffect(() => {
-    players.forEach(({ video }) => {
-      if (aquecido) void video.play().catch(() => {});
-      else video.pause();
-    });
-    tocandoRef.current = players.map(() => aquecido);
+    tocandoRef.current = players.map(() => false);
+    if (!aquecido) {
+      players.forEach(({ video }) => video.pause());
+      return;
+    }
+
+    // O estado da fila mora num objeto, e não em `let`: reatribuir variável
+    // local de dentro das funções abaixo faz a análise do React Compiler
+    // desistir do componente INTEIRO, em silêncio — o lint deixava de
+    // inspecionar a galeria toda. Mutar propriedade não tem esse efeito.
+    const fila = { proximo: 0, cancelada: false, timers: [] as number[] };
+    const ordem = ordemDeAparicao(players.length);
+
+    const iniciar = () => {
+      if (fila.cancelada || fila.proximo >= players.length) return;
+      const i = ordem[fila.proximo];
+      fila.proximo += 1;
+      const { video, carregar } = players[i];
+      tocandoRef.current[i] = true;
+      carregar();
+      void video.play().catch(() => {});
+
+      const vez = { liberada: false };
+      const liberar = () => {
+        if (vez.liberada) return;
+        vez.liberada = true;
+        iniciar();
+      };
+      if (video.readyState >= HTMLMediaElement.HAVE_FUTURE_DATA) {
+        liberar();
+        return;
+      }
+      video.addEventListener("canplay", liberar, { once: true });
+      // Com <source> filhos, a falha dispara "error" NO <source>, e esse
+      // evento não borbulha — só a fase de captura do <video> o recebe.
+      video.addEventListener("error", liberar, { once: true, capture: true });
+      fila.timers.push(window.setTimeout(liberar, ESPERA_MAX_MS));
+    };
+
+    for (let n = 0; n < LOTE_INICIAL; n++) iniciar();
+
+    return () => {
+      fila.cancelada = true;
+      fila.timers.forEach((t) => window.clearTimeout(t));
+    };
   }, [players, aquecido]);
 
   // No PIN (entrada de verdade), todos recomeçam do zero: o gancho de cada
   // criativo toca junto com a chegada. O seek a 0 é instantâneo — o trecho
   // já está decodificado pela zona quente.
+  //
+  // Só rebobina quem JÁ TEM dados. Mexer no currentTime de um vídeo que ainda
+  // não carregou obriga o navegador a baixá-lo na hora — era isso que
+  // atropelava a fila do aquecimento: no pin, os 6 eram buscados no mesmo
+  // milissegundo (medido). Vídeo que nunca carregou já está no zero mesmo.
   useEffect(() => {
     if (pausado) return;
     players.forEach(({ video }) => {
-      video.currentTime = 0;
+      if (video.readyState > HTMLMediaElement.HAVE_NOTHING) video.currentTime = 0;
     });
   }, [players, pausado]);
 
@@ -304,12 +418,7 @@ function GalleryScene({
       mesh.position.z = z - half;
 
       const t = z / DEPTH_RANGE;
-      let opacity = 1;
-      if (t < FADE.inStart) opacity = 0;
-      else if (t <= FADE.inEnd) opacity = (t - FADE.inStart) / (FADE.inEnd - FADE.inStart);
-      else if (t > FADE.outEnd) opacity = 0;
-      else if (t >= FADE.outStart) opacity = 1 - (t - FADE.outStart) / (FADE.outEnd - FADE.outStart);
-      opacity = Math.max(0, Math.min(1, opacity));
+      const opacity = opacidadeEm(t);
 
       let blur = 0;
       if (t < BLUR.inStart) blur = BLUR.max;
@@ -328,9 +437,11 @@ function GalleryScene({
       const deveTocar = t < 0.5 || t > 0.9;
       if (tocandoRef.current[i] !== deveTocar) {
         tocandoRef.current[i] = deveTocar;
-        const { video } = players[i];
-        if (deveTocar) void video.play().catch(() => {});
-        else video.pause();
+        const { video, carregar } = players[i];
+        if (deveTocar) {
+          carregar();
+          void video.play().catch(() => {});
+        } else video.pause();
       }
 
       material.uniforms.opacity.value = opacity;

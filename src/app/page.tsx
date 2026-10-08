@@ -17,7 +17,7 @@ import type { Creative } from "@/components/ui/creative-stack";
 import { acharPorTitulo } from "@/lib/projects-data";
 import { Cursor, CursorProvider, CursorFollow } from "@/components/ui/cursor";
 
-import { ContactSection } from "@/components/ui/contact-section";
+import { ContactSection, SiteFooter } from "@/components/ui/contact-section";
 
 const navLinks = [
   { label: "Início", href: "#inicio" },
@@ -102,8 +102,7 @@ const bentoCovers: Record<string, { cover: string; aspect: string }> = {
 
 function bentoItem(titulo: string): BentoItem {
   const dados = acharPorTitulo(titulo);
-  const portrait = titulo === "Verbo" || titulo === "Sintony";
-  return { ...dados, ...bentoCovers[titulo], portrait };
+  return { ...dados, ...bentoCovers[titulo] };
 }
 
 // Criativos em vídeo feitos com IA (Verbo). `slug` aponta para os arquivos
@@ -129,11 +128,6 @@ const bentoBands: BentoBand[] = [
 ];
 
 // Certificados, do mais recente para o mais antigo.
-//
-// Google e USP apontam para a página pública de verificação da Coursera
-// (abre sem login e mostra o nome do aluno). Os outros quatro ainda caem na
-// lista do LinkedIn, que para visitante deslogado vira tela de login —
-// PENDENTE: trocar pelo link do "Exibir credencial" de cada um.
 //
 // Google e USP apontam para a página pública de verificação da Coursera —
 // abre sem login e mostra o nome do aluno (testado: HTTP 200).
@@ -257,12 +251,14 @@ export default function Home() {
           Você
         </div>
       </CursorFollow>
+      {/* Navbar em notch: menu com scrollspy no centro (desktop); ilha única
+          com gaveta no mobile. Sem wordmark — o nome domina o hero.
+          Fica FORA do <main>: é navegação do site, não conteúdo. Como é
+          position: fixed, mudar de lugar no DOM não mexe em nada na tela. */}
+      <NotchHeader links={navLinks} />
+
       <main className="cursor-none">
       <GridBackground />
-
-      {/* Navbar em notch: menu com scrollspy no centro (desktop); ilha única
-          com gaveta no mobile. Sem wordmark — o nome domina o hero. */}
-      <NotchHeader links={navLinks} />
 
       <Hero
         eyebrow="Product Designer · UI/UX"
@@ -308,9 +304,9 @@ export default function Home() {
 
 
       <ContactSection />
-
-
     </main>
+
+    <SiteFooter />
     </CursorProvider>
   );
 }

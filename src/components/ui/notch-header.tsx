@@ -120,7 +120,9 @@ export function NotchHeader({ links }: NotchHeaderProps) {
   const rotuloAtivo = links.find((l) => l.href === ativo)?.label ?? links[0]?.label;
 
   return (
-    <div className="pointer-events-none fixed inset-x-0 top-0 z-50">
+    // <header> e não <div>: fora do <main>, vira o landmark "banner" — quem
+    // navega por regiões no leitor de tela chega à navegação por ele.
+    <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
       {/* Sem wordmark no header, por decisão do usuário: o notch central é a
           única presença — o nome já domina o hero logo abaixo. */}
       {/* Notch central: o menu (desktop) */}
@@ -230,6 +232,6 @@ export function NotchHeader({ links }: NotchHeaderProps) {
           </div>
         </div>
       </div>
-    </div>
+    </header>
   );
 }

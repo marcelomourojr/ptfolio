@@ -5,6 +5,8 @@ import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 
+import { useFocusTrap } from "@/lib/use-focus-trap";
+
 export interface LightboxCertificate {
   title: string;
   issuer: string;
@@ -37,6 +39,8 @@ interface CertificateLightboxProps {
 export function CertificateLightbox({ cert, onClose }: CertificateLightboxProps) {
   const reduceMotion = useReducedMotion();
   const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(dialogRef, cert !== null);
 
   useEffect(() => {
     if (!cert) return;
@@ -57,6 +61,7 @@ export function CertificateLightbox({ cert, onClose }: CertificateLightboxProps)
     <AnimatePresence>
       {cert && (
         <motion.div
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-labelledby="titulo-certificado"

@@ -41,7 +41,6 @@ interface ContactSectionProps {
   /** Só dígitos, com código do país: 55 + DDD + número. */
   whatsapp?: string;
   channels?: Channel[];
-  owner?: string;
 }
 
 /**
@@ -86,7 +85,6 @@ export function ContactSection({
   email = "contato@marcelomouro.com",
   whatsapp = "5514997000646",
   channels,
-  owner = "Marcelo Mouro Jr",
 }: ContactSectionProps) {
   const canais = channels ?? canaisPadrao(email);
   const reduceMotion = useReducedMotion();
@@ -103,7 +101,7 @@ export function ContactSection({
   });
 
   return (
-    <section id="contatos" className="px-6 pb-10 pt-24 sm:px-10 sm:pb-14 sm:pt-32">
+    <section id="contatos" className="px-6 pt-24 sm:px-10 sm:pt-32">
       {/* Sem reveal no contêiner: cada elemento tem o próprio efeito, visível
           quando a seção chega — um contêiner invisível escondia o whisper. */}
       <header className="max-w-3xl">
@@ -169,18 +167,30 @@ export function ContactSection({
         <LiquidMetalButton label="Fale comigo" href={whatsappHref(whatsapp)} width={224} height={58} />
       </motion.div>
 
-      <footer className="mt-16 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <p className="font-mono text-micro tracking-[0.06em] text-white/50">
-          © {new Date().getFullYear()} {owner}
-        </p>
-        <a
-          href="#inicio"
-          className="font-mono text-micro tracking-[0.06em] text-white/50 transition-colors hover:text-white
-                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
-        >
-          Voltar ao topo ↑
-        </a>
-      </footer>
     </section>
+  );
+}
+
+/**
+ * Rodapé do site. Era um <footer> dentro da seção de contato, dentro do
+ * <main> — e <footer> só vira o landmark "contentinfo" quando não está dentro
+ * de <main>, <section> ou <article>. Agora a home o renderiza depois do
+ * </main>. O espaçamento é o mesmo de antes: o pb que a seção tinha passou
+ * para cá, e o mt-16 continua separando do botão "Fale comigo".
+ */
+export function SiteFooter({ owner = "Marcelo Mouro Jr" }: { owner?: string }) {
+  return (
+    <footer className="mt-16 flex flex-col gap-3 px-6 pb-10 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:pb-14">
+      <p className="font-mono text-micro tracking-[0.06em] text-white/50">
+        © {new Date().getFullYear()} {owner}
+      </p>
+      <a
+        href="#inicio"
+        className="font-mono text-micro tracking-[0.06em] text-white/50 transition-colors hover:text-white
+                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+      >
+        Voltar ao topo ↑
+      </a>
+    </footer>
   );
 }

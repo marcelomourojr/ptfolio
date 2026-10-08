@@ -72,8 +72,26 @@ export function CreativesSection({
           jaChecou.current = true;
           // Máquina muito fraca nem tenta: mesmo com GPU real, 6 decodes de
           // vídeo + WebGL derrubam 2 núcleos / 2GB. Cartela estática serve.
-          const nav = navigator as Navigator & { deviceMemory?: number };
-          if ((nav.hardwareConcurrency ?? 8) <= 2 || (nav.deviceMemory ?? 8) <= 2) {
+          //
+          // Rede também conta: quem ligou a economia de dados, ou está numa
+          // conexão de fato ruim, não deve pagar ~9 MB de vídeo por um efeito
+          // — a cartela de posters tem ~205 KB. A Network Information API não
+          // existe no Safari (nem no iOS, onde todo navegador é WebKit); lá a
+          // checagem simplesmente não dispara, e quem segura o peso é o
+          // aquecimento escalonado da galeria.
+          //
+          // "3g" NÃO entra, de propósito: o effectiveType é uma ESTIMATIVA do
+          // Chrome pela latência medida, e qualquer RTT acima de ~270ms já vira
+          // "3g". Medido: um M2 com WebGL de verdade, no localhost, oscilou
+          // entre 4g e 3g e perdeu a galeria. Muita conexão 4G real cai nessa
+          // faixa — para essas, quem segura o peso é a fila de vídeos.
+          const nav = navigator as Navigator & {
+            deviceMemory?: number;
+            connection?: { saveData?: boolean; effectiveType?: string };
+          };
+          const redeFraca =
+            nav.connection?.saveData === true || /(^|-)2g$/.test(nav.connection?.effectiveType ?? "");
+          if ((nav.hardwareConcurrency ?? 8) <= 2 || (nav.deviceMemory ?? 8) <= 2 || redeFraca) {
             setSemWebgl(true);
             setMontada(true);
             return;

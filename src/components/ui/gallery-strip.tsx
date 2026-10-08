@@ -209,7 +209,13 @@ export function GalleryStrip({ images, title }: GalleryStripProps) {
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
         onPointerCancel={onPointerUp}
-        className="mt-6 flex cursor-grab select-none gap-4 overflow-x-auto pb-4
+        // Focável de propósito: com uma imagem só não há setas, e se a tela
+        // transborda (celular), sem foco aqui quem usa teclado não alcançava
+        // o resto dela — a trava de foco do modal pulava a faixa.
+        tabIndex={0}
+        aria-label={`Telas de ${title}`}
+        className="mt-6 flex cursor-grab select-none gap-4 overflow-x-auto rounded-lg pb-4
+                   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60
                    active:cursor-grabbing
                    [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
       >

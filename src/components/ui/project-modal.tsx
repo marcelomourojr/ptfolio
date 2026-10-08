@@ -7,6 +7,7 @@ import { ArrowUpRight } from "lucide-react";
 
 import { GalleryStrip } from "./gallery-strip";
 import type { Projeto } from "@/lib/projects-data";
+import { useFocusTrap } from "@/lib/use-focus-trap";
 
 /** Links "#" são placeholders — não viram botão. */
 function realHref(href?: string) {
@@ -42,6 +43,8 @@ export function ProjectModal({
 }) {
   const reduceMotion = useReducedMotion();
   const closeRef = useRef<HTMLButtonElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(dialogRef, project !== null);
 
   const open = project !== null;
 
@@ -70,6 +73,7 @@ export function ProjectModal({
     <AnimatePresence>
       {open && project && (
         <motion.div
+          ref={dialogRef}
           role="dialog"
           aria-modal="true"
           aria-labelledby="titulo-projeto"

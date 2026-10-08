@@ -164,8 +164,13 @@ export default async function PaginaProjeto({
 
           {p.tags.length > 0 && (
             <div className="mt-8">
-              <h2 className="font-mono text-micro tracking-[0.08em] text-white/40">Ferramentas</h2>
-              <ul className="mt-3 flex flex-wrap gap-2">
+              {/* Rótulo, não cabeçalho: era um <h2> que competia com a galeria
+                  pelo segundo nível do sumário da página. E /50, não /40 —
+                  /40 dava 3,66:1 em 11px e reprovava no WCAG AA; /50 dá 5,32:1. */}
+              <p id="rotulo-ferramentas" className="font-mono text-micro tracking-[0.08em] text-white/50">
+                Ferramentas
+              </p>
+              <ul aria-labelledby="rotulo-ferramentas" className="mt-3 flex flex-wrap gap-2">
                 {p.tags.map((t) => (
                   <li
                     key={t}
@@ -187,8 +192,14 @@ export default async function PaginaProjeto({
             por uma marcação no projeto: uma captura de celular em largura
             cheia daria 1893px de altura cada uma (a página do Verbo passava
             de 9500px). Decidir por arquivo também aguenta galeria mista. */}
-        <section className="mt-16" aria-label={`Telas do projeto ${p.title}`}>
-          <div className="space-y-6 sm:space-y-8">
+        <section className="mt-16" aria-labelledby="titulo-telas">
+          {/* A galeria é o corpo da página e não tinha cabeçalho nenhum — quem
+              navega por títulos no leitor de tela pulava direto para o fim.
+              O mesmo rótulo "Telas" que o modal da home já usa. */}
+          <h2 id="titulo-telas" className="font-mono text-micro tracking-[0.08em] text-white/50">
+            Telas
+          </h2>
+          <div className="mt-6 space-y-6 sm:space-y-8">
             {p.images.map((src, i) => (
               <div
                 key={src}

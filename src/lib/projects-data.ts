@@ -18,8 +18,6 @@ export interface ProjectDetail {
   link?: string;
   appStoreLink?: string;
   playStoreLink?: string;
-  /** Capturas de celular ficam num slide mais estreito. */
-  portrait?: boolean;
 }
 
 export interface Projeto extends ProjectDetail {
@@ -54,7 +52,7 @@ const dados: ProjectDetail[] = [
       "/images/6c.webp"
     ],
     tags: ["Figma", "Framer"],
-    link: "https://cupidlove.com.br",
+    link: "https://cupidlove.framer.website/",
   },
   {
     title: "Verbo",
@@ -98,6 +96,7 @@ const dados: ProjectDetail[] = [
       "/images/Webchat-1.webp"
     ],
     tags: ["Figma", "Antigravity"],
+    link: "https://kingchat.com",
   },
   {
     title: "Zé dos Concursos",
