@@ -41,6 +41,11 @@ function ProductCard({ item, featured = false }: { item: ProductLink; featured?:
             alt=""
             fill
             sizes="(max-width: 640px) 100vw, 512px"
+            // O destaque fica sempre no topo e é o maior elemento da tela
+            // (o LCP, medido pelo próprio Next): sem isto ele entrava na fila
+            // do lazy-load e esperava as miniaturas.
+            loading="eager"
+            fetchPriority="high"
             draggable={false}
             className="object-cover"
           />
