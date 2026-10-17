@@ -68,20 +68,45 @@ export function NotchHeader({ links }: NotchHeaderProps) {
   const ilhaRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
 
-  // Scrollspy: a seção que cruza a faixa do meio da tela vira o item ativo
+  // A seção ativa vai do seu início até o início da próxima âncora.
+  // Observar só a interseção perdia seções curtas: ao voltar para #projetos,
+  // o título já estava acima da faixa observada e o menu ficava em "Início".
   useEffect(() => {
-    const secoes = links
-      .map((l) => document.querySelector(l.href))
-      .filter((el): el is Element => el !== null);
-    const io = new IntersectionObserver(
-      (entries) => {
-        const visivel = entries.find((e) => e.isIntersecting);
-        if (visivel) setAtivo(`#${visivel.target.id}`);
-      },
-      { rootMargin: "-45% 0px -50% 0px" },
-    );
-    secoes.forEach((s) => io.observe(s));
-    return () => io.disconnect();
+    const secoes = links.flatMap((link) => {
+      const el = document.querySelector(link.href);
+      return el ? [{ href: link.href, el }] : [];
+    });
+    let quadro = 0;
+    const atualizar = () => {
+      quadro = 0;
+      const linha = Math.max(72, window.innerHeight * 0.45);
+      let atual = secoes[0]?.href ?? "";
+      for (const secao of secoes) {
+        if (secao.el.getBoundingClientRect().top <= linha) atual = secao.href;
+      }
+      setAtivo(atual);
+    };
+    const agendar = () => {
+      if (!quadro) quadro = requestAnimationFrame(atualizar);
+    };
+
+    // A leitura inicial cobre o retorno por link e a restauração de scroll;
+    // o ResizeObserver cobre fontes e seções que mudam de altura depois disso.
+    agendar();
+    const ro = new ResizeObserver(agendar);
+    ro.observe(document.body);
+    window.addEventListener("scroll", agendar, { passive: true });
+    window.addEventListener("resize", agendar);
+    window.addEventListener("hashchange", agendar);
+    window.addEventListener("pageshow", agendar);
+    return () => {
+      cancelAnimationFrame(quadro);
+      ro.disconnect();
+      window.removeEventListener("scroll", agendar);
+      window.removeEventListener("resize", agendar);
+      window.removeEventListener("hashchange", agendar);
+      window.removeEventListener("pageshow", agendar);
+    };
   }, [links]);
 
   // Gaveta mobile fecha em clique fora e no Esc
