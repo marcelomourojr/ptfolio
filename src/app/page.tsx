@@ -211,14 +211,17 @@ export default function Home() {
     // A navbar usa o Lenis para rolar suave até as âncoras
     (window as { __lenis?: Lenis }).__lenis = lenis;
 
+    let quadro: number;
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      quadro = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    quadro = requestAnimationFrame(raf);
 
     return () => {
+      // Encerra o loop antes de destruir a instância ao sair da home.
+      cancelAnimationFrame(quadro);
       delete (window as { __lenis?: Lenis }).__lenis;
       lenis.destroy();
     };

@@ -201,6 +201,9 @@
      o título da seção escondido atrás dela. Cobre âncora nativa e
      scrollIntoView; o caminho do Lenis usa `offset` no notch-header. */
   html {
+    /* O useScroll mede os trilhos em relação ao scrollingElement (html).
+       Uma raiz posicionada mantém os offsets no mesmo referencial. */
+    position: relative;
     scroll-padding-top: 72px;
   }
   * {

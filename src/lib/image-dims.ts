@@ -1,8 +1,8 @@
 /**
- * Dimensões reais de cada imagem em /public/images, geradas por script.
- * A galeria do modal usa isto para dar a cada slide a proporção EXATA da
- * imagem — é o que elimina tarjas (letterbox) sem recortar nada.
- * Regenerar: rodar o script de dims após adicionar imagens novas.
+ * Dimensões reais das imagens em /public/images e subpastas.
+ * Arquivo gerado por scripts/gera-image-dims.mjs — não editar à mão.
+ * Regenerar: npm run images:dims
+ * Verificar sem escrever: npm run images:dims -- --check
  */
 export const IMAGE_DIMS: Record<string, string> = {
   "/images/1c.webp": "1600 / 1005",
@@ -28,9 +28,21 @@ export const IMAGE_DIMS: Record<string, string> = {
   "/images/Isaac5.webp": "1600 / 1005",
   "/images/Mensagens-do-dia.webp": "738 / 1600",
   "/images/Quiz.webp": "738 / 1600",
-  "/images/reflexao.webp": "738 / 1600",
   "/images/Versiculo.webp": "738 / 1600",
   "/images/Webchat-1.webp": "1600 / 1005",
+  "/images/certificados/fiap-user-experience.webp": "1274 / 900",
+  "/images/certificados/fiap.svg": "100 / 28",
+  "/images/certificados/google.svg": "24 / 24",
+  "/images/certificados/imagenation.webp": "82 / 82",
+  "/images/certificados/microsoft.svg": "23 / 23",
+  "/images/certificados/tcb.svg": "524 / 216",
+  "/images/certificados/the-cloud-bootcamp-badge.webp": "800 / 800",
+  "/images/certificados/usp.png": "130 / 54",
+  "/images/links/easysmx-s15.webp": "1024 / 640",
+  "/images/links/gamepad-pro.webp": "800 / 800",
+  "/images/links/ks42-branco.webp": "1024 / 649",
+  "/images/links/ks42-hall.webp": "1024 / 646",
+  "/images/og.png": "1200 / 630",
   "/images/projeto-1.webp": "1600 / 1005",
   "/images/projeto-2---Primeiro-Portfolio.webp": "1600 / 900",
   "/images/pt1.webp": "1600 / 1005",
@@ -41,6 +53,8 @@ export const IMAGE_DIMS: Record<string, string> = {
   "/images/pt6.webp": "1600 / 1005",
   "/images/pt7.webp": "1600 / 1005",
   "/images/pt8.webp": "1600 / 1005",
+  "/images/reflexao.webp": "738 / 1600",
+  "/images/sobre-eu.webp": "1086 / 1448",
   "/images/ze1.webp": "1600 / 1005",
   "/images/ze2.webp": "1600 / 1005",
   "/images/ze3.webp": "1600 / 1005",
