@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -37,6 +38,7 @@ interface CertificateLightboxProps {
  * quadrado e o certificado é paisagem, e nenhum dos dois pode ser recortado.
  */
 export function CertificateLightbox({ cert, onClose }: CertificateLightboxProps) {
+  const { t } = useLanguage();
   const reduceMotion = useReducedMotion();
   const closeRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
@@ -85,7 +87,7 @@ export function CertificateLightbox({ cert, onClose }: CertificateLightboxProps)
                 id="titulo-certificado"
                 className="mt-1 truncate text-item font-semibold text-white"
               >
-                {cert.title}
+                {t(cert.title)}
               </h2>
             </div>
 
@@ -97,7 +99,7 @@ export function CertificateLightbox({ cert, onClose }: CertificateLightboxProps)
                          font-medium text-white transition-colors hover:bg-white/[0.12]
                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
             >
-              Fechar
+              {t("Fechar")}
               {/* `-translate-y-1/2` é obrigatório junto do `top-1/2`: sem ele
                   o que fica no meio é a BORDA da linha, não o centro dela. */}
               <span
@@ -122,7 +124,7 @@ export function CertificateLightbox({ cert, onClose }: CertificateLightboxProps)
             <div className="relative h-full w-full overflow-hidden rounded-xl border border-white/10 bg-white/[0.02]">
               <Image
                 src={cert.image}
-                alt={`Certificado: ${cert.title} — ${cert.issuer}`}
+                alt={t(`Certificado: ${cert.title} — ${cert.issuer}`)}
                 fill
                 sizes="(max-width: 1024px) 100vw, 1024px"
                 draggable={false}
@@ -138,8 +140,8 @@ export function CertificateLightbox({ cert, onClose }: CertificateLightboxProps)
             className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 px-6 py-5 sm:px-10"
           >
             <p className="font-mono text-micro tracking-[0.06em] text-white/50">
-              {cert.date}
-              {cert.credentialId && <span className="ml-3">· chave {cert.credentialId}</span>}
+              {t(cert.date)}
+              {cert.credentialId && <span className="ml-3">· {t("chave")} {cert.credentialId}</span>}
             </p>
 
             {cert.url && (
@@ -151,7 +153,7 @@ export function CertificateLightbox({ cert, onClose }: CertificateLightboxProps)
                            text-meta font-semibold text-white transition-colors hover:border-white/40
                            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
               >
-                Validar no site do emissor
+                {t("Validar no site do emissor")}
                 <ArrowUpRight
                   aria-hidden
                   className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"

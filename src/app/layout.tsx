@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Inter_Tight, Chivo_Mono } from "next/font/google";
 import "./globals.css";
+import { LanguageProvider } from "@/components/language-provider";
 
 // Equivalente livre mais próximo da Helvetica Now Display / Neue Haas Grotesk.
 const displaySans = Inter_Tight({
@@ -92,7 +93,9 @@ export default function RootLayout({
       <body
         className={`${displaySans.variable} ${monoRotulos.variable} antialiased`}
       >
-        {children}
+        <LanguageProvider>
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );

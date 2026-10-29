@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Instagram } from "lucide-react";
 
+import { Translated } from "@/components/language-provider";
+import { LanguageSwitch } from "@/components/ui/language-switch";
 import { ProductLinks } from "@/components/ui/product-links";
 import { products, profile, socials } from "@/lib/links-data";
 
@@ -50,11 +52,12 @@ export default function LinksPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-black">
-      <main className="mx-auto flex w-full max-w-lg flex-1 flex-col px-6 pt-20 sm:pt-28">
+      <LanguageSwitch />
+      <main className="mx-auto flex w-full max-w-lg flex-1 flex-col px-6 pt-28">
         {/* Perfil */}
         <header className="flex flex-col items-center text-center">
           <h1 className="text-destaque font-medium text-white">
-            {profile.title}
+            <Translated>{profile.title}</Translated>
           </h1>
         </header>
 
@@ -84,7 +87,7 @@ export default function LinksPage() {
             className="font-mono text-micro tracking-[0.06em] text-white/50 transition-colors hover:text-white
                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/50"
           >
-            {portfolio.label}
+            <Translated>{portfolio.label}</Translated>
           </Link>
         )}
 

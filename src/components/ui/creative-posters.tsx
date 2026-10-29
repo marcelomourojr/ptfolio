@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import type { Creative } from "@/components/ui/creative-stack";
 
 /**
@@ -13,6 +14,7 @@ import type { Creative } from "@/components/ui/creative-stack";
  * galeria arrastaria o three.js inteiro para o bundle inicial da home.
  */
 export function CreativePosterGrid({ items, className }: { items: Creative[]; className?: string }) {
+  const { t } = useLanguage();
   return (
     <div className={className}>
       <ul className="grid grid-cols-3 gap-2 sm:gap-3 md:grid-cols-6">
@@ -27,7 +29,7 @@ export function CreativePosterGrid({ items, className }: { items: Creative[]; cl
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={`/videos/${item.slug}.webp`}
-              alt={item.title}
+              alt={t(item.title)}
               loading="lazy"
               draggable={false}
               className="pointer-events-none size-full select-none object-cover"

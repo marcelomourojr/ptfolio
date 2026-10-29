@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
+import { LocalizedImage as Image } from "@/components/ui/localized-image";
+import { Translated } from "@/components/language-provider";
+import { LanguageSwitch } from "@/components/ui/language-switch";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
@@ -111,7 +113,7 @@ function Links({ p }: { p: Projeto }) {
                      text-corpo font-semibold text-white transition-colors hover:border-white/40
                      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
         >
-          {i.rotulo}
+          <Translated>{i.rotulo}</Translated>
           <ArrowUpRight
             aria-hidden
             className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
@@ -133,7 +135,8 @@ export default async function PaginaProjeto({
 
   return (
     <div className="flex min-h-screen flex-col bg-black">
-      <main className="mx-auto w-full max-w-5xl flex-1 px-6 pb-24 pt-24 sm:px-10 sm:pt-28">
+      <LanguageSwitch />
+      <main className="site-container flex-1 pb-12 pt-24 sm:pb-16 sm:pt-28">
         <Link
           href="/#projetos"
           className="group inline-flex items-center gap-2 font-mono text-micro tracking-[0.06em] text-white/50
@@ -144,7 +147,7 @@ export default async function PaginaProjeto({
             aria-hidden
             className="size-3.5 transition-transform duration-300 group-hover:-translate-x-0.5"
           />
-          Todos os projetos
+          <Translated>Todos os projetos</Translated>
         </Link>
 
         <header className="relative mt-12">
@@ -155,12 +158,12 @@ export default async function PaginaProjeto({
           />
 
           <p className="font-mono text-micro tracking-[0.08em] text-white/50">
-            {p.year} · {p.category}
+            {p.year} · <Translated>{p.category}</Translated>
           </p>
 
           <h1 className="mt-4 text-display font-semibold text-white">{p.title}</h1>
 
-          <p className="mt-6 max-w-measure text-corpo text-white/60">{p.description}</p>
+          <p className="mt-6 max-w-measure text-corpo text-white/60"><Translated>{p.description}</Translated></p>
 
           {p.tags.length > 0 && (
             <div className="mt-8">
@@ -168,7 +171,7 @@ export default async function PaginaProjeto({
                   pelo segundo nível do sumário da página. E /50, não /40 —
                   /40 dava 3,66:1 em 11px e reprovava no WCAG AA; /50 dá 5,32:1. */}
               <p id="rotulo-ferramentas" className="font-mono text-micro tracking-[0.08em] text-white/50">
-                Ferramentas
+                <Translated>Ferramentas</Translated>
               </p>
               <ul aria-labelledby="rotulo-ferramentas" className="mt-3 flex flex-wrap gap-2">
                 {p.tags.map((t) => (
@@ -197,7 +200,7 @@ export default async function PaginaProjeto({
               navega por títulos no leitor de tela pulava direto para o fim.
               O mesmo rótulo "Telas" que o modal da home já usa. */}
           <h2 id="titulo-telas" className="font-mono text-micro tracking-[0.08em] text-white/50">
-            Telas
+            <Translated>Telas</Translated>
           </h2>
           <div className="mt-6 space-y-6 sm:space-y-8">
             {p.images.map((src, i) => (
@@ -228,21 +231,21 @@ export default async function PaginaProjeto({
 
       {/* Fora do <main>: <footer> só vira landmark `contentinfo` quando é
           descendente direto do body. */}
-      <footer className="mx-auto w-full max-w-5xl px-6 pb-16 sm:px-10">
+      <footer className="site-container pb-10 sm:pb-14">
         <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-8">
           <Link
             href="/#projetos"
             className="text-corpo text-white/60 transition-colors hover:text-white
                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
           >
-            Ver os outros projetos
+            <Translated>Ver os outros projetos</Translated>
           </Link>
           <Link
             href="/#contatos"
             className="text-corpo font-semibold text-white transition-colors hover:text-white/70
                        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
           >
-            Falar comigo
+            <Translated>Falar comigo</Translated>
           </Link>
         </div>
       </footer>

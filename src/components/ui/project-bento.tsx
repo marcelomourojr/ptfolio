@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import { useCallback, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -84,6 +85,7 @@ function Card({
   onOpen: (project: BentoItem, trigger: HTMLAnchorElement) => void;
 }) {
   const ref = useRef<HTMLAnchorElement>(null);
+  const { t } = useLanguage();
 
   return (
     // Link de VERDADE, não botão: o clique comum continua abrindo o modal
@@ -102,7 +104,7 @@ function Card({
         e.preventDefault();
         if (ref.current) onOpen(project, ref.current);
       }}
-      aria-label={`Ver o projeto ${project.title}`}
+      aria-label={t(`Ver o projeto ${project.title}`)}
       className={cn(
         "group relative block w-full overflow-hidden rounded-xl border border-white/10 bg-white/[0.02] sm:rounded-2xl",
         "text-left transition-colors duration-500 hover:border-white/25",
@@ -131,7 +133,7 @@ function Card({
       <div className="absolute inset-x-0 bottom-0 z-10 flex items-end justify-between gap-2 p-3 sm:gap-3 sm:p-5">
         <div className="min-w-0">
           <p className="font-mono text-micro tracking-[0.08em] text-white/50">
-            {project.year} · {project.category}
+            {project.year} · {t(project.category)}
           </p>
           <h3 className="mt-1 text-item font-semibold text-white">{project.title}</h3>
         </div>
@@ -237,7 +239,7 @@ export function ProjectBento({ bands }: { bands: BentoBand[] }) {
   const mobileRows = composeMobileRows(bands);
 
   return (
-    <section className="px-6 py-20 sm:px-10 sm:py-24">
+    <section className="site-container section-space">
       {/* Mosaico mobile: superfaixas densas (só existe abaixo de md; as
           imagens do bloco escondido não carregam — next/image é lazy) */}
       <div className="flex flex-col gap-3 md:hidden">

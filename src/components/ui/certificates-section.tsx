@@ -6,6 +6,7 @@
    mesma tag sem otimizar nada — e para SVG de algumas centenas de bytes, com
    altura exata em px e filtro CSS, a tag crua é mais simples e mais direta. */
 
+import { useLanguage } from "@/components/language-provider";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
@@ -69,6 +70,7 @@ export function CertificatesSection({
   description = "Cursos e certificações concluídos, do design de interface à infraestrutura em nuvem.",
   logoHeight = 56,
 }: CertificatesSectionProps) {
+  const { t } = useLanguage();
   const reduceMotion = useReducedMotion();
   const [ativo, setAtivo] = useState(0);
   const cardsRef = useRef<(HTMLLIElement | null)[]>([]);
@@ -104,11 +106,8 @@ export function CertificatesSection({
   }, [items]);
 
   return (
-    <section id="certificados" className="px-6 py-16 sm:px-10 sm:py-20">
-      {/* Largura cheia, sem `mx-auto max-w-*`: é isso que faz o cabeçalho
-          nascer na mesma borda esquerda de "Sobre", "Projetos" e "Vamos
-          Conversar" — todas essas seções são `px-6 sm:px-10` com o cabeçalho
-          encostado no padding, sem trilho centralizado. */}
+    <section id="certificados" className="site-container section-space">
+      {/* O mesmo trilho das demais seções, inclusive em telas largas. */}
       <div className="lg:grid lg:grid-cols-2 lg:gap-14">
         {/* ---------- Esquerda: fica parada por inteiro ---------- */}
         <div className="lg:sticky lg:top-0 lg:h-svh">
@@ -121,21 +120,18 @@ export function CertificatesSection({
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-80px" }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="lg:absolute lg:inset-x-0 lg:top-[14vh]"
+            // O título começa no fluxo e só para a 72px do topo quando
+            // rola: mantém o intervalo de entrada e não encosta no notch.
+            className="relative lg:sticky lg:top-[72px]"
           >
             {/* Só a marca de canto: o rótulo "Formação" saiu a pedido. */}
-            <span aria-hidden className="block size-2 border-l border-t border-rose-500" />
+            <span aria-hidden className="absolute -top-3 left-0 size-2 border-l border-t border-rose-500" />
 
-            {/* Só a partir de lg a escala é menor: aqui o título divide a
-                coluna com a logo e o clamp do padrão a engoliria. No celular
-                não existe coluna, então ele acompanha o tamanho das outras
-                seções — senão fica visivelmente menor que "Projetos" e
-                "Criativos", que é como estava. */}
-            <h2 className="mt-4 text-display font-semibold text-white lg:text-display-contido">
-              {title}
+            <h2 className="text-display font-semibold text-white">
+              {t(title)}
             </h2>
 
-            <p className="mt-4 max-w-sm text-corpo text-white/60">{description}</p>
+            <p className="mt-5 max-w-md text-corpo text-white/60">{t(description)}</p>
           </motion.header>
 
           {/* A logo no centro EXATO da tela, para continuar na mesma linha do
@@ -145,7 +141,7 @@ export function CertificatesSection({
             <div className="relative flex h-16 w-full items-center justify-center">
               {items.map((cert, i) => (
                 <img
-                  key={cert.title}
+                  key={t(cert.title)}
                   src={cert.logo}
                   alt={cert.issuer}
                   draggable={false}
@@ -167,7 +163,7 @@ export function CertificatesSection({
         <ol className="flex flex-col">
           {items.map((cert, i) => (
             <li
-              key={cert.title}
+              key={t(cert.title)}
               data-indice={i}
               ref={(n) => {
                 cardsRef.current[i] = n;
@@ -175,7 +171,7 @@ export function CertificatesSection({
               // Uma tela por certificado é o que dá o compasso do efeito. No
               // mobile não há coluna parada, então altura cheia seria só
               // rolagem vazia — lá o cartão ocupa o que precisa.
-              className="flex flex-col justify-center border-b border-white/10 py-12 last:border-b-0 lg:min-h-svh lg:border-b-0 lg:py-10"
+              className="flex flex-col justify-center border-b border-white/10 py-12 last:border-b-0 max-lg:last:pb-0 lg:min-h-svh lg:border-b-0 lg:py-10"
             >
               <motion.article
                 initial={reduceMotion ? false : { opacity: 0, y: 24 }}
@@ -194,12 +190,12 @@ export function CertificatesSection({
                 />
 
                 <h3 className="text-destaque font-semibold text-white">
-                  {cert.title}
+                  {t(cert.title)}
                 </h3>
 
                 {/* A data "um pouco apagada", como pedido */}
                 <p className="mt-3 font-mono text-micro tracking-[0.04em] text-white/50">
-                  {cert.date}
+                  {t(cert.date)}
                   {cert.credentialId && <span className="ml-3">·&nbsp;{cert.credentialId}</span>}
                 </p>
 
@@ -216,7 +212,7 @@ export function CertificatesSection({
                                  hover:border-white/40
                                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                     >
-                      Ver certificado
+                      {t("Ver certificado")}
                       {/* Sem seta diagonal: não sai da página */}
                       <span
                         aria-hidden
@@ -233,7 +229,7 @@ export function CertificatesSection({
                                  hover:border-white/40
                                  focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                     >
-                      Ver certificado
+                      {t("Ver certificado")}
                       <ArrowUpRight
                         aria-hidden
                         className="size-4 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"

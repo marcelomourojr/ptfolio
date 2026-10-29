@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
 
@@ -33,6 +34,7 @@ export function AboutSection({
   ],
   photo = "/images/sobre-eu.webp",
 }: AboutSectionProps) {
+  const { t } = useLanguage();
   const reduceMotion = useReducedMotion();
 
   const reveal = (delay = 0) => ({
@@ -47,12 +49,15 @@ export function AboutSection({
   });
 
   return (
-    <section id="sobre" className="px-6 py-24 sm:px-10 sm:py-32">
-      {/* Foto à esquerda; título, texto e números todos na coluna da direita.
-          `h-full` na foto + o stretch padrão da grade fazem topo e base das
-          duas colunas coincidirem. */}
-      <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
-        <motion.div {...reveal()} className="lg:col-span-4">
+    <section id="sobre" className="site-container section-space">
+      {/* O título pertence à seção inteira, no mesmo eixo de Projetos,
+          Criativos, Certificados e Contato. */}
+      <h2 className="text-display font-semibold text-white">
+        <WhisperText text={title} />
+      </h2>
+
+      <div className="mt-10 grid items-start gap-8 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:gap-12">
+        <motion.div {...reveal()}>
           {/* aspect fixo, não h-full: esticar até a altura da coluna de texto
               achatava a foto de retrato para 1.17 de proporção. E a largura é
               LIMITADA por faixa: com w-full puro, abaixo de lg a coluna é a
@@ -76,31 +81,27 @@ export function AboutSection({
 
         {/* Sem reveal no contêiner: cada elemento tem seu próprio efeito —
             um contêiner invisível por cima escondia o whisper do título. */}
-        <div className="flex flex-col lg:col-span-8">
-          <h2 className="text-display font-semibold text-white">
-            <WhisperText text={title} />
-          </h2>
-
+        <div className="flex min-w-0 flex-col">
           <BlurFade delay={0.1}>
-            <p className="mt-7 max-w-3xl text-destaque font-medium text-white">
-              {statement}
+            <p className="max-w-3xl text-destaque font-medium text-white">
+              {t(statement)}
             </p>
           </BlurFade>
 
-          <BlurFade delay={0.2} className="mt-7 space-y-5">
+          <BlurFade delay={0.2} className="mt-6 space-y-5">
             {paragraphs.map((text) => (
               <p key={text.slice(0, 32)} className="max-w-measure text-corpo text-white/60">
-                {text}
+                {t(text)}
               </p>
             ))}
           </BlurFade>
 
-          {/* mt-auto encosta os números na base da coluna, alinhando-os com o
-              rodapé da foto quando a foto é quem define a altura da linha. */}
-          <BlurFade delay={0.3} className="mt-auto">
+          {/* Margem + padding somam 64px entre o texto e os números;
+              mt-auto deixava esse intervalo depender da altura da foto. */}
+          <BlurFade delay={0.3} className="mt-8">
             {/* No celular os números vivem centralizados; o alinhamento à
                 esquerda volta junto com as 3 colunas */}
-            <dl className="grid gap-y-8 border-t border-white/10 pt-10 max-sm:text-center sm:grid-cols-3 sm:gap-x-8">
+            <dl className="grid gap-y-8 border-t border-white/10 pt-8 max-sm:text-center sm:grid-cols-3 sm:gap-x-6">
               {stats.map(({ value, label }) => (
                 <div key={label} className="relative">
                   {/* A marca de canto só existe onde há canto: no celular os
@@ -109,13 +110,13 @@ export function AboutSection({
                     aria-hidden
                     className="absolute -top-3 left-0 size-2 border-l border-t border-rose-500 max-sm:hidden"
                   />
-                  <dt className="sr-only">{label}</dt>
+                  <dt className="sr-only">{t(label)}</dt>
                   <dd>
-                    <span className="block text-display-contido font-semibold text-white">
+                    <span className="block whitespace-nowrap text-display-contido font-semibold tabular-nums text-white">
                       {value}
                     </span>
                     <span className="mt-3 block font-mono text-micro tracking-[0.06em] text-white/50">
-                      {label}
+                      {t(label)}
                     </span>
                   </dd>
                 </div>

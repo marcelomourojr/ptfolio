@@ -1,5 +1,7 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
+import { LanguageSwitch } from "@/components/ui/language-switch";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { LayoutGroup, motion, useReducedMotion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
@@ -63,6 +65,7 @@ function Wing({ lado, className }: { lado: "esq" | "dir"; className?: string }) 
 }
 
 export function NotchHeader({ links }: NotchHeaderProps) {
+  const { t } = useLanguage();
   const [ativo, setAtivo] = useState(links[0]?.href ?? "");
   const [aberto, setAberto] = useState(false);
   const ilhaRef = useRef<HTMLDivElement>(null);
@@ -148,11 +151,12 @@ export function NotchHeader({ links }: NotchHeaderProps) {
     // <header> e não <div>: fora do <main>, vira o landmark "banner" — quem
     // navega por regiões no leitor de tela chega à navegação por ele.
     <header className="pointer-events-none fixed inset-x-0 top-0 z-50">
+      <LanguageSwitch />
       {/* Sem wordmark no header, por decisão do usuário: o notch central é a
           única presença — o nome já domina o hero logo abaixo. */}
       {/* Notch central: o menu (desktop) */}
       <nav
-        aria-label="Seções do site"
+        aria-label={t("Seções do site")}
         className="pointer-events-auto absolute left-1/2 top-0 hidden h-12 -translate-x-1/2 items-center rounded-b-3xl bg-white px-4 lg:flex"
       >
         <Wing lado="esq" />
@@ -183,7 +187,7 @@ export function NotchHeader({ links }: NotchHeaderProps) {
                     ativo === l.href ? "font-semibold text-white" : "text-black/55 hover:text-black",
                   )}
                 >
-                  {l.label}
+                  {t(l.label)}
                 </span>
               </a>
             ))}
@@ -204,12 +208,12 @@ export function NotchHeader({ links }: NotchHeaderProps) {
             type="button"
             aria-expanded={aberto}
             aria-haspopup="true"
-            aria-label="Abrir navegação"
+            aria-label={t(aberto ? "Fechar navegação" : "Abrir navegação")}
             onClick={() => setAberto((a) => !a)}
             className="flex h-8 items-center gap-1.5 rounded-full px-2.5 text-meta font-semibold text-black outline-none
                        focus-visible:ring-2 focus-visible:ring-black/70"
           >
-            <span className="leading-none">{rotuloAtivo}</span>
+            <span className="leading-none">{t(rotuloAtivo ?? "")}</span>
             <ChevronDown
               aria-hidden
               className={cn(
@@ -233,7 +237,7 @@ export function NotchHeader({ links }: NotchHeaderProps) {
               tabulação — quem navega por teclado passava por destinos
               invisíveis. `inert` tira do foco e da árvore de acessibilidade. */}
           <div className="overflow-hidden" inert={!aberto}>
-            <nav aria-label="Seções do site" className="flex flex-col gap-0.5 px-0.5 pb-2.5 pt-1">
+            <nav aria-label={t("Seções do site")} className="flex flex-col gap-0.5 px-0.5 pb-2.5 pt-1">
               {links.map((l, i) => (
                 <a
                   key={l.href}
@@ -250,7 +254,7 @@ export function NotchHeader({ links }: NotchHeaderProps) {
                       : "text-black/55 hover:bg-black/5 hover:text-black",
                   )}
                 >
-                  {l.label}
+                  {t(l.label)}
                 </a>
               ))}
             </nav>

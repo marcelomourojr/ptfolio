@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, type PanInfo } from "framer-motion";
 import { ChevronDown, ChevronUp, Pause, Play, Volume2, VolumeX } from "lucide-react";
@@ -31,6 +32,7 @@ interface CreativeStackProps {
  *   site: preto puro e branco com opacidade.
  */
 export function CreativeStack({ items, className }: CreativeStackProps) {
+  const { t } = useLanguage();
   const [current, setCurrent] = useState(0);
   const [comSom, setComSom] = useState(false);
   // null = automático: toca, exceto sob prefers-reduced-motion (WCAG 2.2.2 —
@@ -61,7 +63,7 @@ export function CreativeStack({ items, className }: CreativeStackProps) {
   // senão o carrossel engolia o celular inteiro
   const [compacto, setCompacto] = useState(false);
   useEffect(() => {
-    const mq = window.matchMedia("(max-width: 640px)");
+    const mq = window.matchMedia("(width < 640px)");
     const sync = () => setCompacto(mq.matches);
     sync();
     mq.addEventListener("change", sync);
@@ -170,14 +172,16 @@ export function CreativeStack({ items, className }: CreativeStackProps) {
       ref={rootRef}
       className={className}
       role="region"
-      aria-roledescription="carrossel"
-      aria-label="Criativos em vídeo"
+      aria-roledescription={t("carrossel")}
+      aria-label={t("Criativos em vídeo")}
     >
       {/* Anúncio da troca para leitores de tela */}
       <p aria-live="polite" className="sr-only">
-        {atual.title} — {atual.meta}, {current + 1} de {items.length}
+        {t(atual.title)} — {t(atual.meta)}, {current + 1} {t("de")} {items.length}
       </p>
-      <div className="relative flex items-center justify-center gap-4 sm:gap-8 lg:gap-16">
+      {/* Os vizinhos transformados ultrapassam o palco. Reservar esse espaço
+          no fluxo impede que invadam a legenda e o título da próxima seção. */}
+      <div className="relative flex items-center justify-center gap-4 py-16 sm:gap-8 sm:py-24 lg:gap-16">
         {/* Informações à esquerda: contador + criativo atual */}
         <div className="hidden w-36 shrink-0 flex-col items-end text-right md:flex">
           <span className="text-display-contido font-light tabular-nums text-white">
@@ -187,13 +191,13 @@ export function CreativeStack({ items, className }: CreativeStackProps) {
           <span className="font-mono text-micro tabular-nums text-white/50">
             {String(items.length).padStart(2, "0")}
           </span>
-          <p className="mt-8 text-corpo font-medium tracking-[-0.01em] text-white">{atual.title}</p>
-          <p className="mt-1 font-mono text-micro tracking-[0.04em] text-white/50">{atual.meta}</p>
+          <p className="mt-8 text-corpo font-medium tracking-[-0.01em] text-white">{t(atual.title)}</p>
+          <p className="mt-1 font-mono text-micro tracking-[0.04em] text-white/50">{t(atual.meta)}</p>
         </div>
 
         {/* A pilha */}
         <div
-          className="relative flex h-[340px] w-[min(46vw,280px)] items-center justify-center sm:h-[620px]"
+          className="relative flex aspect-[9/16] min-h-[340px] w-[min(46vw,280px)] items-center justify-center sm:aspect-auto sm:h-[620px]"
           style={{ perspective: "1200px" }}
           onWheel={onWheel}
         >
@@ -239,7 +243,7 @@ export function CreativeStack({ items, className }: CreativeStackProps) {
                     muted
                     playsInline
                     draggable={false}
-                    aria-label={`${item.title} — ${item.meta}`}
+                    aria-label={t(`${item.title} — ${item.meta}`)}
                     className="pointer-events-none size-full select-none object-cover"
                   >
                     {/* mp4 primeiro, como na galeria: o H.264 decodifica por
@@ -261,7 +265,7 @@ export function CreativeStack({ items, className }: CreativeStackProps) {
                     <div className="absolute bottom-2 right-2 flex gap-1.5 sm:bottom-4 sm:right-4 sm:gap-2">
                       <button
                         type="button"
-                        aria-label={deveTocar ? "Pausar vídeo" : "Reproduzir vídeo"}
+                        aria-label={t(deveTocar ? "Pausar vídeo" : "Reproduzir vídeo")}
                         onClick={() => setTocando(!deveTocar)}
                         className="rounded-full border border-white/20 bg-black/50 p-2 text-white backdrop-blur-sm transition-colors
                                    hover:border-white/50 sm:p-2.5
@@ -275,7 +279,7 @@ export function CreativeStack({ items, className }: CreativeStackProps) {
                       </button>
                       <button
                         type="button"
-                        aria-label={comSom ? "Desligar som" : "Ligar som"}
+                        aria-label={t(comSom ? "Desligar som" : "Ligar som")}
                         aria-pressed={comSom}
                         onClick={() => setComSom((s) => !s)}
                         className="rounded-full border border-white/20 bg-black/50 p-2 text-white backdrop-blur-sm transition-colors
@@ -302,7 +306,7 @@ export function CreativeStack({ items, className }: CreativeStackProps) {
         <div className="flex w-36 shrink-0 flex-col items-start gap-6 max-md:absolute max-md:right-0 max-md:top-1/2 max-md:w-auto max-md:-translate-y-1/2 max-md:gap-4">
           <button
             type="button"
-            aria-label="Criativo anterior"
+            aria-label={t("Criativo anterior")}
             onClick={() => navigate(-1)}
             className="rounded-full border border-white/15 p-2 text-white transition-colors
                        hover:border-white/40
@@ -318,7 +322,7 @@ export function CreativeStack({ items, className }: CreativeStackProps) {
               <button
                 key={item.slug}
                 type="button"
-                aria-label={`Ir para ${item.title}`}
+                aria-label={t(`Ir para ${item.title}`)}
                 aria-current={index === current ? "true" : undefined}
                 onClick={() => setCurrent(index)}
                 className="group flex min-h-6 w-6 items-center justify-center py-1"
@@ -335,7 +339,7 @@ export function CreativeStack({ items, className }: CreativeStackProps) {
 
           <button
             type="button"
-            aria-label="Próximo criativo"
+            aria-label={t("Próximo criativo")}
             onClick={() => navigate(1)}
             className="rounded-full border border-white/15 p-2 text-white transition-colors
                        hover:border-white/40
@@ -349,8 +353,8 @@ export function CreativeStack({ items, className }: CreativeStackProps) {
       {/* No mobile as laterais somem: título e contador vêm para baixo */}
       <div className="mt-8 flex items-baseline justify-between px-1 md:hidden">
         <div>
-          <p className="text-corpo font-medium tracking-[-0.01em] text-white">{atual.title}</p>
-          <p className="mt-1 font-mono text-micro tracking-[0.04em] text-white/50">{atual.meta}</p>
+          <p className="text-corpo font-medium tracking-[-0.01em] text-white">{t(atual.title)}</p>
+          <p className="mt-1 font-mono text-micro tracking-[0.04em] text-white/50">{t(atual.meta)}</p>
         </div>
         <p className="font-mono text-micro tabular-nums text-white/50">
           {String(current + 1).padStart(2, "0")} / {String(items.length).padStart(2, "0")}

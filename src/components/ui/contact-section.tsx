@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, Github, Instagram, Linkedin, Mail } from "lucide-react";
@@ -48,8 +49,8 @@ interface ContactSectionProps {
  * celular e o WhatsApp Web no desktop, sem depender de o número estar salvo.
  * O texto vem pré-preenchido só para o Marcelo saber de onde veio o contato.
  */
-function whatsappHref(numero: string) {
-  const texto = encodeURIComponent("Oi, Marcelo! Vim pelo seu portfólio.");
+function whatsappHref(numero: string, message: string) {
+  const texto = encodeURIComponent(message);
   return `https://wa.me/${numero}?text=${texto}`;
 }
 
@@ -86,6 +87,7 @@ export function ContactSection({
   whatsapp = "5514997000646",
   channels,
 }: ContactSectionProps) {
+  const { t } = useLanguage();
   const canais = channels ?? canaisPadrao(email);
   const reduceMotion = useReducedMotion();
 
@@ -101,7 +103,7 @@ export function ContactSection({
   });
 
   return (
-    <section id="contatos" className="px-6 pt-24 sm:px-10 sm:pt-32">
+    <section id="contatos" className="site-container pt-12 sm:pt-16">
       {/* Sem reveal no contêiner: cada elemento tem o próprio efeito, visível
           quando a seção chega — um contêiner invisível escondia o whisper. */}
       <header className="max-w-3xl">
@@ -110,14 +112,14 @@ export function ContactSection({
         </h2>
         <BlurFade delay={0.15}>
           <p className="mt-5 max-w-md text-corpo text-white/50">
-            Conecte-se comigo através das minhas redes ou me chame no Whatsapp.
+            {t("Conecte-se comigo através das minhas redes ou me chame no Whatsapp.")}
           </p>
         </BlurFade>
       </header>
 
       {/* Cards compactos, um por rede, entrando em cascata. O hover: a marca
           de canto rose acende e cresce — a assinatura do site como resposta. */}
-      <ul className="mt-12 grid grid-cols-2 gap-3 border-t border-white/10 pt-10 sm:gap-4 md:grid-cols-4">
+      <ul className="mt-10 grid grid-cols-1 gap-3 border-t border-white/10 pt-10 sm:mt-12 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
         {canais.map(({ label, handle, href, icon }, i) => (
           <li key={label}>
             <BlurFade delay={0.1 + i * 0.08} className="h-full">
@@ -125,9 +127,9 @@ export function ContactSection({
               href={href}
               target={href.startsWith("http") ? "_blank" : undefined}
               rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
-              className="group relative flex flex-col gap-6 overflow-hidden rounded-xl border border-white/10
+              className="group relative flex h-full flex-col gap-4 overflow-hidden rounded-xl border border-white/10
                          bg-white/[0.02] p-5 transition-colors duration-300 hover:border-white/25 hover:bg-white/[0.05]
-                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:p-6"
+                         focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60 sm:gap-6 sm:p-6"
             >
               <span
                 aria-hidden
@@ -142,7 +144,7 @@ export function ContactSection({
               <span className="flex items-end justify-between gap-3">
                 <span className="min-w-0">
                   <span className="block text-corpo font-semibold tracking-[-0.02em] text-white">
-                    {label}
+                    {t(label)}
                   </span>
                   <span className="mt-1 block truncate font-mono text-micro text-white/50 transition-colors group-hover:text-white/60">
                     {handle}
@@ -163,8 +165,8 @@ export function ContactSection({
       {/* O CTA: aro de metal líquido, abrindo conversa no WhatsApp. Era um
           mailto:, que a Cloudflare reescrevia para /cdn-cgi/l/email-protection
           (404 sem JS) — o wa.me não sofre essa ofuscação. */}
-      <motion.div {...reveal(0.16)} className="mt-14 flex justify-center">
-        <LiquidMetalButton label="Fale comigo" href={whatsappHref(whatsapp)} width={224} height={58} />
+      <motion.div {...reveal(0.16)} className="mt-10 flex justify-center sm:mt-14">
+        <LiquidMetalButton label={t("Fale comigo")} href={whatsappHref(whatsapp, t("Oi, Marcelo! Vim pelo seu portfólio."))} width={224} height={58} />
       </motion.div>
 
     </section>
@@ -179,8 +181,9 @@ export function ContactSection({
  * para cá, e o mt-16 continua separando do botão "Fale comigo".
  */
 export function SiteFooter({ owner = "Marcelo Mouro Jr" }: { owner?: string }) {
+  const { t } = useLanguage();
   return (
-    <footer className="mt-16 flex flex-col gap-3 px-6 pb-10 sm:flex-row sm:items-center sm:justify-between sm:px-10 sm:pb-14">
+    <footer className="site-container mt-16 flex flex-col gap-3 pb-10 sm:flex-row sm:items-center sm:justify-between sm:pb-14">
       <p className="font-mono text-micro tracking-[0.06em] text-white/50">
         © {new Date().getFullYear()} {owner}
       </p>
@@ -189,7 +192,7 @@ export function SiteFooter({ owner = "Marcelo Mouro Jr" }: { owner?: string }) {
         className="font-mono text-micro tracking-[0.06em] text-white/50 transition-colors hover:text-white
                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
       >
-        Voltar ao topo ↑
+        {t("Voltar ao topo ↑")}
       </a>
     </footer>
   );

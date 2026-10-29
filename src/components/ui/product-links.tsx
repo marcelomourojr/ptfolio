@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import { useMemo, useState } from "react";
 import Image from "next/image";
 import { motion, useReducedMotion } from "framer-motion";
@@ -20,6 +21,8 @@ function Spine() {
 }
 
 function ProductCard({ item, featured = false }: { item: ProductLink; featured?: boolean }) {
+  const { t } = useLanguage();
+  const title = t(item.title);
   return (
     <a
       href={item.url}
@@ -74,17 +77,17 @@ function ProductCard({ item, featured = false }: { item: ProductLink; featured?:
         <div className="min-w-0 flex-1">
           {/* Título em DUAS linhas em todos os cards: nome do produto em
               cima, plataforma embaixo (quebra no "—"). */}
-          {item.title.includes(" — ") ? (
+          {title.includes(" — ") ? (
             <h2
               className={`font-medium leading-snug text-white ${
                 featured ? "text-destaque" : "text-corpo"
               }`}
             >
-              <span className="block">{item.title.split(" — ")[0]}</span>
+              <span className="block">{title.split(" — ")[0]}</span>
               <span
                 className={`block text-white/50 ${featured ? "text-corpo" : ""}`}
               >
-                {item.title.split(" — ")[1]}
+                {title.split(" — ")[1]}
               </span>
             </h2>
           ) : (
@@ -93,7 +96,7 @@ function ProductCard({ item, featured = false }: { item: ProductLink; featured?:
                 featured ? "text-destaque" : "text-corpo"
               }`}
             >
-              {item.title}
+              {title}
             </h2>
           )}
         </div>
@@ -111,6 +114,7 @@ function ProductCard({ item, featured = false }: { item: ProductLink; featured?:
 }
 
 export function ProductLinks({ products }: { products: ProductLink[] }) {
+  const { t } = useLanguage();
   const reduceMotion = useReducedMotion();
   const [active, setActive] = useState(ALL);
 
@@ -132,7 +136,7 @@ export function ProductLinks({ products }: { products: ProductLink[] }) {
       {/* Filtros — rolagem horizontal no mobile, sem barra visível */}
       {/* Poucas categorias: quebrar em linhas centralizadas mostra todas de uma
           vez. Rolagem horizontal esconderia opções e não centraliza no mobile. */}
-      <nav aria-label="Filtrar por categoria" className="mt-8">
+      <nav aria-label={t("Filtrar por categoria")} className="mt-8">
         <ul className="flex flex-wrap justify-center gap-2">
           {categories.map((category) => {
             const isActive = category === active;
@@ -151,7 +155,7 @@ export function ProductLinks({ products }: { products: ProductLink[] }) {
                                   : "border-white/10 bg-white/[0.03] text-white/50 hover:border-white/25 hover:text-white"
                               }`}
                 >
-                  {category}
+                  {t(category)}
                 </button>
               </li>
             );
@@ -182,7 +186,7 @@ export function ProductLinks({ products }: { products: ProductLink[] }) {
 
       {visible.length === 0 && (
         <p className="mt-10 text-center text-corpo text-white/50">
-          Nada nesta categoria ainda. Escolha outra ou volte em alguns dias.
+          {t("Nada nesta categoria ainda. Escolha outra ou volte em alguns dias.")}
         </p>
       )}
     </>

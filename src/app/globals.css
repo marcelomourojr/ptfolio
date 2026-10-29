@@ -39,7 +39,7 @@
   --text-display--line-height: 0.95;
   --text-display--letter-spacing: -0.03em;
 
-  /* Mesmo papel, coluna estreita (Certificados, números do Sobre) */
+  /* Destaques em espaços menores: números do Sobre, contador e frase da galeria */
   --text-display-contido: clamp(1.875rem, 3.4vw, 3.25rem);
   --text-display-contido--line-height: 1.02;
   --text-display-contido--letter-spacing: -0.035em;
@@ -71,6 +71,29 @@
 
   /* Medida de linha única do texto corrido: 440px = 59 a 65 caracteres a 16px */
   --container-measure: 27.5rem;
+}
+
+/* Mesmo trilho de conteúdo do Bibemfica: 24/40px nas telas menores e
+   largura útil máxima de 1152px. A largura já desconta as duas margens. */
+.site-container {
+  width: min(calc(100% - 3rem), 72rem);
+  margin-inline: auto;
+}
+
+/* Cada seção contribui com metade do intervalo: entre dois blocos de
+   conteúdo ficam 96px no celular e 128px a partir de 640px. */
+.section-space {
+  padding-block: 3rem;
+}
+
+@media (min-width: 640px) {
+  .site-container {
+    width: min(calc(100% - 5rem), 72rem);
+  }
+
+  .section-space {
+    padding-block: 4rem;
+  }
 }
 
 

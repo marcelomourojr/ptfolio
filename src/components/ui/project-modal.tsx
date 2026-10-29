@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import { useEffect, useRef } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import Link from "next/link";
@@ -42,6 +43,7 @@ export function ProjectModal({
   onClose: () => void;
 }) {
   const reduceMotion = useReducedMotion();
+  const { t } = useLanguage();
   const closeRef = useRef<HTMLButtonElement>(null);
   const dialogRef = useRef<HTMLDivElement>(null);
   useFocusTrap(dialogRef, project !== null);
@@ -86,7 +88,7 @@ export function ProjectModal({
           data-lenis-prevent
           className="fixed inset-0 z-[60] overflow-y-auto overscroll-contain bg-black"
         >
-          <div className="sticky top-0 z-10 flex justify-end bg-black/80 px-6 py-5 backdrop-blur-xl sm:px-10">
+          <div className="site-container sticky top-0 z-10 flex justify-end bg-black/80 py-5 backdrop-blur-xl">
             <button
               ref={closeRef}
               type="button"
@@ -95,7 +97,7 @@ export function ProjectModal({
                          font-medium text-white transition-colors hover:bg-white/[0.12]
                          focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
             >
-              Fechar
+              {t("Fechar")}
               {/* `-translate-y-1/2` é obrigatório junto do `top-1/2`: sem ele
                   o que fica no meio é a BORDA da linha, não o centro dela. */}
               <span
@@ -108,14 +110,14 @@ export function ProjectModal({
             </button>
           </div>
 
-          <div className="px-6 pb-16 sm:px-10">
+          <div className="site-container pb-12 sm:pb-16">
             <motion.div
               initial={reduceMotion ? false : { opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.45, delay: 0.05, ease: [0.22, 1, 0.36, 1] }}
             >
               <p className="font-mono text-micro tracking-[0.08em] text-white/50">
-                {project.year} · {project.category}
+                {project.year} · {t(project.category)}
               </p>
               <h2
                 id="titulo-projeto"
@@ -126,12 +128,12 @@ export function ProjectModal({
 
               <div className="mt-8 grid gap-8 border-t border-white/10 pt-8 lg:grid-cols-12 lg:gap-16">
                 <p className="max-w-measure text-corpo text-white/60 lg:col-span-7">
-                  {project.description}
+                  {t(project.description)}
                 </p>
 
                 <div className="lg:col-span-5">
                   <p className="font-mono text-micro tracking-[0.08em] text-white/50">
-                    Ferramentas
+                    {t("Ferramentas")}
                   </p>
                   <ul className="mt-4 flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
@@ -147,7 +149,7 @@ export function ProjectModal({
 
                   {hasActions && (
                     <div className="mt-8 flex flex-wrap gap-3">
-                      {site && <ActionButton href={site}>Ver site</ActionButton>}
+                      {site && <ActionButton href={site}>{t("Ver site")}</ActionButton>}
                       {appStore && <ActionButton href={appStore}>App Store</ActionButton>}
                       {playStore && <ActionButton href={playStore}>Google Play</ActionButton>}
                     </div>
@@ -162,7 +164,7 @@ export function ProjectModal({
                                text-white/50 transition-colors hover:text-white
                                focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                   >
-                    Ver a página do projeto
+                    {t("Ver a página do projeto")}
                     <ArrowUpRight
                       aria-hidden
                       className="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"

@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import { Fragment, useLayoutEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -32,7 +33,7 @@ interface WhisperTextProps {
  * - Renderiza <span>, para viver DENTRO do h2 da seção sem mudar semântica.
  */
 export function WhisperText({
-  text,
+  text: originalText,
   className,
   delay = 100,
   duration = 0.5,
@@ -40,6 +41,8 @@ export function WhisperText({
   y = 0,
   triggerStart = "top 85%",
 }: WhisperTextProps) {
+  const { t } = useLanguage();
+  const text = t(originalText);
   const ref = useRef<HTMLSpanElement>(null);
 
   useLayoutEffect(() => {

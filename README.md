@@ -23,6 +23,7 @@ configuração `portfolio` para o servidor de desenvolvimento e
 
 ```bash
 npm run lint
+npm run test:i18n
 npx tsc --noEmit --incremental false
 npm run images:dims -- --check
 npm run build
@@ -30,7 +31,8 @@ npm run build
 
 O lint inclui a guarda de tipografia em `scripts/checa-tipografia.mjs`.
 O build do Next gera as páginas estáticas, mas não valida sozinho o runtime
-da Cloudflare. Não há suíte de testes automatizados configurada.
+da Cloudflare. `test:i18n` usa o runner nativo do Node 22 e cobre preservação
+do português, descrições dos oito projetos, textos acessíveis e URLs/identificadores.
 
 ## Organização e conteúdo
 
@@ -55,6 +57,42 @@ Para incluir um projeto, adicione os dados e um slug estável em
 `bentoBands` na home. O sitemap e as páginas de projetos usam os dados
 compartilhados. O parallax da home usa uma seleção separada de sete imagens.
 Preserve os textos do usuário ao fazer ajustes técnicos.
+
+## Alinhamento e espaçamento
+
+O conteúdo usa `site-container`, definido em `globals.css`: margens mínimas
+de 24px no celular e 40px a partir de 640px, com largura útil máxima de
+1152px. Os títulos de Sobre, Projetos, Criativos, Certificados e Contato,
+o bento, os contatos, os modais, as páginas de projetos e o rodapé compartilham
+esse eixo. A assinatura grande do hero e os efeitos de tela inteira mantêm
+sua composição; o texto de abertura e os metadados usam o trilho de conteúdo.
+
+`section-space` reserva 48px em cada extremidade no celular e 64px nas telas
+maiores. Duas seções consecutivas somam 96px ou 128px, conforme o padrão
+aprovado no Bibemfica. Evite somar novamente um intervalo inteiro de cada lado.
+O título Sobre fica acima da grade de foto e texto; as métricas têm 64px de
+respiro após os parágrafos. O carrossel reserva no próprio fluxo a área dos
+cards transformados, para não invadir a legenda nem a seção seguinte.
+
+## Idiomas
+
+O seletor PT/EN segue o Bibemfica: bandeiras, indicador deslizante em 450ms,
+opções horizontais no desktop e empilhadas abaixo de 640px. Ele fica no canto
+direito, separado do notch, que mantém `left: 50%` e `translateX(-50%)` mesmo
+com a gaveta aberta. O seletor também aparece nos projetos, em `/links` e na 404.
+
+`LanguageProvider` mantém a escolha em `portfolio-language` no localStorage,
+com fallback em memória se o armazenamento estiver indisponível. Atualiza
+`html[lang]` e acompanha mudanças em outra aba. Português é o HTML inicial e
+o idioma padrão; a preferência local é aplicada após a hidratação.
+
+As traduções ficam em `src/lib/translations.ts`. Componentes interativos usam
+`useLanguage`; páginas prerenderizadas usam `Translated` e `LocalizedImage`
+para traduzir conteúdo e textos alternativos sem transformar a rota inteira
+em Client Component. Ao acrescentar textos, inclua a tradução e verifique PT/EN.
+Os originais em português, dados, nomes, métricas, slugs e mídia são preservados.
+O seletor muda a apresentação: as URLs, canonical e metadata estática continuam
+em português; não há rotas `/en` nem uma versão inglesa indexável separada.
 
 ## Dimensões das imagens
 

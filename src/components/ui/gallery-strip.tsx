@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -24,6 +25,7 @@ interface GalleryStripProps {
  *   scroll nativo já é fluido e continua valendo.
  */
 export function GalleryStrip({ images, title }: GalleryStripProps) {
+  const { t } = useLanguage();
   const n = images.length;
   const loop = n >= 2;
   const items = loop ? [...images, ...images, ...images] : images;
@@ -172,7 +174,7 @@ export function GalleryStrip({ images, title }: GalleryStripProps) {
   return (
     <div className="mt-12 border-t border-white/10 pt-8">
       <div className="flex items-center justify-between">
-        <p className="font-mono text-micro tracking-[0.08em] text-white/50">Telas</p>
+        <p className="font-mono text-micro tracking-[0.08em] text-white/50">{t("Telas")}</p>
         {n > 1 && (
           <div className="flex items-center gap-2">
             <span className="mr-2 font-mono text-micro tabular-nums text-white/50">
@@ -180,7 +182,7 @@ export function GalleryStrip({ images, title }: GalleryStripProps) {
             </span>
             <button
               type="button"
-              aria-label="Tela anterior"
+              aria-label={t("Tela anterior")}
               onClick={() => passo(-1)}
               className="rounded-full border border-white/15 p-2 text-white transition-colors
                          hover:border-white/40
@@ -190,7 +192,7 @@ export function GalleryStrip({ images, title }: GalleryStripProps) {
             </button>
             <button
               type="button"
-              aria-label="Próxima tela"
+              aria-label={t("Próxima tela")}
               onClick={() => passo(1)}
               className="rounded-full border border-white/15 p-2 text-white transition-colors
                          hover:border-white/40
@@ -213,7 +215,7 @@ export function GalleryStrip({ images, title }: GalleryStripProps) {
         // transborda (celular), sem foco aqui quem usa teclado não alcançava
         // o resto dela — a trava de foco do modal pulava a faixa.
         tabIndex={0}
-        aria-label={`Telas de ${title}`}
+        aria-label={t(`Telas de ${title}`)}
         className="mt-6 flex cursor-grab select-none gap-4 overflow-x-auto rounded-lg pb-4
                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60
                    active:cursor-grabbing
@@ -228,7 +230,7 @@ export function GalleryStrip({ images, title }: GalleryStripProps) {
           >
             <Image
               src={src}
-              alt={loop && (i < n || i >= n * 2) ? "" : `${title} — tela ${(i % n) + 1}`}
+              alt={loop && (i < n || i >= n * 2) ? "" : t(`${title} — tela ${(i % n) + 1}`)}
               fill
               sizes="60vh"
               draggable={false}

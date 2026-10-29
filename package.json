@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint && node scripts/checa-tipografia.mjs",
+    "test:i18n": "node --experimental-strip-types --experimental-default-type=module --test tests/translations.test.mjs",
     "images:dims": "node scripts/gera-image-dims.mjs",
     "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
     "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",

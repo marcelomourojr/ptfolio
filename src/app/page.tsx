@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import { useEffect } from "react";
 import Lenis from "@studio-freight/lenis";
 import { ZoomParallax } from "@/components/ui/zoom-parallax";
@@ -192,6 +193,7 @@ const certificatesData: Certificate[] = [
 ];
 
 export default function Home() {
+  const { t } = useLanguage();
   // Smooth scroll with Lenis
   useEffect(() => {
     // Respeita quem pediu menos movimento no sistema: o scroll hijacking do
@@ -251,7 +253,7 @@ export default function Home() {
       </Cursor>
       <CursorFollow align="bottom-right" sideOffset={10} className="z-[9998] pointer-events-none hidden md:block">
         <div className="bg-white/10 border border-white/20 backdrop-blur-md text-white px-3 py-1 rounded-full text-micro font-semibold tracking-[0.04em] shadow-xl">
-          Você
+          {t("Você")}
         </div>
       </CursorFollow>
       {/* Navbar em notch: menu com scrollspy no centro (desktop); ilha única
@@ -281,14 +283,14 @@ export default function Home() {
 
 
       {/* Projetos: cabeçalho à esquerda, sem gradiente em texto */}
-      <section id="projetos" className="px-6 pt-24 sm:px-10 sm:pt-32">
+      <section id="projetos" className="site-container section-space">
         <header className="max-w-3xl">
           <h2 className="text-display font-semibold text-white">
             <WhisperText text="Projetos" />
           </h2>
           <BlurFade delay={0.15}>
             <p className="mt-5 max-w-md text-corpo text-white/50">
-              Produtos que foram para a rua e continuam em uso. Role para ver de perto.
+              {t("Produtos que foram para a rua e continuam em uso. Role para ver de perto.")}
             </p>
           </BlurFade>
         </header>

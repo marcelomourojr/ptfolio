@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import { useLayoutEffect, useRef, useState } from "react";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 
@@ -29,7 +30,9 @@ interface VelocityTextProps {
  * - Sem uppercase (regra do site) e na tipografia do restante da página.
  * - Sob prefers-reduced-motion vira um bloco estático de texto, sem trilho.
  */
-export function VelocityText({ phrase, className }: VelocityTextProps) {
+export function VelocityText({ phrase: originalPhrase, className }: VelocityTextProps) {
+  const { t } = useLanguage();
+  const phrase = t(originalPhrase);
   const railRef = useRef<HTMLElement>(null);
   const textRef = useRef<HTMLParagraphElement>(null);
   const [distancia, setDistancia] = useState(0);

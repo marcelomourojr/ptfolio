@@ -1,5 +1,6 @@
 "use client";
 
+import { useLanguage } from "@/components/language-provider";
 import { useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import { motion, useReducedMotion } from "framer-motion";
@@ -45,6 +46,7 @@ export function CreativesSection({
   featStatement = "Criativos de anúncio gerados de ponta a ponta com IA para o Verbo.",
   featText = "Roteiro, avatar, narração e edição feitos com ferramentas de IA generativa — do gancho à tela final, prontos para campanha.",
 }: CreativesSectionProps) {
+  const { t } = useLanguage();
   const reduceMotion = useReducedMotion();
   const galleryRef = useRef<HTMLDivElement>(null);
   const [montada, setMontada] = useState(false);
@@ -139,7 +141,7 @@ export function CreativesSection({
   const estatico = reduceMotion || semWebgl;
 
   return (
-    <section id="criativos" className="px-6 pb-24 pt-24 sm:px-10 sm:pb-32 sm:pt-32">
+    <section id="criativos" className="site-container section-space">
       {/* Sem reveal no contêiner: cada elemento tem o próprio efeito, visível
           quando a seção chega — um contêiner invisível escondia o whisper. */}
       <header className="relative max-w-3xl">
@@ -147,7 +149,7 @@ export function CreativesSection({
           <WhisperText text={title} />
         </h2>
         <BlurFade delay={0.15}>
-          <p className="mt-5 max-w-md text-corpo text-white/50">{subtitle}</p>
+          <p className="mt-5 max-w-md text-corpo text-white/50">{t(subtitle)}</p>
         </BlurFade>
       </header>
 
@@ -171,7 +173,7 @@ export function CreativesSection({
             )}
             <div className="pointer-events-none absolute inset-0 flex items-center justify-center px-6 text-center mix-blend-exclusion">
               <p className="text-display-contido font-semibold text-white">
-                {phrase}
+                {t(phrase)}
               </p>
             </div>
           </div>
@@ -186,15 +188,13 @@ export function CreativesSection({
           <WhisperText text={featStatement} />
         </p>
         <BlurFade delay={0.2}>
-          <p className="mx-auto mt-4 max-w-md text-corpo text-white/50">{featText}</p>
+          <p className="mx-auto mt-4 max-w-md text-corpo text-white/50">{t(featText)}</p>
         </BlurFade>
       </div>
 
-      {/* A pilha vertical, depois do efeito. A margem compensa o VAZAMENTO
-          da pilha: os cards vizinhos espreitam ~120px acima da caixa do
-          carrossel (é o efeito), então o respiro visual é a margem menos
-          isso — daí o valor alto. */}
-      <motion.div {...reveal(0.08)} className="mt-36 sm:mt-52">
+      {/* A pilha reserva no próprio fluxo a área dos cards vizinhos;
+          aqui entra apenas o intervalo normal entre blocos da seção. */}
+      <motion.div {...reveal(0.08)} className="mt-12 sm:mt-16">
         <CreativeStack items={items} />
       </motion.div>
     </section>
